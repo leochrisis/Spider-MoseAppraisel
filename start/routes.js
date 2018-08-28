@@ -16,4 +16,11 @@
 const Route = use('Route')
 
 Route.any('*', 'NuxtController.render')
+
+// Users
 Route.post('api/users/create', 'UserController.create')
+
+// Achievements
+Route.get('api/achievements', 'AchievementController.index')
+Route.post('api/achievement/create', 'AchievementController.create')
+Route.delete('api/achievement/:id', 'AchievementController.delete')
