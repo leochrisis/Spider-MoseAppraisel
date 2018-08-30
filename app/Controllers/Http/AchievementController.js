@@ -47,6 +47,13 @@ class AchievementController {
    * PUT or PATCH achievements/:id
    */
   async update ({ params, request, response }) {
+    const achievement = await Achievement.findOrFail(params.id)
+
+    const data = request.only(['name', 'cnpj', 'phone', 'adress'])
+
+    achievement.merge(data)
+    await achievement.save()
+    return achievement
   }
 
   /**
