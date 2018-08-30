@@ -3,8 +3,12 @@
 const Model = use('Model')
 
 class Achievement extends Model {
-  user () {
-    return this.belongsTo('App/Models/User')
+  userprofile () {
+    return this.belongsTo('App/Models/UserProfile')
+  }
+
+  unit () {
+    return this.hasMany('App/Models/Unit')
   }
 }
 
