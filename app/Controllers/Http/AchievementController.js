@@ -53,12 +53,8 @@ class AchievementController {
    * Delete a achievement with id.
    * DELETE achievements/:id
    */
-  async destroy ({ params, auth, response }) {
+  async destroy ({ params }) {
     const achievement = await Achievement.findOrFail(params.id)
-
-    if (achievement.user_id !== auth.user.id) {
-      return response.status(401).send({ error: 'Not authorized' })
-    }
 
     await achievement.delete()
   }
