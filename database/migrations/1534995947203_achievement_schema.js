@@ -7,10 +7,10 @@ class AchievementSchema extends Schema {
     this.create('achievements', (table) => {
       table.increments()
       table
-        .integer('user_id')
+        .integer('userprofile_id')
         .unsigned()
         .references('id')
-        .inTable('users')
+        .inTable('user_profiles')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
       table.string('name').unique().notNullable()
