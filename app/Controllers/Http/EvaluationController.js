@@ -1,5 +1,7 @@
 'use strict'
 
+const Evaluation = use('App/Models/Evaluation')
+
 /**
  * Resourceful controller for interacting with evaluations
  */
@@ -9,6 +11,9 @@ class EvaluationController {
    * GET evaluations
    */
   async index ({ request, response, view }) {
+    const evaluation = Evaluation.all()
+
+    return evaluation
   }
 
   /**
@@ -23,6 +28,11 @@ class EvaluationController {
    * POST evaluations
    */
   async store ({ request, response }) {
+    const data = request.only(['type', 'status', 'contractor', 'partner'])
+
+    const evaluation = await Evaluation.create(data)
+
+    return evaluation
   }
 
   /**
@@ -30,6 +40,13 @@ class EvaluationController {
    * GET evaluations/:id
    */
   async show ({ params, request, response, view }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    if (!evaluation) {
+      return response.status(404).json({ message: 'Evaluation not found!' })
+    }
+
+    return evaluation
   }
 
   /**
@@ -44,6 +61,13 @@ class EvaluationController {
    * PUT or PATCH evaluations/:id
    */
   async update ({ params, request, response }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['type', 'status', 'contractor', 'partner'])
+
+    evaluation.merge(data)
+    await evaluation.save()
+    return evaluation
   }
 
   /**
@@ -51,6 +75,9 @@ class EvaluationController {
    * DELETE evaluations/:id
    */
   async destroy ({ params, request, response }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    await evaluation.delete()
   }
 }
 
