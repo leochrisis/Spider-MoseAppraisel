@@ -26,8 +26,11 @@
     "@adonisjs/session": "^1.0.19",
     "@adonisjs/shield": "^1.0.4",
     "cross-env": "^3.1.4",
+    "node-sass": "^4.9.3",
     "nuxt": "latest",
+    "nuxt-buefy": "^0.1.0",
     "pg": "^7.4.3",
+    "sass-loader": "^7.1.0",
     "standard": "^8.6.0",
     "youch": "^2.0.4"
   },
