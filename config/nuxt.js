@@ -30,6 +30,11 @@ module.exports = {
       }
     ]
   },
+
+  modules: [
+    'nuxt-buefy'
+  ],
+
   /*
   ** Global CSS
   */

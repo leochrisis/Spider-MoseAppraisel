@@ -1,5 +1,7 @@
 'use strict'
 
+const Unit = use('App/Models/Unit')
+
 /**
  * Resourceful controller for interacting with units
  */
@@ -8,7 +10,8 @@ class UnitController {
    * Show a list of all units.
    * GET units
    */
-  async index ({ request, response, view }) {
+  async index () {
+    return await Unit.all()
   }
 
   /**
@@ -23,13 +26,19 @@ class UnitController {
    * POST units
    */
   async store ({ request, response }) {
+    const data = request.only(['name', 'description', 'phone', 'people_number'])
+
+    const unit = await Unit.create(data)
+
+    return unit
   }
 
   /**
    * Display a single unit.
    * GET units/:id
    */
-  async show ({ params, request, response, view }) {
+  async show ({ request }) {
+    return await Unit.findOrFail(request.params.id)
   }
 
   /**
@@ -44,6 +53,11 @@ class UnitController {
    * PUT or PATCH units/:id
    */
   async update ({ params, request, response }) {
+    const unit = await Unit.findOrFail(request.params.id)
+    const data = request.only(['name', 'description', 'phone', 'people_number'])
+    unit.merge(data)
+    await unit.save()
+    return unit
   }
 
   /**
@@ -51,6 +65,8 @@ class UnitController {
    * DELETE units/:id
    */
   async destroy ({ params, request, response }) {
+    const unit = await Unit.findOrFail(request.params.id)
+    await unit.delete()
   }
 }
 

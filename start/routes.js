@@ -15,12 +15,22 @@
 
 const Route = use('Route')
 
+// User
+
+Route.group(() => {
+  Route.resource('sessions', 'SessionController').apiOnly()
+  Route.resource('users', 'UserController').apiOnly()
+  Route.resource('achievements', 'AchievementController').apiOnly()
+})
+  .formats(['json'])
+  .prefix('api')
+
+// Route.post('api/sessions', 'SessionController.create')
+// Route.post('api/users/create', 'UserController.create')
+
+// // Achievements
+// Route.get('api/achievements', 'AchievementController.index')
+// Route.post('api/achievement/create', 'AchievementController.create')
+// Route.delete('api/achievement/:id', 'AchievementController.delete')
+
 Route.any('*', 'NuxtController.render')
-
-// Users
-Route.post('api/users/create', 'UserController.create')
-
-// Achievements
-Route.get('api/achievements', 'AchievementController.index')
-Route.post('api/achievement/create', 'AchievementController.create')
-Route.delete('api/achievement/:id', 'AchievementController.delete')
