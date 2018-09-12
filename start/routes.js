@@ -19,6 +19,8 @@ const Route = use('Route')
 
 Route.group(() => {
   Route.resource('sessions', 'SessionController').apiOnly()
+  Route.resource('users', 'UserController').apiOnly()
+  Route.resource('achievements', 'AchievementController').apiOnly()
 })
   .formats(['json'])
   .prefix('api')
