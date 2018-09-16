@@ -28,12 +28,4 @@ Route.group(() => {
   .formats(['json'])
   .prefix('api')
 
-// Route.post('api/sessions', 'SessionController.create')
-// Route.post('api/users/create', 'UserController.create')
-
-// // Achievements
-// Route.get('api/achievements', 'AchievementController.index')
-// Route.post('api/achievement/create', 'AchievementController.create')
-// Route.delete('api/achievement/:id', 'AchievementController.delete')
-
 Route.any('*', 'NuxtController.render')
