@@ -1,7 +1,5 @@
 'use strict'
 
-const Evidence = use('App/Model/Evidence')
-
 /**
  * Resourceful controller for interacting with evidences
  */
@@ -11,9 +9,6 @@ class EvidenceController {
    * GET evidences
    */
   async index ({ request, response, view }) {
-    const evidence = Evidence.all()
-
-    return evidence
   }
 
   /**
@@ -28,11 +23,6 @@ class EvidenceController {
    * POST evidences
    */
   async store ({ request, response }) {
-    const data = request.only(['role', 'habilities'])
-
-    const evidence = await Evidence.create(data)
-
-    return evidence
   }
 
   /**
@@ -40,13 +30,6 @@ class EvidenceController {
    * GET evidences/:id
    */
   async show ({ params, request, response, view }) {
-    const evidence = await Evidence.findOrFail(params.id)
-
-    if (!evidence) {
-      return response.status(404).json({ message: 'Evidence not found!' })
-    }
-
-    return evidence
   }
 
   /**
@@ -61,13 +44,6 @@ class EvidenceController {
    * PUT or PATCH evidences/:id
    */
   async update ({ params, request, response }) {
-    const evidence = await Evidence.findOrFail(params.id)
-
-    const data = request.only(['role', 'habilities'])
-
-    evidence.merge(data)
-    await evidence.save()
-    return evidence
   }
 
   /**
@@ -75,9 +51,6 @@ class EvidenceController {
    * DELETE evidences/:id
    */
   async destroy ({ params, request, response }) {
-    const evidence = await Evidence.findOrFail(params.id)
-
-    await evidence.delete()
   }
 }
 
