@@ -7,7 +7,7 @@ class ProfileAchievementsTeamsSchema extends Schema {
     this.create('profile_achievements_teams', (table) => {
       table.increments()
       table.integer('userId').unsigned()
-      table.foreign('userId').references('user.id')
+      table.foreign('userId').references('users.id')
       table.integer('profileId').unsigned()
       table.foreign('profileId').references('profiles.id')
       table.integer('achievementId').unsigned()
