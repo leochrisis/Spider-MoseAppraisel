@@ -7,7 +7,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Adonuxt',
+    title: 'Avaliação MOSE',
     meta: [
       {
         charset: 'utf-8'
