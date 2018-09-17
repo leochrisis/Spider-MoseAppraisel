@@ -32,7 +32,8 @@ module.exports = {
   },
 
   modules: [
-    'nuxt-buefy'
+    'nuxt-buefy',
+    '@nuxtjs/axios'
   ],
 
   /*
