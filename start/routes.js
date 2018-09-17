@@ -18,12 +18,13 @@ const Route = use('Route')
 // User
 
 Route.group(() => {
-  Route.resource('sessions', 'SessionController').apiOnly()
   Route.resource('users', 'UserController').apiOnly()
   Route.resource('achievements', 'AchievementController').apiOnly()
   Route.resource('unit', 'UnitController').apiOnly()
   Route.resource('evaluation', 'EvaluationController').apiOnly()
   Route.resource('evidence', 'EvidenceController').apiOnly()
+  Route.post('login', 'SessionController.login')
+  Route.post('logout', 'SessionController.logout')
 })
   .formats(['json'])
   .prefix('api')
