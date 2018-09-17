@@ -7,6 +7,8 @@ class SessionController {
     return await auth.attempt(email, password)
   }
 
+  async logout ({auth, params}) {
+    return await auth.logout()
   }
 }
 
