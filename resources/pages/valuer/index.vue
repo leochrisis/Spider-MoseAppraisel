@@ -118,8 +118,9 @@ export default {
   },
 
   methods: {
-    createAchievement () {
-      console.log('hi!')
+    async createAchievement () {
+      await this.$axios.$post('api/achievements', this.achievement)
+    },
     }
   }
 
