@@ -1,0 +1,127 @@
+<template>
+  <div>
+    <div class="columns">
+      <div class="column is-one-fifth">
+        <aside class="menu">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">John Smith</p>
+                  <p class="subtitle is-6">@johnsmith</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+
+          <ul class="menu-list gray">
+            <a class="button is-info" @click="creation = true">Novo empreendimento</a>
+            <br/>
+            <p class="menu-label">
+              Empreendimentos:
+            </p>
+            <ul>
+              <div v-for="achievement in achievements" :key="achievement.id">
+                <li><a>{{achievement.name}}</a></li>
+              </div>
+            </ul>
+          </ul>
+        </aside>
+      </div>
+      <div class="column">
+        escolha um empreendimento para começar.
+      </div>
+    </div>
+
+    <section>
+      <div v-if="creation">
+        <b-modal :active.sync="creation" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Cadastro de Empredimento</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Nome">
+                    <b-input
+                        v-model="achievement.name"
+                        placeholder="Nome do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="CNPJ">
+                    <b-input
+                        v-model="achievement.cnpj"
+                        placeholder="CNPJ do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Telefone">
+                    <b-input
+                        v-model="achievement.phone"
+                        placeholder="Telefone do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Endereço">
+                    <b-input
+                        v-model="achievement.adress"
+                        placeholder="Endereço do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="creation = false">Cancelar</button>
+                    <button class="button is-primary" @click="createAchievement">Cadastrar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+export default {
+  layout: 'basic',
+
+  data: () => ({
+    achievements: [],
+    creation: false,
+    achievement: {
+      name: '',
+      cnpj: '',
+      phone: '',
+      adress: ''
+    }
+  }),
+
+  async created () {
+    const achievements = await this.$axios.$get('/api/achievements')
+    this.achievements = achievements
+  },
+
+  methods: {
+    createAchievement () {
+      console.log('hi!')
+    }
+  }
+
+}
+</script>
