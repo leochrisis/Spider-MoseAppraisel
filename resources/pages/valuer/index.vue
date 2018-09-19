@@ -40,7 +40,27 @@
         </aside>
       </div>
       <div class="column">
-        escolha um empreendimento para começar.
+        <div v-if="!achievementSelected">
+          escolha um empreendimento para começar.
+        </div>
+        <div v-else>
+          <nav class="navbar is-transparent">
+            <div class="navbar-start">
+              <div class="navbar-item title">
+                {{selected.name}}
+              </div>
+            </div>
+
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <button class="button is-warning" @click="">Editar</button>
+                  <button class="button is-danger" @click="">Deletar</button>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
 
