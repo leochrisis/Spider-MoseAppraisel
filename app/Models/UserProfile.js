@@ -3,6 +3,8 @@
 const Model = use('Model')
 
 class UserProfile extends Model {
+  static boot () {
+    super.boot()
   }
 }
 
