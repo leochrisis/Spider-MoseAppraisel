@@ -27,7 +27,7 @@ class UserController {
     return user
   }
 
-  async update ({ params, request, response }) {
+  async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
     const data = request.only(['username', 'email', 'password'])
