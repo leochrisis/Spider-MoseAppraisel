@@ -37,10 +37,8 @@ class UserController {
     return user
   }
 
-
-    if (User.user_id !== auth.user.id) {
-      return response.status(401).send({ error: 'Not authorized' })
-    }
+  async destroy ({ request }) {
+    const user = await User.findOrFail(request.params.id)
 
     await user.delete()
   }
