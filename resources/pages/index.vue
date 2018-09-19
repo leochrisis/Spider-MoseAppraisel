@@ -53,7 +53,7 @@ export default {
 
     handleSuccess () {
       localStorage.setItem('lastUsername', this.email)
-      this.$router.push({path: '/about', success: true})
+      this.$router.push({path: '/admin', success: true})
     },
 
     handleFail () {
