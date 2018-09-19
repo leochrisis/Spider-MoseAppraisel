@@ -33,7 +33,7 @@
             </p>
             <ul>
               <div v-for="achievement in achievements" :key="achievement.id">
-                <li><a>{{achievement.name}}</a></li>
+                <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
               </div>
             </ul>
           </ul>
@@ -109,7 +109,9 @@ export default {
       cnpj: '',
       phone: '',
       adress: ''
-    }
+    },
+    selected: null,
+    achievementSelected: false
   }),
 
   async created () {
@@ -121,6 +123,11 @@ export default {
     async createAchievement () {
       await this.$axios.$post('api/achievements', this.achievement)
     },
+
+    async chargeAchievement (id) {
+      const achievement = await this.$axios.$get(`api/achievements/${id}`)
+      this.selected = achievement
+      this.achievementSelected = true
     }
   }
 
