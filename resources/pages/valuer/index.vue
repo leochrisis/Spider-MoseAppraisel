@@ -60,6 +60,35 @@
               </div>
             </div>
           </nav>
+          <nav class="level">
+            <div class="level-item has-text-centered column is-2">
+              <div>
+                <p class="heading">Patrocinador</p>
+                <p>
+                  O Empreendimento não possui patrocinador. 
+                  <a>Clique aqui para cadastra-lo</a>
+                </p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered column is-2">
+              <div>
+                <p class="heading">CNPJ</p>
+                <p>{{selected.cnpj}}</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered column is-2">
+              <div>
+                <p class="heading">Telefone</p>
+                <p>{{selected.phone}}</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered column is-2">
+              <div>
+                <p class="heading">Endereço</p>
+                <p>{{selected.adress}}</p>
+              </div>
+            </div>
+          </nav>
         </div>
       </div>
     </div>
