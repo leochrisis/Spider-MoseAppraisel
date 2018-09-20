@@ -66,7 +66,7 @@
                 <p class="heading">Patrocinador</p>
                 <p>
                   O Empreendimento não possui patrocinador. 
-                  <a>Clique aqui para cadastra-lo</a>
+                  <a @click="sponsor = true">Clique aqui para cadastra-lo</a>
                 </p>
               </div>
             </div>
@@ -191,6 +191,57 @@
           </form>
         </b-modal>
       </div>
+
+      <div v-if="sponsor">
+        <b-modal :active.sync="sponsor" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Cadastro de patrocinador</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Papel">
+                    <b-dropdown disabled>
+                      <button class="button" slot="trigger">
+                          <span>Patrocinador</span>
+                          <b-icon icon="menu-down"></b-icon>
+                      </button>
+                    </b-dropdown>
+                  </b-field>
+
+                  <b-field label="Usuário">
+                    <b-input
+                        v-model="user.name"
+                        placeholder="Nome do patrocinador"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Email">
+                    <b-input
+                        type="email"
+                        v-model="user.email"
+                        placeholder="Email do usuário"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Senha">
+                    <b-input
+                        v-model="user.password"
+                        placeholder="Senha do usuário"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="sponsor = false">Cancelar</button>
+                    <button class="button is-primary" @click="createUSer">cadastrar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
     </section>
   </div>
 </template>
@@ -208,10 +259,16 @@ export default {
       phone: '',
       adress: ''
     },
+    user: {
+      username: '',
+      email: '',
+      password: ''
+    },
     selected: null,
     edited: {},
     editing: false,
-    achievementSelected: false
+    sponsor: false,
+    achievementSelected: false,
   }),
 
   async created () {
@@ -244,6 +301,10 @@ export default {
     async deleteAchievement () {
       const {id} = this.selected
       await this.$axios.$delete(`api/achievements/${id}`)
+    },
+
+    async createUSer () {
+      await this.$axios.$post('api/users', this.user)
     }
   }
 
