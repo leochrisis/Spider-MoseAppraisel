@@ -54,8 +54,8 @@
             <div class="navbar-end">
               <div class="navbar-item">
                 <div class="buttons">
-                  <button class="button is-danger" @click="">Deletar</button>
                   <button class="button is-warning" @click="editAchievement">Editar</button>
+                  <button class="button is-danger" @click="deleteAchievement">Deletar</button>
                 </div>
               </div>
             </div>
@@ -239,6 +239,11 @@ export default {
       const {id} = this.edited
       await this.$axios.$put(`api/achievements/${id}`, this.edited)
       Object.assign(this.selected, this.edited)
+    },
+
+    async deleteAchievement () {
+      const {id} = this.selected
+      await this.$axios.$delete(`api/achievements/${id}`)
     }
   }
 
