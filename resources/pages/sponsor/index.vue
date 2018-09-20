@@ -168,8 +168,58 @@
           </form>
         </b-modal>
       </div>
+
+      <div v-if="edition">
+        <b-modal :active.sync="edition" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Atualização de unidade de negócio</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Nome">
+                    <b-input
+                        v-model="editUN.name"
+                        placeholder="Nome da unidade"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Descrição">
+                    <b-input
+                        type="textarea"
+                        v-model="editUN.description"
+                        placeholder="Descrição da unidade"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Telefone">
+                    <b-input
+                        v-model="editUN.phone"
+                        placeholder="Telefone da unidade de negócio"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Número de pessoas">
+                    <b-input
+                        v-model="editUN.people_number"
+                        placeholder="Número de pessoas da unidade"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="edition = false">Cancelar</button>
+                    <button class="button is-primary" @click="updateUnit">Atualizar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
     </section>
-  </div>  
+  </div>
 </template>
 
 <script>
