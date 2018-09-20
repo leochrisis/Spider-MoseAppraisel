@@ -34,6 +34,13 @@
             <ul>
               <div v-for="achievement in achievements" :key="achievement.id">
                 <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
+                  <li>
+                    <ul>
+                      <div v-for="unit in achievement.unit" :key="unit.id">
+                        <li><a>{{unit.name}}</a></li>
+                      </div>
+                    </ul>
+                  </li>
               </div>
             </ul>
           </ul>
