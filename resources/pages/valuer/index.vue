@@ -54,8 +54,8 @@
             <div class="navbar-end">
               <div class="navbar-item">
                 <div class="buttons">
-                  <button class="button is-warning" @click="editAchivement">Editar</button>
                   <button class="button is-danger" @click="">Deletar</button>
+                  <button class="button is-warning" @click="editAchievement">Editar</button>
                 </div>
               </div>
             </div>
@@ -185,7 +185,7 @@
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="editing = false">Cancelar</button>
-                    <button class="button is-primary" @click="updateAchivement">Atualizar</button>
+                    <button class="button is-primary" @click="updateAchievement">Atualizar</button>
                 </footer>
             </div>
           </form>
@@ -230,12 +230,12 @@ export default {
       this.achievementSelected = true
     },
 
-    editAchivement () {
+    editAchievement () {
       Object.assign(this.edited, this.selected)
       this.editing = true
     },
 
-    async updateAchivement () {
+    async updateAchievement () {
       const {id} = this.edited
       await this.$axios.$put(`api/achievements/${id}`, this.edited)
       Object.assign(this.selected, this.edited)
