@@ -64,8 +64,8 @@ class UnitController {
    * Delete a unit with id.
    * DELETE units/:id
    */
-  async destroy ({ params, request, response }) {
-    const unit = await Unit.findOrFail(request.params.id)
+  async destroy ({ params }) {
+    const unit = await Unit.findOrFail(params.id)
     await unit.delete()
   }
 }
