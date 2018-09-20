@@ -4,9 +4,10 @@ const Achievement = use('App/Models/Achievement')
 
 class AchievementController {
   async index () {
-    const achievements = Achievement.all()
-
-    return achievements
+    return await Achievement
+      .query()
+      .with('unit')
+      .fetch()
   }
 
   async store ({ request, response }) {
@@ -17,14 +18,11 @@ class AchievementController {
     return achievement
   }
 
-  async show ({ params, response }) {
-    const achievement = await Achievement.findOrFail(params.id)
-
-    if (!achievement) {
-      return response.status(404).json({ message: 'Achievement not found!' })
-    }
-
-    return achievement
+  async show ({ request }) {
+    return await Achievement.query()
+      .where('id', request.params.id)
+      .with('unit')
+      .first()
   }
 
   async update ({ params, request, response }) {
