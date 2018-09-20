@@ -96,6 +96,25 @@
               </div>
             </div>
           </nav>
+          <nav class="navbar is-transparent">
+            <div class="navbar-start">
+              <div class="navbar-item title">
+                Unidades de negócio
+              </div>
+            </div>
+          </nav>
+          <br/>
+          <div v-if="selected.unit.length === 0">
+            Ainda não existem unidades de negócio.
+          </div>
+          <div v-else>
+            <b-table
+              :bordered="bordered"
+              :data="selected.unit"
+              :columns="columns"
+              focusable
+            ></b-table>
+          </div>
         </div>
       </div>
     </div>
@@ -276,6 +295,35 @@ export default {
     editing: false,
     sponsor: false,
     achievementSelected: false,
+    bordered: true,
+    columns: [
+      {
+        field: 'id',
+        label: 'ID',
+        width: '40',
+        numeric: true
+      },
+      {
+        field: 'name',
+        label: 'Nome da UN',
+        centered: true
+      },
+      {
+        field: 'description',
+        label: 'Descrição da UN',
+        centered: true
+      },
+      {
+        field: 'phone',
+        label: 'Telefone',
+        centered: true
+      },
+      {
+        field: 'people_number',
+        label: 'Número de pessoas',
+        centered: true
+      }
+    ]
   }),
 
   async created () {
