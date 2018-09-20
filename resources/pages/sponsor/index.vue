@@ -267,6 +267,11 @@ export default {
       this.edition = true
     },
 
+    async updateUnit () {
+      const {id} = this.editUN
+      await this.$axios.$put(`api/unit/${id}`, this.editUN)
+    },
+
     async deleteUnit () {
       const {id} = this.selectedUN
 
