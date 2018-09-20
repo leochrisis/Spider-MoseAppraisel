@@ -92,7 +92,13 @@
             </div>
             <div class="navbar-end">
               <div class="navbar-item">
-                <button class="button is-info" @click="createUN = true">Nova</button>
+                <div class="buttons">
+                  <button class="button is-info" @click="createUN = true">Nova</button>
+                  <div v-if="selectedUN">
+                    <button class="button is-warning" @click="editUnit">Editar</button>
+                    <button class="button is-danger" @click="deleteUnit">Deletar</button>
+                  </div>
+                </div>
               </div>
             </div>
           </nav>
@@ -105,6 +111,7 @@
               :bordered="bordered"
               :data="selected.unit"
               :columns="columns"
+              :selected.sync="selectedUN"
               focusable
             ></b-table>
           </div>
@@ -174,13 +181,16 @@ export default {
     achievementSelected: false,
     selected: null,
     createUN: false,
+    selectedUN: false,
+    edition: false,
     unit: {
       achievement_id: '',
       name: '',
       description: '',
       phone: '',
       people_number: ''
-    }
+    },
+    editUN: {},
   }),
 
   async created () {
@@ -200,6 +210,17 @@ export default {
     async createUnit () {
       this.unit.achievement_id = this.selected.id
       await this.$axios.$post(`api/unit`, this.unit)
+    },
+
+    editUnit () {
+      Object.assign(this.editUN, this.selectedUN)
+      this.edition = true
+    },
+
+    async deleteUnit () {
+      const {id} = this.selectedUN
+
+      await this.$axios.$delete(`api/unit/${id}`)
     }
   }
 }
