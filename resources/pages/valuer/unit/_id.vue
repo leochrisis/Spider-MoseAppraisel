@@ -134,7 +134,30 @@ export default {
   data: () => ({
     achievements: [],
     selected: null,
-    responsible: false
+    responsible: false,
+    bordered: true,
+    columns: [
+      {
+        field: 'type',
+        label: 'Tipo',
+        centered: true
+      },
+      {
+        field: 'status',
+        label: 'status',
+        centered: true
+      },
+      {
+        field: 'contractor',
+        label: 'Contratante',
+        centered: true
+      },
+      {
+        field: 'partner',
+        label: 'Parceiro',
+        centered: true
+      }
+    ]
   }),
 
   methods: {
