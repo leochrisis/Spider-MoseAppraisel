@@ -48,6 +48,73 @@
           </ul>
         </aside>
       </div>
+
+      <div class="column" v-if="selected">
+        <nav class="navbar is-ligthGray">
+          <div class="navbar-start">
+            <div class="navbar-item title">
+              {{selected.name}}
+            </div>
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <button class="button is-warning" @click="">Editar</button>
+                <button class="button is-danger" @click="">Deletar</button>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <nav class="level">
+          <div class="level-item has-text-centered column is-2">
+            <div>
+              <p class="heading">Responsável</p>
+              <p>
+                O Empreendimento não possui responsável.
+                <a @click="responsible = true">Clique aqui para cadastra-lo</a>
+              </p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered column is-2">
+            <div>
+              <p class="heading">Descrição</p>
+              <p>{{selected.description}}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered column is-2">
+            <div>
+              <p class="heading">Telefone</p>
+              <p>{{selected.phone}}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered column is-2">
+            <div>
+              <p class="heading">Número de membros</p>
+              <p>{{selected.people_number}}</p>
+            </div>
+          </div>
+        </nav>
+        <nav class="navbar is-transparent">
+          <div class="navbar-start">
+            <div class="navbar-item title">
+              Avaliações
+            </div>
+          </div>
+        </nav>
+        <br/>
+        <div v-if="selected.evaluation.length === 0">
+          Ainda não existem avaliações.
+        </div>
+        <div v-else>
+          <b-table
+            :bordered="bordered"
+            :data="selected.evaluation"
+            :columns="columns"
+            focusable
+          ></b-table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -65,7 +132,12 @@ export default {
   },
 
   data: () => ({
-    achievements: []
-  })
+    achievements: [],
+    selected: null,
+    responsible: false
+  }),
+
+  methods: {
+  }
 }
 </script>
