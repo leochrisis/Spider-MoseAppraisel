@@ -44,7 +44,7 @@
           escolha um empreendimento para começar.
         </div>
         <div v-else>
-          <nav class="navbar is-transparent">
+          <nav class="navbar is-ligthGray">
             <div class="navbar-start">
               <div class="navbar-item title">
                 {{selected.name}}
