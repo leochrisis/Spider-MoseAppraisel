@@ -11,7 +11,10 @@ class UnitController {
    * GET units
    */
   async index () {
-    return await Unit.all()
+    return await Unit
+      .query()
+      .with('evaluation')
+      .fetch()
   }
 
   /**
@@ -38,7 +41,10 @@ class UnitController {
    * GET units/:id
    */
   async show ({ request }) {
-    return await Unit.findOrFail(request.params.id)
+    return await Unit.query()
+      .where('id', request.params.id)
+      .with('evaluation')
+      .first()
   }
 
   /**
