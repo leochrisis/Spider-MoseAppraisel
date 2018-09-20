@@ -37,7 +37,11 @@
                   <li>
                     <ul>
                       <div v-for="unit in achievement.unit" :key="unit.id">
-                        <li><a>{{unit.name}}</a></li>
+                        <li><a>
+                        <nuxt-link :to="`/valuer/unit/${unit.name}`">
+                          {{unit.name}}
+                        </nuxt-link>
+                        </a></li>
                       </div>
                     </ul>
                   </li>
