@@ -54,7 +54,7 @@
             <div class="navbar-end">
               <div class="navbar-item">
                 <div class="buttons">
-                  <button class="button is-warning" @click="">Editar</button>
+                  <button class="button is-warning" @click="editAchivement">Editar</button>
                   <button class="button is-danger" @click="">Deletar</button>
                 </div>
               </div>
@@ -142,6 +142,55 @@
           </form>
         </b-modal>
       </div>
+
+      <div v-if="editing">
+        <b-modal :active.sync="editing" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Edição de Empredimento</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Nome">
+                    <b-input
+                        v-model="edited.name"
+                        placeholder="Nome do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="CNPJ">
+                    <b-input
+                        v-model="edited.cnpj"
+                        placeholder="CNPJ do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Telefone">
+                    <b-input
+                        v-model="edited.phone"
+                        placeholder="Telefone do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Endereço">
+                    <b-input
+                        v-model="edited.adress"
+                        placeholder="Endereço do empreendimento"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="editing = false">Cancelar</button>
+                    <button class="button is-primary" @click="updateAchivement">Atualizar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
     </section>
   </div>
 </template>
@@ -160,6 +209,8 @@ export default {
       adress: ''
     },
     selected: null,
+    edited: {},
+    editing: false,
     achievementSelected: false
   }),
 
@@ -177,6 +228,17 @@ export default {
       const achievement = await this.$axios.$get(`api/achievements/${id}`)
       this.selected = achievement
       this.achievementSelected = true
+    },
+
+    editAchivement () {
+      Object.assign(this.edited, this.selected)
+      this.editing = true
+    },
+
+    async updateAchivement () {
+      const {id} = this.edited
+      await this.$axios.$put(`api/achievements/${id}`, this.edited)
+      Object.assign(this.selected, this.edited)
     }
   }
 
