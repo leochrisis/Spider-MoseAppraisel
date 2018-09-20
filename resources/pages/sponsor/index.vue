@@ -241,6 +241,29 @@ export default {
       people_number: ''
     },
     editUN: {},
+    bordered: true,
+    columns: [
+      {
+        field: 'name',
+        label: 'Nome da UN',
+        centered: true
+      },
+      {
+        field: 'description',
+        label: 'Descrição da UN',
+        centered: true
+      },
+      {
+        field: 'phone',
+        label: 'Telefone',
+        centered: true
+      },
+      {
+        field: 'people_number',
+        label: 'Número de pessoas',
+        centered: true
+      }
+    ]
   }),
 
   async created () {
