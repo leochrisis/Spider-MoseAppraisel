@@ -101,6 +101,17 @@
               Avaliações
             </div>
           </div>
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <button class="button is-info" @click="creation = true">Novo</button>
+                <div v-if="selected">
+                  <button class="button is-warning" @click="edition = true">Editar</button>
+                  <button class="button is-danger" @click="">Deletar</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </nav>
         <br/>
         <div v-if="selected.evaluation.length === 0">
@@ -136,6 +147,8 @@ export default {
     selected: null,
     responsible: false,
     bordered: true,
+    creation: false,
+    edition: false,
     columns: [
       {
         field: 'type',
