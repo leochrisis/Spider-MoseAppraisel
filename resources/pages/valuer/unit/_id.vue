@@ -59,6 +59,9 @@ export default {
   async created () {
     const achievements = await this.$axios.$get('/api/achievements')
     this.achievements = achievements
+    var id = this.$route.params.id
+    const selected = await this.$axios.$get(`/api/unit/${id}`)
+    this.selected = selected
   },
 
   data: () => ({
