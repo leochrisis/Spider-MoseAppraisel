@@ -74,7 +74,7 @@ class EvaluationController {
    * Delete a evaluation with id.
    * DELETE evaluations/:id
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
     await evaluation.delete()
