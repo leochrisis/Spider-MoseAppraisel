@@ -71,8 +71,7 @@
             <div>
               <p class="heading">Responsável</p>
               <p>
-                O Empreendimento não possui responsável.
-                <a @click="responsible = true">Clique aqui para cadastra-lo</a>
+                A unidade não possui responsável.
               </p>
             </div>
           </div>
