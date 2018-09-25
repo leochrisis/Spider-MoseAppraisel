@@ -99,10 +99,10 @@
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <button class="button is-info" @click="creation = true">Novo</button>
-                <div v-if="selected">
-                  <button class="button is-warning" @click="edition = true">Editar</button>
-                  <button class="button is-danger" @click="">Deletar</button>
+                <button class="button is-info" @click="creation = true">Nova</button>
+                <div v-if="selectedEva">
+                  <button class="button is-warning" @click="editEvaluation">Editar</button>
+                  <button class="button is-danger" @click="deleteEvaluation">Deletar</button>
                 </div>
               </div>
             </div>
