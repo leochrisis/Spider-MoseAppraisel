@@ -7,7 +7,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Adonuxt',
+    title: 'Avaliação MOSE',
     meta: [
       {
         charset: 'utf-8'
@@ -32,13 +32,14 @@ module.exports = {
   },
 
   modules: [
-    'nuxt-buefy'
+    'nuxt-buefy',
+    '@nuxtjs/axios'
   ],
 
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'],
+  css: ['~assets/main.scss'],
   /*
   ** Customize the progress-bar color
   */

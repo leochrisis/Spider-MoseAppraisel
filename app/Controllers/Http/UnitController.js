@@ -11,7 +11,10 @@ class UnitController {
    * GET units
    */
   async index () {
-    return await Unit.all()
+    return await Unit
+      .query()
+      .with('evaluation')
+      .fetch()
   }
 
   /**
@@ -26,7 +29,7 @@ class UnitController {
    * POST units
    */
   async store ({ request, response }) {
-    const data = request.only(['name', 'description', 'phone', 'people_number'])
+    const data = request.only(['achievement_id', 'name', 'description', 'phone', 'people_number'])
 
     const unit = await Unit.create(data)
 
@@ -38,7 +41,10 @@ class UnitController {
    * GET units/:id
    */
   async show ({ request }) {
-    return await Unit.findOrFail(request.params.id)
+    return await Unit.query()
+      .where('id', request.params.id)
+      .with('evaluation')
+      .first()
   }
 
   /**
@@ -64,8 +70,8 @@ class UnitController {
    * Delete a unit with id.
    * DELETE units/:id
    */
-  async destroy ({ params, request, response }) {
-    const unit = await Unit.findOrFail(request.params.id)
+  async destroy ({ params }) {
+    const unit = await Unit.findOrFail(params.id)
     await unit.delete()
   }
 }

@@ -28,7 +28,7 @@ class EvaluationController {
    * POST evaluations
    */
   async store ({ request, response }) {
-    const data = request.only(['type', 'status', 'contractor', 'partner'])
+    const data = request.only(['unit_id', 'type', 'status', 'contractor', 'partner'])
 
     const evaluation = await Evaluation.create(data)
 
@@ -74,7 +74,7 @@ class EvaluationController {
    * Delete a evaluation with id.
    * DELETE evaluations/:id
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
     await evaluation.delete()

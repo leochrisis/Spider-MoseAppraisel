@@ -6,15 +6,10 @@ class EvidenceSchema extends Schema {
   up () {
     this.create('evidences', (table) => {
       table.increments()
-      table
-        .integer('unit_id')
-        .unsigned()
-        .references('id')
-        .inTable('units')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
-      table.string('role').notNullable()
-      table.string('habilities', 200).notNullable()
+      table.integer('evaluationId').unsigned()
+      table.foreign('evaluationId').references('evaluations.id')
+      table.string('role', 50)
+      table.string('password', 300)
       table.timestamps()
     })
   }

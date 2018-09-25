@@ -2,24 +2,14 @@
 
 const Achievement = use('App/Models/Achievement')
 
-/**
- * Resourceful controller for interacting with achievements
- */
 class AchievementController {
-  /**
-   * Show a list of all achievements.
-   * GET achievements
-   */
   async index () {
-    const achievements = Achievement.all()
-
-    return achievements
+    return await Achievement
+      .query()
+      .with('unit')
+      .fetch()
   }
 
-  /**
-   * Create/save a new achievement.
-   * POST achievements
-   */
   async store ({ request, response }) {
     const data = request.only(['name', 'cnpj', 'phone', 'adress'])
 
@@ -28,24 +18,13 @@ class AchievementController {
     return achievement
   }
 
-  /**
-   * Display a single achievement.
-   * GET achievements/:id
-   */
-  async show ({ params, response }) {
-    const achievement = await Achievement.findOrFail(params.id)
-
-    if (!achievement) {
-      return response.status(404).json({ message: 'Achievement not found!' })
-    }
-
-    return achievement
+  async show ({ request }) {
+    return await Achievement.query()
+      .where('id', request.params.id)
+      .with('unit')
+      .first()
   }
 
-  /**
-   * Update achievement details.
-   * PUT or PATCH achievements/:id
-   */
   async update ({ params, request, response }) {
     const achievement = await Achievement.findOrFail(params.id)
 
@@ -56,10 +35,6 @@ class AchievementController {
     return achievement
   }
 
-  /**
-   * Delete a achievement with id.
-   * DELETE achievements/:id
-   */
   async destroy ({ params }) {
     const achievement = await Achievement.findOrFail(params.id)
 

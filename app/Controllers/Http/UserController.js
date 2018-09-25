@@ -27,17 +27,24 @@ class UserController {
     return user
   }
 
-  async update ({ params, request, response }) {
+  async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
-    const data = request.only(['username', 'email', 'password'])
+    const data = request.only([
+      'username',
+      'email'
+    ])
 
     user.merge(data)
     await user.save()
     return user
   }
 
-  async destroy ({ params, auth, response }) {}
+  async destroy ({ request }) {
+    const user = await User.findOrFail(request.params.id)
+
+    await user.delete()
+  }
 }
 
 module.exports = UserController

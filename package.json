@@ -25,6 +25,7 @@
     "@adonisjs/lucid": "^4.0.22",
     "@adonisjs/session": "^1.0.19",
     "@adonisjs/shield": "^1.0.4",
+    "@nuxtjs/axios": "^5.3.1",
     "cross-env": "^3.1.4",
     "node-sass": "^4.9.3",
     "nuxt": "latest",

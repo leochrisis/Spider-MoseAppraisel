@@ -1,0 +1,14 @@
+@import "~bulma/sass/utilities/_all";
+
+$primary: #5183f7;
+$ligthGray: #f8f8f8;
+$primary-invert: findColorInvert($primary);
+$ligthGray-invert: findColorInvert($ligthGray);
+
+$colors: (
+  "primary": ($primary, $primary-invert),
+  "ligthGray": ($ligthGray, $ligthGray-invert)
+);
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
