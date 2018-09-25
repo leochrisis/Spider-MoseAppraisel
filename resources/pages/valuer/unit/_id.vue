@@ -244,6 +244,19 @@ export default {
     bordered: true,
     creation: false,
     edition: false,
+    selectedEva: false,
+    evaluation: {
+      unit_id: '',
+      type: 'contetxo',
+      status: 'vigente',
+      contractor: '',
+      partner: ''
+    },
+    contractors: [
+      'Lorem',
+      'Inpsun',
+      'Sit amet'
+    ],
     columns: [
       {
         field: 'type',
@@ -265,7 +278,8 @@ export default {
         label: 'Parceiro',
         centered: true
       }
-    ]
+    ],
+    edited: {}
   }),
 
   methods: {
