@@ -269,6 +269,26 @@ export default {
   }),
 
   methods: {
+    async createEvaluation () {
+      this.evaluation.unit_id = this.$route.params.id
+      await this.$axios.$post(`api/evaluation`, this.evaluation)
+    },
+
+    editEvaluation () {
+      Object.assign(this.edited, this.selectedEva)
+      this.edition = true
+    },
+
+    async updateEvaluation () {
+      const {id} = this.edited
+      await this.$axios.$put(`api/evaluation/${id}`, this.edited)
+      Object.assign(this.selected, this.edited)
+    },
+
+    async deleteEvaluation () {
+      const {id} = this.selectedEva
+      await this.$axios.$delete(`api/evaluation/${id}`)
+    }
   }
 }
 </script>
