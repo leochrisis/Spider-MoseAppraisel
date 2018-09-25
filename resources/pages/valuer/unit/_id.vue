@@ -117,10 +117,110 @@
             :bordered="bordered"
             :data="selected.evaluation"
             :columns="columns"
+            :selected.sync="selectedEva"
             focusable
           ></b-table>
         </div>
       </div>
+    </div>
+    <div v-if="creation">
+      <b-modal :active.sync="creation" has-modal-card>
+        <form action="">
+          <div class="modal-card" style="width: auto">
+              <header class="modal-card-head">
+                  <p class="modal-card-title">Cadastro de avaliação</p>
+              </header>
+              <section class="modal-card-body">
+                <b-field label="Tipo">
+                  <b-dropdown disabled>
+                    <button class="button" slot="trigger">
+                        <span>Contexto</span>
+                        <b-icon icon="menu-down"></b-icon>
+                    </button>
+                  </b-dropdown>
+                </b-field>
+
+                <b-field label="Status">
+                  <b-dropdown disabled>
+                    <button class="button" slot="trigger">
+                        <span>Vigente</span>
+                        <b-icon icon="menu-down"></b-icon>
+                    </button>
+                  </b-dropdown>
+                </b-field>
+
+                <b-field label="Contratante">
+                  <b-input
+                    v-model="evaluation.contractor"
+                    placeholder="Nome do contratante"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Parceiro">
+                  <b-input
+                    v-model="evaluation.partner"
+                    placeholder="Nome do parceiro"
+                    required>
+                  </b-input>
+                </b-field>
+              </section>
+              <footer class="modal-card-foot">
+                  <button class="button" type="button" @click="creation = false">Cancelar</button>
+                  <button class="button is-primary" @click="createEvaluation">Cadastrar</button>
+              </footer>
+          </div>
+        </form>
+      </b-modal>
+    </div>
+
+    <div v-if="edition">
+      <b-modal :active.sync="edition" has-modal-card>
+        <form action="">
+          <div class="modal-card" style="width: auto">
+              <header class="modal-card-head">
+                  <p class="modal-card-title">Atualização de avaliação</p>
+              </header>
+              <section class="modal-card-body">
+                <b-field label="Tipo">
+                  <b-input
+                    v-model="edited.type"
+                    placeholder="Nome do contratante"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Status">
+                  <b-input
+                    v-model="edited.status"
+                    placeholder="Nome do contratante"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Contratante">
+                  <b-input
+                    v-model="edited.contractor"
+                    placeholder="Nome do contratante"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Parceiro">
+                  <b-input
+                    v-model="edited.partner"
+                    placeholder="Nome do parceiro"
+                    required>
+                  </b-input>
+                </b-field>
+              </section>
+              <footer class="modal-card-foot">
+                  <button class="button" type="button" @click="edition = false">Cancelar</button>
+                  <button class="button is-primary" @click="updateEvaluation">Atualizar</button>
+              </footer>
+          </div>
+        </form>
+      </b-modal>
     </div>
   </div>
 </template>
