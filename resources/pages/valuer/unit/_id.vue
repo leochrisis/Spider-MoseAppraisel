@@ -59,10 +59,6 @@
 
           <div class="navbar-end">
             <div class="navbar-item">
-              <div class="buttons">
-                <button class="button is-warning" @click="">Editar</button>
-                <button class="button is-danger" @click="">Deletar</button>
-              </div>
             </div>
           </div>
         </nav>
