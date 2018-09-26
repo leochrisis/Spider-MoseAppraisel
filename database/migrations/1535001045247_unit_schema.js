@@ -6,13 +6,8 @@ class UnitSchema extends Schema {
   up () {
     this.create('units', (table) => {
       table.increments()
-      table
-        .integer('achievement_id')
-        .unsigned()
-        .references('id')
-        .inTable('achievements')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
+      table.integer('achievementId').unsigned()
+      table.foreign('achievementId').references('achievements.id').onDelete('cascade')
       table.string('name').notNullable()
       table.string('description', 500)
       table.string('phone').notNullable()
