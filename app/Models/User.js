@@ -30,8 +30,10 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
-  profile () {
-    return this.belongsToMany('App/Models/Profile')
+  profiles () {
+    return this
+      .belongsToMany('App/Models/Profile', 'userId', 'profileId')
+      .pivotTable('user_profiles')
   }
 }
 
