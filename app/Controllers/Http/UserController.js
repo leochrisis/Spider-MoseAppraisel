@@ -4,7 +4,10 @@ const User = use('App/Models/User')
 
 class UserController {
   async index () {
-    const users = User.all()
+    const users = User
+      .query()
+      .with('profiles')
+      .fetch()
 
     return users
   }
