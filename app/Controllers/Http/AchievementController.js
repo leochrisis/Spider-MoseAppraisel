@@ -11,9 +11,9 @@ class AchievementController {
   }
 
   async store ({ request, response }) {
-    const data = request.only(['name', 'cnpj', 'phone', 'adress'])
+    const {name, cnpj, phone, adress} = request.post()
 
-    const achievement = await Achievement.create(data)
+    const achievement = await Achievement.create({name, cnpj, phone, adress})
 
     return achievement
   }
