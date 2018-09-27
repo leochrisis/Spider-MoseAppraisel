@@ -19,9 +19,11 @@ class AchievementController {
   }
 
   async show ({ request }) {
-    return await Achievement.query()
+    return await Achievement
+      .query()
       .where('id', request.params.id)
       .with('units')
+      .fetch()
   }
 
   async update ({ params, request, response }) {
