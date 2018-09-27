@@ -13,7 +13,7 @@ class UnitController {
   async index () {
     return await Unit
       .query()
-      .with('evaluation')
+      .with('evaluations')
       .fetch()
   }
 
@@ -43,7 +43,6 @@ class UnitController {
   async show ({ request }) {
     return await Unit.query()
       .where('id', request.params.id)
-      .with('evaluation')
       .first()
   }
 
@@ -52,6 +51,7 @@ class UnitController {
    * GET units/:id/edit
    */
   async edit ({ params, request, response, view }) {
+      .with('evaluations')
   }
 
   /**
