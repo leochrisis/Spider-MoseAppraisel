@@ -217,4 +217,8 @@ export default {
 .title {
   font-size: 30px;
 }
+.button {
+  padding: 5px;
+  display: inline-flex
+}
 </style>
