@@ -7,8 +7,8 @@ class Unit extends Model {
     return this.belongsTo('App/Models/achievement', 'achievementId')
   }
 
-  evidences () {
-    return this.hasMany('App/Models/Evidences')
+  evaluations () {
+    return this.hasMany('App/Models/Evaluation', 'id', 'unitId')
   }
 }
 
