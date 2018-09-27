@@ -47,6 +47,13 @@ class UserController {
     user.email = email || user.email
 
     await user.save()
+
+    if (profiles && profiles.length > 0) {
+      await user.profiles().detach()
+      await user.profiles().attach(profiles)
+      user.profiles = await user.profiles().fetch()
+    }
+
     return user
   }
 
