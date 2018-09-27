@@ -14,9 +14,9 @@ class UnitController {
   }
 
   async store ({ request, response }) {
-    const data = request.only(['achievement_id', 'name', 'description', 'phone', 'people_number'])
+    const {achievementId, name, description, phone, people_number} = request.post()
 
-    const unit = await Unit.create(data)
+    const unit = await Unit.create({achievementId, name, description, phone, people_number})
 
     return unit
   }
