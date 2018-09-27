@@ -3,8 +3,8 @@
 const Model = use('Model')
 
 class Evaluation extends Model {
-  unit () {
-    return this.belongsTo('App/Models/Unit')
+  units () {
+    return this.belongsTo('App/Models/Unit', 'unitId')
   }
 }
 
