@@ -10,9 +10,6 @@ class UnitController {
       .fetch()
   }
 
-  async create ({ request, response, view }) {
-  }
-
   async store ({ request, response }) {
     const {achievementId, name, description, phone, people_number} = request.post()
 
@@ -27,7 +24,6 @@ class UnitController {
       .first()
   }
 
-  async edit ({ params, request, response, view }) {
       .with('evaluations')
   }
 
