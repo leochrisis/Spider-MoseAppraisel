@@ -6,13 +6,8 @@ class EvaluationSchema extends Schema {
   up () {
     this.create('evaluations', (table) => {
       table.increments()
-      table
-        .integer('unit_id')
-        .unsigned()
-        .references('id')
-        .inTable('units')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
+      table.integer('unitId').unsigned()
+      table.foreign('unitId').references('units.id').onDelete('cascade')
       table.string('type').notNullable()
       table.string('status').notNullable()
       table.string('contractor').notNullable()

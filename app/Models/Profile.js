@@ -3,8 +3,10 @@
 const Model = use('Model')
 
 class Profile extends Model {
-  user () {
-    return this.belongsToMany('App/Models/User')
+  users () {
+    return this
+      .belongsToMany('App/Models/User', 'profileId', 'userId')
+      .pivotTable('user_profiles')
   }
 }
 

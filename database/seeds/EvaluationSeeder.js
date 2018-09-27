@@ -15,28 +15,28 @@ const Evaluation = use('App/Models/Evaluation')
 class EvaluationSeeder {
   async run () {
     await Evaluation.create({
-      unit_id: 1,
+      unitId: 1,
       type: 'contexto',
       status: 'Finalizada',
       contractor: 'Lorem',
       partner: 'Inpsun'
     })
     await Evaluation.create({
-      unit_id: 1,
+      unitId: 1,
       type: 'contexto',
       status: 'Finalizada',
       contractor: 'Dolor',
       partner: 'Sit Amet'
     })
     await Evaluation.create({
-      unit_id: 1,
+      unitId: 1,
       type: 'contexto',
       status: 'Finalizada',
       contractor: 'Inpsun Dolor',
       partner: 'Sit Amet'
     })
     await Evaluation.create({
-      unit_id: 2,
+      unitId: 2,
       type: 'contexto',
       status: 'Finalizada',
       contractor: 'Inpsun Dolor',

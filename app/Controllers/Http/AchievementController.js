@@ -6,23 +6,24 @@ class AchievementController {
   async index () {
     return await Achievement
       .query()
-      .with('unit')
+      .with('units')
       .fetch()
   }
 
   async store ({ request, response }) {
-    const data = request.only(['name', 'cnpj', 'phone', 'adress'])
+    const {name, cnpj, phone, adress} = request.post()
 
-    const achievement = await Achievement.create(data)
+    const achievement = await Achievement.create({name, cnpj, phone, adress})
 
     return achievement
   }
 
   async show ({ request }) {
-    return await Achievement.query()
+    return await Achievement
+      .query()
       .where('id', request.params.id)
-      .with('unit')
-      .first()
+      .with('units')
+      .fetch()
   }
 
   async update ({ params, request, response }) {

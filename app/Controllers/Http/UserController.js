@@ -4,15 +4,22 @@ const User = use('App/Models/User')
 
 class UserController {
   async index () {
-    const users = User.all()
+    const users = User
+      .query()
+      .with('profiles')
+      .fetch()
 
     return users
   }
 
   async store ({ request }) {
-    const data = request.only(['username', 'email', 'password'])
+    const {username, email, password, profiles} = request.post()
 
-    const user = await User.create(data)
+    const user = await User.create({username, email, password})
+
+    if (profiles && profiles.length > 0) {
+      await user.profiles().attach(profiles)
+    }
 
     return user
   }
@@ -24,19 +31,29 @@ class UserController {
       return response.status(404).json({ message: 'User not found!' })
     }
 
+    const profiles = await user.profiles().fetch()
+
+    user.profiles = profiles
+
     return user
   }
 
   async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
-    const data = request.only([
-      'username',
-      'email'
-    ])
+    const {username, email, profiles} = request.post()
 
-    user.merge(data)
+    user.username = username || user.username
+    user.email = email || user.email
+
     await user.save()
+
+    if (profiles && profiles.length > 0) {
+      await user.profiles().detach()
+      await user.profiles().attach(profiles)
+      user.profiles = await user.profiles().fetch()
+    }
+
     return user
   }
 
