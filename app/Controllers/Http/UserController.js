@@ -17,6 +17,10 @@ class UserController {
 
     const user = await User.create({username, email, password})
 
+    if (profiles && profiles.length > 0) {
+      await user.profiles().attach(profiles)
+    }
+
     return user
   }
 
