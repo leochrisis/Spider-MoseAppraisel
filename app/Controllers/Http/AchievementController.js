@@ -6,7 +6,7 @@ class AchievementController {
   async index () {
     return await Achievement
       .query()
-      .with('unit')
+      .with('units')
       .fetch()
   }
 
@@ -21,8 +21,7 @@ class AchievementController {
   async show ({ request }) {
     return await Achievement.query()
       .where('id', request.params.id)
-      .with('unit')
-      .first()
+      .with('units')
   }
 
   async update ({ params, request, response }) {
