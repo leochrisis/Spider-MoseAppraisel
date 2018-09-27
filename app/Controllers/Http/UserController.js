@@ -41,12 +41,11 @@ class UserController {
   async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
-    const data = request.only([
-      'username',
-      'email'
-    ])
+    const {username, email, profiles} = request.post()
 
-    user.merge(data)
+    user.username = username || user.username
+    user.email = email || user.email
+
     await user.save()
     return user
   }
