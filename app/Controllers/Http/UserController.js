@@ -31,6 +31,10 @@ class UserController {
       return response.status(404).json({ message: 'User not found!' })
     }
 
+    const profiles = await user.profiles().fetch()
+
+    user.profiles = profiles
+
     return user
   }
 
