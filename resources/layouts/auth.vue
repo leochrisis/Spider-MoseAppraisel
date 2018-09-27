@@ -31,7 +31,7 @@
         </nav>
       </div>
       <div class="hero-body">
-        <div class="container has-text-centered">
+        <div class="container is-fluid has-text-centered">
           <a href="http://www.mosecompetence.com/" target="blank">
             <img class="moseLogo" :src="moseLogo">
           </a>
