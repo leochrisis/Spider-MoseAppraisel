@@ -19,12 +19,11 @@ class UnitController {
   }
 
   async show ({ request }) {
-    return await Unit.query()
+    return await Unit
+      .query()
       .where('id', request.params.id)
-      .first()
-  }
-
       .with('evaluations')
+      .fetch()
   }
 
   async update ({ params, request, response }) {
