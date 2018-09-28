@@ -11,7 +11,10 @@ class EvaluationController {
    * GET evaluations
    */
   async index ({ request, response, view }) {
-    const evaluation = Evaluation.all()
+    const evaluation = Evaluation
+      .query()
+      .with('evidences')
+      .fetch()
 
     return evaluation
   }
