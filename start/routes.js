@@ -18,6 +18,7 @@ const Route = use('Route')
 // User
 
 Route.group(() => {
+  Route.get('me', 'UserController.me').middleware('auth')
   Route.resource('users', 'UserController').apiOnly()
   Route.resource('achievements', 'AchievementController').apiOnly()
   Route.resource('units', 'UnitController').apiOnly()
