@@ -178,7 +178,8 @@ export default {
     user: {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      profiles: [2]
     },
     confirmPassword: '',
     selected: null,
