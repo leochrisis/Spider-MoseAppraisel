@@ -52,7 +52,7 @@ export default {
     },
 
     handleSuccess () {
-      localStorage.setItem('lastUsername', this.email)
+      localStorage.setItem('lastEmail', this.email)
       this.$router.push({path: '/admin', success: true})
     },
 
