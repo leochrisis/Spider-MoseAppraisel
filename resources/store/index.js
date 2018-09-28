@@ -17,8 +17,13 @@ export const actions = {
 
   async login ({ commit }, { email, password }) {
     try {
-      const { data } = await this.$axios.post('/api/login', { email, password })
-      commit('SET_USER', data)
+      const { data: { token } } = await this.$axios.post('/api/login', { email, password })
+      this.$axios.setToken(token, 'Bearer')
+
+      const { data } = await this.$axios.get('api/me')
+      const user = await this.$axios.get(`/api/users/${data.id}`)
+
+      commit('SET_USER', user.data)
     } catch (error) {
       if (error.response && error.response.status === 401) {
         throw new Error('Bad credentials')
