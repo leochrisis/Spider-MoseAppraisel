@@ -9,7 +9,7 @@ class EvidenceSchema extends Schema {
       table.integer('evaluationId').unsigned()
       table.foreign('evaluationId').references('evaluations.id')
       table.string('role', 50)
-      table.string('password', 300)
+      table.string('skills', 300)
       table.timestamps()
     })
   }
