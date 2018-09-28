@@ -12,6 +12,10 @@ class UserController {
     return users
   }
 
+  async me ({ auth, params }) {
+    return auth.user
+  }
+
   async store ({ request }) {
     const {username, email, password, profiles} = request.post()
 
