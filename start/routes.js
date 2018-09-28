@@ -25,6 +25,8 @@ Route.group(() => {
   Route.resource('evaluations', 'EvaluationController').apiOnly()
   Route.resource('evidences', 'EvidenceController').apiOnly()
   Route.resource('profiles', 'ProfileController').apiOnly()
+  Route.get('roles', 'UserProfileController.index')
+  Route.post('roles', 'UserProfileController.store')
   Route.post('login', 'SessionController.login')
   Route.post('logout', 'SessionController.logout')
 })
