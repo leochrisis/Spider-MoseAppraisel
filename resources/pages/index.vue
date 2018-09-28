@@ -53,7 +53,12 @@ export default {
 
     handleSuccess () {
       localStorage.setItem('lastEmail', this.email)
-      this.$router.push({path: '/admin', success: true})
+
+      if (this.$store.getters.isAdmin) {
+        this.$router.push({path: '/admin', success: true})
+      } else {
+        this.$router.push({path: '/valuer', success: true})
+      }
     },
 
     handleFail () {
