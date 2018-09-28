@@ -36,7 +36,7 @@
                 <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
                   <li>
                     <ul>
-                      <div v-for="unit in achievement.unit" :key="unit.id">
+                      <div v-for="unit in achievement.units" :key="unit.id">
                         <li><a>
                         <nuxt-link :to="`/valuer/unit/${unit.id}`">
                           {{unit.name}}
@@ -108,13 +108,13 @@
             </div>
           </nav>
           <br/>
-          <div v-if="selected.unit.length === 0">
+          <div v-if="!selected.units.length > 0">
             Ainda não existem unidades de negócio.
           </div>
           <div v-else>
             <b-table
               :bordered="bordered"
-              :data="selected.unit"
+              :data="selected.units"
               :columns="columns"
               focusable
             ></b-table>
