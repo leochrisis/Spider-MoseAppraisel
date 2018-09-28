@@ -18,12 +18,18 @@ class AchievementController {
     return achievement
   }
 
-  async show ({ request }) {
-    return await Achievement
-      .query()
-      .where('id', request.params.id)
-      .with('units')
-      .fetch()
+  async show ({ request, params, response }) {
+    const achievement = await Achievement.findOrFail(params.id)
+
+    if (!achievement) {
+      return response.status(404).json({ message: 'User not found!' })
+    }
+
+    const units = await achievement.units().fetch()
+
+    achievement.units = units
+
+    return achievement
   }
 
   async update ({ params, request, response }) {
