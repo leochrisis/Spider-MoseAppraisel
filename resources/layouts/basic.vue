@@ -51,4 +51,8 @@ export default {
 .moseLogo {
   max-width: 40px
 }
+.button {
+  padding: 5px;
+  display: inline-flex
+}
 </style>
