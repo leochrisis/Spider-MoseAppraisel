@@ -38,3 +38,12 @@ export const actions = {
     commit('SET_USER', null)
   }
 }
+
+export const getters = {
+  isAdmin (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(1)
+  }
+}
