@@ -292,7 +292,8 @@ export default {
     user: {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      profiles: [3]
     },
     selected: null,
     edited: {},
