@@ -3,7 +3,10 @@
 const Profile = use('App/Models/Profile')
 class ProfileController {
   async index () {
-    return await Profile.all()
+    return await Profile
+      .query()
+      .with('users')
+      .fetch()
   }
 
   /**
