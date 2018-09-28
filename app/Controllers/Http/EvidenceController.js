@@ -1,10 +1,20 @@
 'use strict'
 
+const Evidence = use('App/Models/Evidence')
+
 class EvidenceController {
-  async index ({ request, response, view }) {
+  async index ({ request, response }) {
+    const evidence = Evidence.all()
+
+    return evidence
   }
 
   async store ({ request, response }) {
+    const data = request.only(['evaluationId', 'role', 'description'])
+
+    const evidence = await Evidence.create(data)
+
+    return evidence
   }
 
   async show ({ params, request, response, view }) {
