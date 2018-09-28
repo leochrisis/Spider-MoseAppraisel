@@ -31,7 +31,7 @@ class EvaluationController {
    * POST evaluations
    */
   async store ({ request, response }) {
-    const data = request.only(['unit_id', 'type', 'status', 'contractor', 'partner'])
+    const data = request.only(['unitId', 'type', 'status', 'contractor', 'partner'])
 
     const evaluation = await Evaluation.create(data)
 
