@@ -107,6 +107,17 @@
                         required>
                     </b-input>
                   </b-field>
+
+                  <b-field label="Confirmação de senha">
+                    <b-input
+                        type="password"
+                        v-model="confirmPassword"
+                        password-reveal
+                        placeholder="Confirmação de senha"
+                        required>
+                    </b-input>
+                  </b-field>
+
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="creation = false">Cancelar</button>
@@ -167,8 +178,10 @@ export default {
     user: {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      profiles: [2]
     },
+    confirmPassword: '',
     selected: null,
     creation: false,
     edition: false,
@@ -195,7 +208,9 @@ export default {
 
   methods: {
     async createUser () {
-      await this.$axios.$post('api/users', this.user)
+      if (this.user.password === this.confirmPassword) {
+        await this.$axios.$post('api/users', this.user)
+      }
     },
 
     async updateUser () {

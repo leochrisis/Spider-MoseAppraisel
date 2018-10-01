@@ -34,7 +34,7 @@
                 <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
                   <li>
                     <ul>
-                      <div v-for="unit in achievement.unit" :key="unit.id">
+                      <div v-for="unit in achievement.units" :key="unit.id">
                         <li><a>
                         <nuxt-link :to="`/sponsor/unit/${unit.id}`">
                           {{unit.name}}
@@ -107,13 +107,13 @@
             </div>
           </nav>
           <br/>
-          <div v-if="selected.unit.length === 0">
+          <div v-if="selected.units.length === 0">
             Ainda não existem unidades de negócio.
           </div>
           <div v-else>
             <b-table
               :bordered="bordered"
-              :data="selected.unit"
+              :data="selected.units"
               :columns="columns"
               :selected.sync="selectedUN"
               focusable
@@ -271,9 +271,9 @@ export default {
   }),
 
   async created () {
-    const achievements = await this.$axios.$get(`/api/achievements/3`)
+    const achievements = await this.$axios.$get(`/api/achievements/1`)
     this.achievements.push(achievements)
-    const t = await this.$axios.$get(`/api/achievements/5`)
+    const t = await this.$axios.$get(`/api/achievements/3`)
     this.achievements.push(t)
   },
 
@@ -286,7 +286,7 @@ export default {
 
     async createUnit () {
       this.unit.achievement_id = this.selected.id
-      await this.$axios.$post(`api/unit`, this.unit)
+      await this.$axios.$post(`api/units`, this.unit)
     },
 
     editUnit () {
@@ -296,14 +296,21 @@ export default {
 
     async updateUnit () {
       const {id} = this.editUN
-      await this.$axios.$put(`api/unit/${id}`, this.editUN)
+      await this.$axios.$put(`api/units/${id}`, this.editUN)
     },
 
     async deleteUnit () {
       const {id} = this.selectedUN
 
-      await this.$axios.$delete(`api/unit/${id}`)
+      await this.$axios.$delete(`api/units/${id}`)
     }
   }
 }
 </script>
+
+<style>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>

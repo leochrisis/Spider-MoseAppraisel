@@ -33,7 +33,7 @@ class User extends Model {
   profiles () {
     return this
       .belongsToMany('App/Models/Profile', 'userId', 'profileId')
-      .pivotTable('user_profiles')
+      .pivotModel('App/Models/UserProfile')
   }
 }
 

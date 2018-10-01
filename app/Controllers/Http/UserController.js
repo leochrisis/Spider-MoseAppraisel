@@ -12,6 +12,10 @@ class UserController {
     return users
   }
 
+  async me ({ auth, params }) {
+    return auth.user
+  }
+
   async store ({ request }) {
     const {username, email, password, profiles} = request.post()
 
@@ -61,6 +65,12 @@ class UserController {
     const user = await User.findOrFail(request.params.id)
 
     await user.delete()
+  }
+
+  async ids ({ request }) {
+    const userIds = await User.ids()
+
+    return userIds
   }
 }
 

@@ -11,7 +11,10 @@ class EvaluationController {
    * GET evaluations
    */
   async index ({ request, response, view }) {
-    const evaluation = Evaluation.all()
+    const evaluation = Evaluation
+      .query()
+      .with('evidences')
+      .fetch()
 
     return evaluation
   }
@@ -28,7 +31,7 @@ class EvaluationController {
    * POST evaluations
    */
   async store ({ request, response }) {
-    const data = request.only(['unit_id', 'type', 'status', 'contractor', 'partner'])
+    const data = request.only(['unitId', 'type', 'status', 'contractor', 'partner', 'startDate', 'endDate'])
 
     const evaluation = await Evaluation.create(data)
 
@@ -63,7 +66,7 @@ class EvaluationController {
   async update ({ params, request, response }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
-    const data = request.only(['type', 'status', 'contractor', 'partner'])
+    const data = request.only(['type', 'status', 'contractor', 'partner', 'startDate', 'endDate'])
 
     evaluation.merge(data)
     await evaluation.save()
@@ -78,6 +81,16 @@ class EvaluationController {
     const evaluation = await Evaluation.findOrFail(params.id)
 
     await evaluation.delete()
+  }
+
+  async unitId ({ params }) {
+    const evaluation = await Evaluation
+      .query()
+      .where('unitId', params.id)
+      .with('evidences')
+      .fetch()
+
+    return evaluation
   }
 }
 

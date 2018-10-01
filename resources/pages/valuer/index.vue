@@ -36,7 +36,7 @@
                 <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
                   <li>
                     <ul>
-                      <div v-for="unit in achievement.unit" :key="unit.id">
+                      <div v-for="unit in achievement.units" :key="unit.id">
                         <li><a>
                         <nuxt-link :to="`/valuer/unit/${unit.id}`">
                           {{unit.name}}
@@ -73,12 +73,16 @@
           </nav>
           <nav class="level">
             <div class="level-item has-text-centered column is-2">
-              <div>
+              <div v-if="!newUser">
                 <p class="heading">Patrocinador</p>
                 <p>
-                  O Empreendimento não possui patrocinador. 
+                  O Empreendimento não possui patrocinador.
                   <a @click="sponsor = true">Clique aqui para cadastra-lo</a>
                 </p>
+              </div>
+              <div v-else>
+                <p class="heading">Patrocinador</p>
+                <p>{{newUser.username}}</p>
               </div>
             </div>
             <div class="level-item has-text-centered column is-2">
@@ -108,13 +112,13 @@
             </div>
           </nav>
           <br/>
-          <div v-if="selected.unit.length === 0">
+          <div v-if="!selected.units.length > 0">
             Ainda não existem unidades de negócio.
           </div>
           <div v-else>
             <b-table
               :bordered="bordered"
-              :data="selected.unit"
+              :data="selected.units"
               :columns="columns"
               focusable
             ></b-table>
@@ -241,7 +245,7 @@
 
                   <b-field label="Usuário">
                     <b-input
-                        v-model="user.name"
+                        v-model="user.username"
                         placeholder="Nome do patrocinador"
                         required>
                     </b-input>
@@ -260,6 +264,14 @@
                     <b-input
                         v-model="user.password"
                         placeholder="Senha do usuário"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Confime a senha">
+                    <b-input
+                        v-model="passwordConfirme"
+                        placeholder="Confirme a senha"
                         required>
                     </b-input>
                   </b-field>
@@ -292,7 +304,8 @@ export default {
     user: {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      profiles: [3]
     },
     selected: null,
     edited: {},
@@ -327,7 +340,9 @@ export default {
         label: 'Número de pessoas',
         centered: true
       }
-    ]
+    ],
+    newUser: false,
+    passwordConfirme: ''
   }),
 
   async created () {
@@ -363,9 +378,35 @@ export default {
     },
 
     async createUSer () {
-      await this.$axios.$post('api/users', this.user)
+      if (this.user.password === this.passwordConfirme) {
+        await this.$axios.$post('api/users', this.user)
+        this.relateUserAchievement()
+      }
+    },
+
+    async relateUserAchievement (newUser) {
+      var id = await this.$axios.$get('api/ids')
+      var index = id.pop()
+      var user = await this.$axios.$get(`api/achievements/${index}`)
+      this.newUser = user
+      var i = user.id
+      var j = user.profiles.profileId
+      var k = [].push(this.selected.id)
+      const data = {
+        userId: i,
+        profileId: j,
+        achievements: k
+      }
+      await this.$axios.$post(`api/roles`, data)
     }
   }
 
 }
 </script>
+
+<style>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>

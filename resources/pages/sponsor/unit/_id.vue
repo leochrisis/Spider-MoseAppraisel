@@ -74,7 +74,7 @@
               <p class="heading">Responsável</p>
               <p>
                 A unidade de negócio não possui responsável.
-                <a @click="responsible = true">Clique aqui para cadastra-lo</a>
+                <a @click="creation = true">Clique aqui para cadastra-lo</a>
               </p>
             </div>
           </div>
@@ -105,13 +105,13 @@
           </div>
         </nav>
         <br/>
-        <div v-if="selected.evaluation.length === 0">
+        <div v-if="selected.evaluations.length === 0">
           Ainda não existem avaliações.
         </div>
         <div v-else>
           <b-table
             :bordered="bordered"
-            :data="selected.evaluation"
+            :data="selected.evaluations"
             :columns="columns"
             focusable
           ></b-table>
@@ -119,50 +119,59 @@
       </div>
     </div>
     <section>
-      <div v-if="edition">
-        <b-modal :active.sync="edition" has-modal-card>
+      <div v-if="creation">
+        <b-modal :active.sync="creation" has-modal-card>
           <form action="">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Atualização de unidade de negócio</p>
+                    <p class="modal-card-title">Cadastro de patrocinador</p>
                 </header>
                 <section class="modal-card-body">
-                  <b-field label="Nome">
+                  <b-field label="Papel">
+                    <b-dropdown disabled>
+                      <button class="button" slot="trigger">
+                          <span>Responsável</span>
+                          <b-icon icon="menu-down"></b-icon>
+                      </button>
+                    </b-dropdown>
+                  </b-field>
+
+                  <b-field label="Usuário">
                     <b-input
-                        v-model="edited.name"
-                        placeholder="Nome da unidade"
+                        v-model="user.username"
+                        placeholder="Nome do patrocinador"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Descrição">
+                  <b-field label="Email">
                     <b-input
-                        type="textarea"
-                        v-model="edited.description"
-                        placeholder="Descrição da unidade"
+                        type="email"
+                        v-model="user.email"
+                        placeholder="Email do usuário"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Telefone">
+                  <b-field label="Senha">
                     <b-input
-                        v-model="edited.phone"
-                        placeholder="Telefone da unidade de negócio"
+                        v-model="user.password"
+                        placeholder="Senha do usuário"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Número de pessoas">
+                  <b-field label="Confime a senha">
                     <b-input
-                        v-model="edited.people_number"
-                        placeholder="Número de pessoas da unidade"
+                        v-model="passwordConfirme"
+                        placeholder="Confirme a senha"
                         required>
                     </b-input>
                   </b-field>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="edition = false">Cancelar</button>
-                    <button class="button is-primary" @click="updateUnit">Atualizar</button>
+                    <button class="button" type="button" @click="sponsor = false">Cancelar</button>
+                    <button class="button is-primary" @click="createUSer">cadastrar</button>
                 </footer>
             </div>
           </form>
@@ -177,10 +186,10 @@ export default {
   layout: 'basic',
 
   async created () {
-    const achievements = await this.$axios.$get('/api/achievements/3')
+    const achievements = await this.$axios.$get('/api/achievements/1')
     this.achievements.push(achievements)
     var id = this.$route.params.id
-    const selected = await this.$axios.$get(`/api/unit/${id}`)
+    const selected = await this.$axios.$get(`/api/units/${id}`)
     this.selected = selected
   },
 
@@ -191,13 +200,13 @@ export default {
     bordered: true,
     creation: false,
     edition: false,
-    evaluation: {
-      unit_id: '',
-      type: 'contetxo',
-      status: 'vigente',
-      contractor: '',
-      partner: ''
+    user: {
+      username: '',
+      email: '',
+      password: '',
+      profiles: [4]
     },
+    passwordConfirme: '',
     contractors: [
       'Lorem',
       'Inpsun',
@@ -229,9 +238,10 @@ export default {
   }),
 
   methods: {
-    async createEvaluation () {
-      this.evaluation.unit_id = this.$route.params.id
-      await this.$axios.$post(`api/evaluation`, this.evaluation)
+    async createUser () {
+      if (this.user.password === this.passwordConfirme) {
+        await this.$axios.$post('api/users', this.user)
+      }
     },
 
     editEvaluation () {
@@ -270,3 +280,9 @@ export default {
 }
 </script>
 
+<style>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>

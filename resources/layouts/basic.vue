@@ -17,10 +17,10 @@
               About
             </p>
             <p class="control">
-              Features
-            </p>
-            <p class="control">
               About us
+            </p>
+            <p class="button is-danger" @click="logout">
+              logout
             </p>
           </div>
         </div>
@@ -36,12 +36,23 @@ import logoMose from '~/assets/img/mose-logo.png'
 export default {
   data: () => ({
     logoMose
-  })
+  }),
+
+  methods: {
+    async logout () {
+      await this.$store.dispatch('logout')
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
 <style scoped>
 .moseLogo {
   max-width: 40px
+}
+.button {
+  padding: 5px;
+  display: inline-flex
 }
 </style>

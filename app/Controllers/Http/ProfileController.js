@@ -1,17 +1,12 @@
 'use strict'
 
 const Profile = use('App/Models/Profile')
-
-/**
- * Resourceful controller for interacting with profiles
- */
 class ProfileController {
-  /**
-   * Show a list of all profiles.
-   * GET profiles
-   */
   async index () {
-    return await Profile.all()
+    return await Profile
+      .query()
+      .with('users')
+      .fetch()
   }
 
   /**

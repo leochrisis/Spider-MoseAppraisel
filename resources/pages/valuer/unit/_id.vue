@@ -109,13 +109,13 @@
           </div>
         </nav>
         <br/>
-        <div v-if="selected.evaluation.length === 0">
+        <div v-if="selected.evaluations.length === 0">
           Ainda não existem avaliações.
         </div>
         <div v-else>
           <b-table
             :bordered="bordered"
-            :data="selected.evaluation"
+            :data="selected.evaluations"
             :columns="columns"
             :selected.sync="selectedEva"
             focusable
@@ -164,6 +164,15 @@
                     required>
                   </b-input>
                 </b-field>
+
+                <b-field label="Data de início">
+                  <b-datepicker
+                      placeholder="Selecione a data de início..."
+                      icon="calendar-today"
+                      v-model="evaluation.startDate"
+                      :readonly="false">
+                  </b-datepicker>
+              </b-field>
               </section>
               <footer class="modal-card-foot">
                   <button class="button" type="button" @click="creation = false">Cancelar</button>
@@ -213,6 +222,24 @@
                     required>
                   </b-input>
                 </b-field>
+
+                <b-field label="Data de início">
+                  <b-datepicker
+                      placeholder="Selecione a data de início..."
+                      icon="calendar-today"
+                      v-model="evaluation.startDate"
+                      :readonly="false">
+                  </b-datepicker>
+                </b-field>
+
+                <b-field label="Data de finalização">
+                  <b-datepicker
+                      placeholder="Selecione a data de finalização..."
+                      icon="calendar-today"
+                      v-model="evaluation.endDate"
+                      :readonly="false">
+                  </b-datepicker>
+              </b-field>
               </section>
               <footer class="modal-card-foot">
                   <button class="button" type="button" @click="edition = false">Cancelar</button>
@@ -233,7 +260,7 @@ export default {
     const achievements = await this.$axios.$get('/api/achievements')
     this.achievements = achievements
     var id = this.$route.params.id
-    const selected = await this.$axios.$get(`/api/unit/${id}`)
+    const selected = await this.$axios.$get(`/api/units/${id}`)
     this.selected = selected
   },
 
@@ -250,7 +277,9 @@ export default {
       type: 'contetxo',
       status: 'vigente',
       contractor: '',
-      partner: ''
+      partner: '',
+      startDate: '',
+      endDate: ''
     },
     contractors: [
       'Lorem',
@@ -276,6 +305,16 @@ export default {
       {
         field: 'partner',
         label: 'Parceiro',
+        centered: true
+      },
+      {
+        field: 'startDate',
+        label: 'Data de início',
+        centered: true
+      },
+      {
+        field: 'endDate',
+        label: 'Data de finalização',
         centered: true
       }
     ],
@@ -306,3 +345,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>
