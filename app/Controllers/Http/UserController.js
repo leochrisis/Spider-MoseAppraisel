@@ -66,6 +66,12 @@ class UserController {
 
     await user.delete()
   }
+
+  async ids ({ request }) {
+    const userIds = await User.ids()
+
+    return userIds
+  }
 }
 
 module.exports = UserController
