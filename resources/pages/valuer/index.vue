@@ -73,12 +73,16 @@
           </nav>
           <nav class="level">
             <div class="level-item has-text-centered column is-2">
-              <div>
+              <div v-if="!newUser">
                 <p class="heading">Patrocinador</p>
                 <p>
-                  O Empreendimento não possui patrocinador. 
+                  O Empreendimento não possui patrocinador.
                   <a @click="sponsor = true">Clique aqui para cadastra-lo</a>
                 </p>
+              </div>
+              <div v-else>
+                <p class="heading">Patrocinador</p>
+                <p>{{newUser.username}}</p>
               </div>
             </div>
             <div class="level-item has-text-centered column is-2">
