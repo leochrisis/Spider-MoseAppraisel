@@ -82,6 +82,16 @@ class EvaluationController {
 
     await evaluation.delete()
   }
+
+  async unitId ({ params }) {
+    const evaluation = await Evaluation
+      .query()
+      .where('unitId', params.id)
+      .with('evidences')
+      .fetch()
+
+    return evaluation
+  }
 }
 
 module.exports = EvaluationController
