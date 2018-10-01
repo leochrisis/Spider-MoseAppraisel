@@ -263,6 +263,14 @@
                         required>
                     </b-input>
                   </b-field>
+
+                  <b-field label="Confime a senha">
+                    <b-input
+                        v-model="passwordConfirme"
+                        placeholder="Confirme a senha"
+                        required>
+                    </b-input>
+                  </b-field>
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="sponsor = false">Cancelar</button>
@@ -328,7 +336,9 @@ export default {
         label: 'Número de pessoas',
         centered: true
       }
-    ]
+    ],
+    newUser: false,
+    passwordConfirme: ''
   }),
 
   async created () {
