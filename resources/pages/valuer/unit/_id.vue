@@ -109,13 +109,13 @@
           </div>
         </nav>
         <br/>
-        <div v-if="selected.evaluation.length === 0">
+        <div v-if="selected.evaluations.length === 0">
           Ainda não existem avaliações.
         </div>
         <div v-else>
           <b-table
             :bordered="bordered"
-            :data="selected.evaluation"
+            :data="selected.evaluations"
             :columns="columns"
             :selected.sync="selectedEva"
             focusable
@@ -260,7 +260,7 @@ export default {
     const achievements = await this.$axios.$get('/api/achievements')
     this.achievements = achievements
     var id = this.$route.params.id
-    const selected = await this.$axios.$get(`/api/unit/${id}`)
+    const selected = await this.$axios.$get(`/api/units/${id}`)
     this.selected = selected
   },
 
