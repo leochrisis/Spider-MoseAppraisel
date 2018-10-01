@@ -18,12 +18,18 @@ class UnitController {
     return unit
   }
 
-  async show ({ request }) {
-    return await Unit
-      .query()
-      .where('id', request.params.id)
-      .with('evaluations')
-      .fetch()
+  async show ({ params, response }) {
+    const unit = await Unit.findOrFail(params.id)
+
+    if (!unit) {
+      return response.status(404).json({ message: 'User not found!' })
+    }
+
+    const evaluations = await unit.evaluations().fetch()
+
+    unit.evaluations = evaluations
+
+    return unit
   }
 
   async update ({ params, request, response }) {
