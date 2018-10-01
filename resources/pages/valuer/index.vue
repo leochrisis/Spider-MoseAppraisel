@@ -374,7 +374,11 @@ export default {
     },
 
     async createUSer () {
-      await this.$axios.$post('api/users', this.user)
+      if (this.user.password === this.passwordConfirme) {
+        await this.$axios.$post('api/users', this.user)
+        this.relateUserAchievement()
+      }
+    },
     }
   }
 
