@@ -31,7 +31,7 @@ class EvaluationController {
    * POST evaluations
    */
   async store ({ request, response }) {
-    const data = request.only(['unitId', 'type', 'status', 'contractor', 'partner'])
+    const data = request.only(['unitId', 'type', 'status', 'contractor', 'partner', 'startDate', 'endDate'])
 
     const evaluation = await Evaluation.create(data)
 
@@ -66,7 +66,7 @@ class EvaluationController {
   async update ({ params, request, response }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
-    const data = request.only(['type', 'status', 'contractor', 'partner'])
+    const data = request.only(['type', 'status', 'contractor', 'partner', 'startDate', 'endDate'])
 
     evaluation.merge(data)
     await evaluation.save()
