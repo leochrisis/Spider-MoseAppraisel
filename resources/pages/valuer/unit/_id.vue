@@ -345,3 +345,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>
