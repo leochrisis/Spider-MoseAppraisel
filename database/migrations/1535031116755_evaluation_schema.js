@@ -12,6 +12,8 @@ class EvaluationSchema extends Schema {
       table.string('status').notNullable()
       table.string('contractor').notNullable()
       table.string('partner').notNullable()
+      table.datetime('startDate').defaultTo(this.fn.now())
+      table.datetime('endDate').defaultTo(this.fn.now())
       table.timestamps()
     })
   }
