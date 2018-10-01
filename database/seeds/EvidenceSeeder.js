@@ -17,19 +17,19 @@ class EvidenceSeeder {
     await Evidence.create({
       evaluationId: 1,
       role: 'Gerente de projetos',
-      description: 'Trabalha bem'
+      skills: 'Trabalha bem'
     })
 
     await Evidence.create({
       evaluationId: 2,
       role: 'Analista de requisitos',
-      description: 'Legal com os clientes'
+      skills: 'Legal com os clientes'
     })
 
     await Evidence.create({
       evaluationId: 1,
       role: 'Programador',
-      description: 'Só chora'
+      skills: 'Só chora'
     })
   }
 }
