@@ -164,6 +164,15 @@
                     required>
                   </b-input>
                 </b-field>
+
+                <b-field label="Data de início">
+                  <b-datepicker
+                      placeholder="Selecione a data de início..."
+                      icon="calendar-today"
+                      v-model="evaluation.startDate"
+                      :readonly="false">
+                  </b-datepicker>
+              </b-field>
               </section>
               <footer class="modal-card-foot">
                   <button class="button" type="button" @click="creation = false">Cancelar</button>
@@ -213,6 +222,24 @@
                     required>
                   </b-input>
                 </b-field>
+
+                <b-field label="Data de início">
+                  <b-datepicker
+                      placeholder="Selecione a data de início..."
+                      icon="calendar-today"
+                      v-model="evaluation.startDate"
+                      :readonly="false">
+                  </b-datepicker>
+                </b-field>
+
+                <b-field label="Data de finalização">
+                  <b-datepicker
+                      placeholder="Selecione a data de finalização..."
+                      icon="calendar-today"
+                      v-model="evaluation.endDate"
+                      :readonly="false">
+                  </b-datepicker>
+              </b-field>
               </section>
               <footer class="modal-card-foot">
                   <button class="button" type="button" @click="edition = false">Cancelar</button>
@@ -250,7 +277,9 @@ export default {
       type: 'contetxo',
       status: 'vigente',
       contractor: '',
-      partner: ''
+      partner: '',
+      startDate: '',
+      endDate: ''
     },
     contractors: [
       'Lorem',
@@ -276,6 +305,16 @@ export default {
       {
         field: 'partner',
         label: 'Parceiro',
+        centered: true
+      },
+      {
+        field: 'startDate',
+        label: 'Data de início',
+        centered: true
+      },
+      {
+        field: 'endDate',
+        label: 'Data de finalização',
         centered: true
       }
     ],
