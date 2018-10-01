@@ -238,9 +238,10 @@ export default {
   }),
 
   methods: {
-    async createEvaluation () {
-      this.evaluation.unit_id = this.$route.params.id
-      await this.$axios.$post(`api/evaluation`, this.evaluation)
+    async createUser () {
+      if (this.user.password === this.passwordConfirme) {
+        await this.$axios.$post('api/users', this.user)
+      }
     },
 
     editEvaluation () {
