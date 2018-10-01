@@ -241,7 +241,7 @@
 
                   <b-field label="Usuário">
                     <b-input
-                        v-model="user.name"
+                        v-model="user.username"
                         placeholder="Nome do patrocinador"
                         required>
                     </b-input>
