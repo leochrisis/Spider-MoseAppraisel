@@ -29,6 +29,8 @@ Route.group(() => {
   Route.post('roles', 'UserProfileController.store')
   Route.post('login', 'SessionController.login')
   Route.post('logout', 'SessionController.logout')
+  Route.get('ids', 'UserController.ids')
+  Route.get('test/:id', 'EvaluationController.unitId')
 })
   .formats(['json'])
   .prefix('api')
