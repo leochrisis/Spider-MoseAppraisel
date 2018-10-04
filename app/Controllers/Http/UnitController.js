@@ -36,9 +36,17 @@ class UnitController {
 
   async update ({ params, request, response }) {
     const unit = await Unit.findOrFail(request.params.id)
-    const data = request.only(['name', 'description', 'phone', 'people_number'])
-    unit.merge(data)
+
+    const {achievementId, name, description, phone, people_number, members} = request.post()
+
+    unit.merge({achievementId, name, description, phone, people_number})
+
     await unit.save()
+
+    if (members && members.length > 0) {
+      await unit.members().attach(members)
+    }
+
     return unit
   }
 
