@@ -10,6 +10,12 @@ class Unit extends Model {
   evaluations () {
     return this.hasMany('App/Models/Evaluation', 'id', 'unitId')
   }
+
+  members () {
+    return this
+      .belongsToMany('App/Models/UserProfile', 'unitId', 'userProfileId')
+      .pivotTable('teams')
+  }
 }
 
 module.exports = Unit
