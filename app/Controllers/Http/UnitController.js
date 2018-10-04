@@ -7,6 +7,8 @@ class UnitController {
     return await Unit
       .query()
       .with('evaluations')
+      .with('members')
+      .with('evidences')
       .fetch()
   }
 
