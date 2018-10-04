@@ -11,6 +11,10 @@ class Unit extends Model {
     return this.hasMany('App/Models/Evaluation', 'id', 'unitId')
   }
 
+  evidences () {
+    return this.hasMany('App/Models/Evidence', 'id', 'unitId')
+  }
+
   members () {
     return this
       .belongsToMany('App/Models/UserProfile', 'unitId', 'userProfileId')
