@@ -13,6 +13,12 @@ class UserProfile extends Model {
       .belongsToMany('App/Models/Achievement', 'userProfileId', 'achievementId')
       .pivotTable('profile_achievements_teams')
   }
+
+  units () {
+    return this
+      .belongsToMany('App/Models/Unit', 'userProfileId', 'unitId')
+      .pivotTable('teams')
+  }
 }
 
 module.exports = UserProfile
