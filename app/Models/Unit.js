@@ -4,7 +4,7 @@ const Model = use('Model')
 
 class Unit extends Model {
   achievements () {
-    return this.belongsTo('App/Models/achievement', 'achievementId')
+    return this.belongsTo('App/Models/Achievement', 'achievementId')
   }
 
   evaluations () {
