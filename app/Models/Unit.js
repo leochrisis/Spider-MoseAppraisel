@@ -20,6 +20,10 @@ class Unit extends Model {
       .belongsToMany('App/Models/UserProfile', 'unitId', 'userProfileId')
       .pivotTable('teams')
   }
+
+  responsible () {
+    return this.this.belongsTo('App/Models/User', 'userId')
+  }
 }
 
 module.exports = Unit
