@@ -35,6 +35,14 @@ class User extends Model {
       .belongsToMany('App/Models/Profile', 'userId', 'profileId')
       .pivotModel('App/Models/UserProfile')
   }
+
+  achievements () {
+    return this.hasMany('App/Models/Achievement') 
+  }
+
+  units () {
+    return this.hasMany('App/Models/Unit')
+  }
 }
 
 module.exports = User
