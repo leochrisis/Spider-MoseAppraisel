@@ -10,6 +10,12 @@ class Evaluation extends Model {
   evidences () {
     return this.hasMany('App/Models/Evidence', 'id', 'evaluationId')
   }
+
+  particpants () {
+    return this
+      .belongsToMany('App/Models/MamberRole', 'evaluationId', 'memberId')
+      .pivotTable('member_evaluations')
+  }
 }
 
 module.exports = Evaluation
