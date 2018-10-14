@@ -2,14 +2,7 @@
 
 const Evaluation = use('App/Models/Evaluation')
 
-/**
- * Resourceful controller for interacting with evaluations
- */
 class EvaluationController {
-  /**
-   * Show a list of all evaluations.
-   * GET evaluations
-   */
   async index ({ request, response, view }) {
     const evaluation = Evaluation
       .query()
@@ -19,17 +12,6 @@ class EvaluationController {
     return evaluation
   }
 
-  /**
-   * Render a form to be used for creating a new evaluation.
-   * GET evaluations/create
-   */
-  async create ({ request, response, view }) {
-  }
-
-  /**
-   * Create/save a new evaluation.
-   * POST evaluations
-   */
   async store ({ request, response }) {
     const data = request.only(['unitId', 'type', 'status', 'contractor', 'partner', 'startDate', 'endDate'])
 
@@ -38,10 +20,6 @@ class EvaluationController {
     return evaluation
   }
 
-  /**
-   * Display a single evaluation.
-   * GET evaluations/:id
-   */
   async show ({ params, request, response, view }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
@@ -52,17 +30,6 @@ class EvaluationController {
     return evaluation
   }
 
-  /**
-   * Render a form to update an existing evaluation.
-   * GET evaluations/:id/edit
-   */
-  async edit ({ params, request, response, view }) {
-  }
-
-  /**
-   * Update evaluation details.
-   * PUT or PATCH evaluations/:id
-   */
   async update ({ params, request, response }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
@@ -73,10 +40,6 @@ class EvaluationController {
     return evaluation
   }
 
-  /**
-   * Delete a evaluation with id.
-   * DELETE evaluations/:id
-   */
   async destroy ({ params }) {
     const evaluation = await Evaluation.findOrFail(params.id)
 
