@@ -17,6 +17,9 @@ class Achievement extends Model {
     return this.this.belongsTo('App/Models/User', 'sponsorId')
   }
 
+  valuer () {
+    return this.this.belongsTo('App/Models/User', 'valuerId')
+  }
 }
 
 module.exports = Achievement
