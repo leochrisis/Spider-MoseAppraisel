@@ -1,6 +1,8 @@
 'use strict'
 
 const Unit = use('App/Models/Unit')
+const User = use('App/Models/User')
+const Evaluation = ('App/Models/Evaluation')
 
 class UnitController {
   async index () {
@@ -13,9 +15,9 @@ class UnitController {
   }
 
   async store ({ request, response }) {
-    const {achievementId, name, description, phone, people_number} = request.post()
+    const {achievementId, name, description, phone, people_number, valuerId} = request.post()
 
-    const unit = await Unit.create({achievementId, name, description, phone, people_number})
+    const unit = await Unit.create({achievementId, name, description, phone, people_number, valuerId})
 
     return unit
   }
@@ -28,8 +30,17 @@ class UnitController {
     }
 
     const evaluations = await unit.evaluations().fetch()
-
     unit.evaluations = evaluations
+
+    if (unit.responsibleId) {
+      const responsible = await User.find(unit.responsibleId)
+      unit.sponsor = responsible
+    }
+
+    if (unit.valuerId) {
+      const valuer = await User.find(unit.valuerId)
+      unit.valuer = valuer
+    }
 
     return unit
   }
@@ -37,9 +48,17 @@ class UnitController {
   async update ({ params, request, response }) {
     const unit = await Unit.findOrFail(request.params.id)
 
-    const {achievementId, name, description, phone, people_number, members} = request.post()
+    const {
+      achievementId,
+      name,
+      description,
+      phone,
+      people_number,
+      members,
+      responsibleId,
+      valuerId} = request.post()
 
-    unit.merge({achievementId, name, description, phone, people_number})
+    unit.merge({achievementId, name, description, phone, people_number, responsibleId, valuerId})
 
     await unit.save()
 
