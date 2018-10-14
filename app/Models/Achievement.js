@@ -14,8 +14,9 @@ class Achievement extends Model {
   }
 
   sponsor () {
-    return this.this.belongsTo('App/Models/User', 'userId')
+    return this.this.belongsTo('App/Models/User', 'sponsorId')
   }
+
 }
 
 module.exports = Achievement
