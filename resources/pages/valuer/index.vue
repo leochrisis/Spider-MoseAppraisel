@@ -397,25 +397,8 @@ export default {
 
     async createUSer () {
       if (this.user.password === this.passwordConfirme) {
-        await this.$axios.$post('api/users', this.user)
-        this.relateUserAchievement()
+        const id = await this.$axios.$post('api/users', this.user)
       }
-    },
-
-    async relateUserAchievement (newUser) {
-      var id = await this.$axios.$get('api/ids')
-      var index = id.pop()
-      var user = await this.$axios.$get(`api/achievements/${index}`)
-      this.newUser = user
-      var i = user.id
-      var j = user.profiles.profileId
-      var k = [].push(this.selected.id)
-      const data = {
-        userId: i,
-        profileId: j,
-        achievements: k
-      }
-      await this.$axios.$post(`api/roles`, data)
     }
   }
 
