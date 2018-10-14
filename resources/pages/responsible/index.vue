@@ -105,7 +105,7 @@
                 </div>
               </nav>
               <div v-if="selected.evaluations.length === 0">
-                Ainda não existem unidades de negócio.
+                Ainda não existem avaliações.
               </div>
               <div v-else>
                 <b-table
@@ -391,7 +391,7 @@ export default {
 
     async createEvidence () {
       const data = {
-        id: this.selected.id,
+        unitId: this.selected.id,
         role: this.evidence.role,
         skills: this.evidence.skills
       }
