@@ -303,6 +303,8 @@ export default {
 
   data: () => ({
     achievements: [],
+    loggedUser: null,
+    patrocinator: null,
     creation: false,
     achievement: {
       name: '',
