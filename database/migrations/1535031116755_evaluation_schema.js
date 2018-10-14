@@ -16,6 +16,8 @@ class EvaluationSchema extends Schema {
       table.foreign('unitId').references('units.id').onDelete('cascade')
       table.integer('valuerId').unsigned()
       table.foreign('valuerId').references('users.id')
+      table.integer('responsibleId').unsigned()
+      table.foreign('responsibleId').references('users.id')
       table.timestamps()
     })
   }
