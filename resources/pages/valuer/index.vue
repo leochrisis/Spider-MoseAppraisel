@@ -269,6 +269,7 @@
 
                   <b-field label="Senha">
                     <b-input
+                        type="password"
                         v-model="user.password"
                         placeholder="Senha do usuário"
                         required>
@@ -277,6 +278,7 @@
 
                   <b-field label="Confime a senha">
                     <b-input
+                        type="password"
                         v-model="passwordConfirme"
                         placeholder="Confirme a senha"
                         required>
