@@ -56,8 +56,12 @@ export default {
 
       if (this.$store.getters.isAdmin) {
         this.$router.push({path: '/admin', success: true})
-      } else {
+      } else if (this.$store.getters.isValuer) {
         this.$router.push({path: '/valuer', success: true})
+      } else if (this.$store.getters.isSponsor) {
+        this.$router.push({path: '/sponsor', success: true})
+      } else if (this.$store.getters.isResponsible) {
+        this.$router.push({path: '/responsible', success: true})
       }
     },
 
