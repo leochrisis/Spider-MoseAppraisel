@@ -84,18 +84,26 @@
                 <li><a @click="chargeEvidences">Evidencias</a></li>
               </ul>
             </div>
-            <div class="navbar-end">
-              <div class="navbar-item">
-                <div class="buttons">
-                  <div v-if="selectedUn">
-                    <button class="button" @click="">Plano de melhoria</button>
-                    <button class="button">Resultado</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </nav>
             <div v-if="evaluations">
+              <nav class="navbar is-transparent">
+                <div class="navbar-start">
+                  <div class="navbar-item title">
+                    Avaliações
+                  </div>
+                </div>
+
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                      <div v-if="selectedUn">
+                        <button class="button" @click="">Plano de melhoria</button>
+                        <button class="button">Resultado</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
               <div v-if="selected.evaluations.length === 0">
                 Ainda não existem unidades de negócio.
               </div>
