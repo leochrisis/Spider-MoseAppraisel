@@ -17,13 +17,31 @@ class EvidenceController {
     return evidence
   }
 
-  async show ({ params, request, response, view }) {
+  async show ({params, request, response}) {
+    const evidence = await Evidence.findOrFail(params.id)
+
+    if (!evidence) {
+      return response.status(404).json({ message: 'Evidence not found!' })
+    }
+
+    return evidence
   }
 
   async update ({ params, request, response }) {
+    const evidence = await Evidence.findOrFail(params.id)
+
+    const {unitId, role, skills} = request.post()
+
+    evidence.merge({unitId, role, skills})
+
+    await evidence.save()
+    return evidence
   }
 
   async destroy ({ params, request, response }) {
+    const evidence = await Evidence.findOrFail(params.id)
+
+    await evidence.delete()
   }
 }
 
