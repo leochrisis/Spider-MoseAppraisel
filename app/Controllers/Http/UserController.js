@@ -61,8 +61,10 @@ class UserController {
     return user
   }
 
-  async destroy ({ request }) {
-    const user = await User.findOrFail(request.params.id)
+  async destroy ({ params }) {
+    const user = await User.findOrFail(params.id)
+
+    await user.profiles().detach()
 
     await user.delete()
   }
@@ -72,6 +74,25 @@ class UserController {
 
     return userIds
   }
+
+  async sponsorAchievements ({ params }) {
+    const achievements = Achievement.query().where('sponsorId', params.id)
+
+    return achievements
+  }
+
+  async valuerAchivements ({ params }) {
+    const achievements = Achievement.query().where('valuerId', params.id)
+
+    return achievements
+  }
+
+  async unitAchievements ({ params }) {
+    var units = Unit.query().where('responsibleId', params.id).with('evaluations').with('evidences').fetch()
+
+    return units
+  }
+
 }
 
 module.exports = UserController

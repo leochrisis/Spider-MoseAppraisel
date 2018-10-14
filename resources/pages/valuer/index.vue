@@ -75,10 +75,17 @@
             <div class="level-item has-text-centered column is-2">
               <div v-if="!newUser">
                 <p class="heading">Patrocinador</p>
-                <p>
+                <div v-if="!patrocinator">
+                  <p>
                   O Empreendimento não possui patrocinador.
                   <a @click="sponsor = true">Clique aqui para cadastra-lo</a>
                 </p>
+                </div>
+                <div v-else>
+                  <p>
+                    {{patrocinator.username}}
+                  </p>
+                </div>
               </div>
               <div v-else>
                 <p class="heading">Patrocinador</p>
@@ -262,6 +269,7 @@
 
                   <b-field label="Senha">
                     <b-input
+                        type="password"
                         v-model="user.password"
                         placeholder="Senha do usuário"
                         required>
@@ -270,6 +278,7 @@
 
                   <b-field label="Confime a senha">
                     <b-input
+                        type="password"
                         v-model="passwordConfirme"
                         placeholder="Confirme a senha"
                         required>
@@ -294,6 +303,8 @@ export default {
 
   data: () => ({
     achievements: [],
+    loggedUser: null,
+    patrocinator: null,
     creation: false,
     achievement: {
       name: '',
@@ -346,18 +357,34 @@ export default {
   }),
 
   async created () {
-    const achievements = await this.$axios.$get('/api/achievements')
+    const id = this.$store.state.authUser.id
+    const achievements = await this.$axios.$get(`/api/valuer-achivements/${id}`)
     this.achievements = achievements
+    this.loggedUser = this.$store.state.authUser
   },
 
   methods: {
     async createAchievement () {
-      await this.$axios.$post('api/achievements', this.achievement)
+      const data = {
+        name: this.achievement.name,
+        cnpj: this.achievement.cnpj,
+        phone: this.achievement.phone,
+        adress: this.achievement.adress,
+        valuerId: this.loggedUser.id
+      }
+      await this.$axios.$post('api/achievements', data)
     },
 
     async chargeAchievement (id) {
       const achievement = await this.$axios.$get(`api/achievements/${id}`)
       this.selected = achievement
+
+      if (achievement.sponsorId) {
+        const sponsorId = achievement.sponsorId
+        const sponsor = await this.$axios.$get(`api/users/${sponsorId}`)
+        this.patrocinator = sponsor
+      }
+
       this.achievementSelected = true
     },
 
@@ -379,25 +406,8 @@ export default {
 
     async createUSer () {
       if (this.user.password === this.passwordConfirme) {
-        await this.$axios.$post('api/users', this.user)
-        this.relateUserAchievement()
+        const id = await this.$axios.$post('api/users', this.user)
       }
-    },
-
-    async relateUserAchievement (newUser) {
-      var id = await this.$axios.$get('api/ids')
-      var index = id.pop()
-      var user = await this.$axios.$get(`api/achievements/${index}`)
-      this.newUser = user
-      var i = user.id
-      var j = user.profiles.profileId
-      var k = [].push(this.selected.id)
-      const data = {
-        userId: i,
-        profileId: j,
-        achievements: k
-      }
-      await this.$axios.$post(`api/roles`, data)
     }
   }
 

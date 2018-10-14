@@ -65,7 +65,7 @@
               <div>
                 <p class="heading">Patrocinador</p>
                 <p>
-                  Leonardo Christian
+                  {{loggedUser.username}}
                 </p>
               </div>
             </div>
@@ -232,6 +232,8 @@ export default {
 
   data: () => ({
     achievements: [],
+    responsible: null,
+    loggedUser: null,
     achievementSelected: false,
     selected: null,
     createUN: false,
@@ -271,10 +273,10 @@ export default {
   }),
 
   async created () {
-    const achievements = await this.$axios.$get(`/api/achievements/1`)
-    this.achievements.push(achievements)
-    const t = await this.$axios.$get(`/api/achievements/3`)
-    this.achievements.push(t)
+    const id = this.$store.state.authUser.id
+    const achievements = await this.$axios.$get(`/api/sponsor-achivements/${id}`)
+    this.achievements = achievements
+    this.loggedUser = this.$store.state.authUser
   },
 
   methods: {

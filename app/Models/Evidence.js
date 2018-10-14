@@ -3,8 +3,14 @@
 const Model = use('Model')
 
 class Evidence extends Model {
-  evaluations () {
-    return this.belongsTo('App/Models/Evaluation', 'evaluationId')
+  units () {
+    return this.belongsTo('App/Models/Unit', 'unitId')
+  }
+
+  owners () {
+    return this
+      .belongsToMany('App/Models/Team', 'evidenceId', 'memberId')
+      .pivotTable('member_roles')
   }
 }
 

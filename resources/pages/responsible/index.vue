@@ -79,25 +79,33 @@
           <nav class="navbar is-transparent tabs">
             <div class="container">
               <ul>
-                <li><a>Avaliações</a></li>
-                <li><a @click="">Membros</a></li>
+                <li><a @click="chargeEvaluations">Avaliações</a></li>
+                <li><a @click="chargeMembers">Membros</a></li>
                 <li><a @click="chargeEvidences">Evidencias</a></li>
               </ul>
             </div>
-            <div class="navbar-end">
-              <div class="navbar-item">
-                <div class="buttons">
-                  <div v-if="selectedUn">
-                    <button class="button" @click="">Plano de melhoria</button>
-                    <button class="button">Resultado</button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </nav>
             <div v-if="evaluations">
+              <nav class="navbar is-transparent">
+                <div class="navbar-start">
+                  <div class="navbar-item title">
+                    Avaliações
+                  </div>
+                </div>
+
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                      <div v-if="selectedUn">
+                        <button class="button" @click="">Plano de melhoria</button>
+                        <button class="button">Resultado</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
               <div v-if="selected.evaluations.length === 0">
-                Ainda não existem unidades de negócio.
+                Ainda não existem avaliações.
               </div>
               <div v-else>
                 <b-table
@@ -110,13 +118,31 @@
               </div>
             </div>
             <div v-if="evidences">
-              <div v-if="eviList.length === 0">
+              <nav class="navbar is-transparent">
+                <div class="navbar-start">
+                  <div class="navbar-item title">
+                    Evidências
+                  </div>
+                </div>
+
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                      <div v-if="selectedEv">
+                        <button class="button is-warning" @click="editionEv = true">Editar</button>
+                        <button class="button is-danger" @click="deleteEvidence">Deletar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              <div v-if="selected.evidences.length === 0">
                 Ainda não existem evidencias.
               </div>
               <div v-else>
                 <b-table
                   :bordered="bordered"
-                  :data="eviList"
+                  :data="selected.evidences"
                   :columns="columnsEv"
                   :selected.sync="selectedEv"
                   focusable
@@ -218,7 +244,41 @@
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="cadastrate = false">Cancelar</button>
-                    <button class="button is-primary" @click="">Cadastrar</button>
+                    <button class="button is-primary" @click="createEvidence">Cadastrar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
+
+      <div v-if="editionEv">
+        <b-modal :active.sync="editionEv" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Cadastro de usuário</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Papel">
+                    <b-input
+                        v-model="selectedEv.role"
+                        placeholder="Papel"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Habilidades">
+                    <b-input
+                        type="textarea"
+                        v-model="selectedEv.skills"
+                        placeholder="Habilidades"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="editionEv = false">Cancelar</button>
+                    <button class="button is-primary" @click="updateEvidence">Atualizar</button>
                 </footer>
             </div>
           </form>
@@ -239,6 +299,7 @@ export default {
     selectedUn: false,
     bordered: true,
     selectedEv: false,
+    editionEv: false,
     user: {
       username: '',
       email: '',
@@ -301,14 +362,13 @@ export default {
     evaluations: true,
     members: false,
     id: null,
-    eviList: []
+    editionEv: false
   }),
 
   async created () {
-    const units = await this.$axios.$get('/api/units/2')
-    this.units.push(units)
-    const t = await this.$axios.$get('/api/units/3')
-    this.units.push(t)
+    const id = this.$store.state.authUser.id
+    const units = await this.$axios.$get(`/api/responsible-units/${id}`)
+    this.units = units
   },
 
   methods: {
@@ -319,6 +379,8 @@ export default {
     selectUnit (unit, i) {
       this.selected = unit
       this.id = i
+      this.evidences = false
+      this.evaluations = true
     },
 
     async createUser () {
@@ -329,20 +391,44 @@ export default {
 
     async createEvidence () {
       const data = {
-        id: this.selected.id,
+        unitId: this.selected.id,
         role: this.evidence.role,
         skills: this.evidence.skills
       }
       await this.$axios.$post('api/evidences', data)
     },
 
-    async chargeEvidences () {
-      const {id} = this.selected
-      const list = await this.$axios.$get(`api/test/${id}`)
-      this.eviList = list[0].evidences
+    chargeEvidences () {
       this.evidences = true
       this.evaluations = false
       this.members = false
+      this.selectedUn = false
+    },
+
+    chargeEvaluations () {
+      this.evidences = false
+      this.evaluations = true
+      this.members = false
+      this.selectedUn = false
+    },
+
+    chargeMembers () {
+      this.evidences = false
+      this.evaluations = false
+      this.members = true
+      this.selectedUn = false
+    },
+
+    async updateEvidence () {
+      const {id} = this.selectedEv
+
+      await this.$axios.$put(`api/evidences/${id}`, this.selectedEv)
+    },
+
+    async deleteEvidence () {
+      const {id} = this.selectedEv
+
+      await this.$axios.$delete(`api/evidences/${id}`)
     }
   }
 }

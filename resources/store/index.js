@@ -1,3 +1,6 @@
+const TOKEN = 'app/TOKEN'
+const USER = 'app/USER'
+
 export const state = () => ({
   authUser: null
 })
@@ -10,8 +13,9 @@ export const mutations = {
 
 export const actions = {
   nuxtServerInit ({ commit }, { req }) {
-    if (req.session && req.session.authUser) {
-      commit('SET_USER', req.session.authUser)
+    const { auth } = req
+    if (auth && auth.user) {
+      commit('SET_USER', auth.user)
     }
   },
 
@@ -24,6 +28,8 @@ export const actions = {
       const user = await this.$axios.get(`/api/users/${data.id}`)
 
       commit('SET_USER', user.data)
+      localStorage.setItem(TOKEN, token)
+      localStorage.setItem(USER, JSON.stringify(user.data))
     } catch (error) {
       if (error.response && error.response.status === 401) {
         throw new Error('Bad credentials')
@@ -45,5 +51,33 @@ export const getters = {
       return el.id
     })
     return state.authUser && profiles.includes(1)
+  },
+
+  isValuer (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(2)
+  },
+
+  isSponsor (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(3)
+  },
+
+  isResponsible (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(4)
+  },
+
+  isMember (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(5)
   }
 }

@@ -12,6 +12,14 @@ class Achievement extends Model {
       .belongsToMany('App/Models/UserProfile', 'achievementId', 'userProfileId')
       .pivotTable('profile_achievements_teams')
   }
+
+  sponsor () {
+    return this.this.belongsTo('App/Models/User', 'sponsorId')
+  }
+
+  valuer () {
+    return this.this.belongsTo('App/Models/User', 'valuerId')
+  }
 }
 
 module.exports = Achievement

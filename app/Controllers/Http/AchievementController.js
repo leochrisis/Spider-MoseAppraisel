@@ -1,6 +1,7 @@
 'use strict'
 
 const Achievement = use('App/Models/Achievement')
+const User = use('App/Models/User')
 
 class AchievementController {
   async index () {
@@ -11,9 +12,9 @@ class AchievementController {
   }
 
   async store ({ request, response }) {
-    const {name, cnpj, phone, adress} = request.post()
+    const {name, cnpj, phone, adress, valuerId} = request.post()
 
-    const achievement = await Achievement.create({name, cnpj, phone, adress})
+    const achievement = await Achievement.create({name, cnpj, phone, adress, valuerId})
 
     return achievement
   }
@@ -22,12 +23,21 @@ class AchievementController {
     const achievement = await Achievement.findOrFail(params.id)
 
     if (!achievement) {
-      return response.status(404).json({ message: 'User not found!' })
+      return response.status(404).json({ message: 'Achievement not found!' })
     }
 
     const units = await achievement.units().fetch()
-
     achievement.units = units
+
+    if (achievement.sponsorId) {
+      const sponsor = await User.find(achievement.sponsorId)
+      achievement.sponsor = sponsor
+    }
+
+    if (achievement.valuerId) {
+      const valuer = await User.find(achievement.valuerId)
+      achievement.valuer = valuer
+    }
 
     return achievement
   }
@@ -35,7 +45,7 @@ class AchievementController {
   async update ({ params, request, response }) {
     const achievement = await Achievement.findOrFail(params.id)
 
-    const data = request.only(['name', 'cnpj', 'phone', 'adress'])
+    const data = request.only(['name', 'cnpj', 'phone', 'adress', 'sponsorId', 'valuerId'])
 
     achievement.merge(data)
     await achievement.save()

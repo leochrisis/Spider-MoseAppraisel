@@ -21,16 +21,46 @@ class UserSeeder {
     })
 
     await User.create({
-      username: 'tester',
-      email: 'tester@example.com',
+      username: 'valuer',
+      email: 'valuer@example.com',
+      password: '123456'
+    })
+
+    await User.create({
+      username: 'sponsor',
+      email: 'sponsor@example.com',
+      password: '123456'
+    })
+
+    await User.create({
+      username: 'responsible',
+      email: 'responsible@example.com',
+      password: '123456'
+    })
+
+    await User.create({
+      username: 'member',
+      email: 'member@example.com',
       password: '123456'
     })
 
     await User.create({
       username: 'leonardo',
-      email: 'leonardo@example.com',
-      password: '55555'
+      email: 'leo@example.com',
+      password: '123456'
     })
+
+    await User.create({
+      username: 'Ian',
+      email: 'ian@example.com',
+      password: '123456'
+    })
+
+    await User.create({
+      username: 'lucas',
+      email: 'lucas@example.com',
+      password: '123456'
+    })    
   }
 }
 
