@@ -218,7 +218,41 @@
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="cadastrate = false">Cancelar</button>
-                    <button class="button is-primary" @click="">Cadastrar</button>
+                    <button class="button is-primary" @click="createEvidence">Cadastrar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
+
+      <div v-if="editionEv">
+        <b-modal :active.sync="editionEv" has-modal-card>
+          <form action="">
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Cadastro de usuário</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Papel">
+                    <b-input
+                        v-model="selectedEv.role"
+                        placeholder="Papel"
+                        required>
+                    </b-input>
+                  </b-field>
+
+                  <b-field label="Habilidades">
+                    <b-input
+                        type="textarea"
+                        v-model="selectedEv.skills"
+                        placeholder="Habilidades"
+                        required>
+                    </b-input>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="editionEv = false">Cancelar</button>
+                    <button class="button is-primary" @click="updateEvidence">Atualizar</button>
                 </footer>
             </div>
           </form>
@@ -239,6 +273,7 @@ export default {
     selectedUn: false,
     bordered: true,
     selectedEv: false,
+    editionEv: false,
     user: {
       username: '',
       email: '',
@@ -343,6 +378,16 @@ export default {
       this.evidences = true
       this.evaluations = false
       this.members = false
+    async updateEvidence () {
+      const {id} = this.selectedEv
+
+      await this.$axios.$put(`api/evidences/${id}`, this.selectedEv)
+    },
+
+    async deleteEvidence () {
+      const {id} = this.selectedEv
+
+      await this.$axios.$delete(`api/evidences/${id}`)
     }
   }
 }
