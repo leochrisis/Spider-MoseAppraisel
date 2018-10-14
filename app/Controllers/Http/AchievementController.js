@@ -30,6 +30,11 @@ class AchievementController {
 
     achievement.units = units
 
+    if (achievement.sponsorId) {
+      const sponsor = await User.find(achievement.sponsorId)
+      achievement.sponsor = sponsor
+    }
+
     if (achievement.valuerId) {
       const valuer = await User.find(achievement.valuerId)
       achievement.valuer = valuer
