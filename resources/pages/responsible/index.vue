@@ -371,6 +371,8 @@ export default {
     selectUnit (unit, i) {
       this.selected = unit
       this.id = i
+      this.evidences = false
+      this.evaluations = true
     },
 
     async createUser () {
