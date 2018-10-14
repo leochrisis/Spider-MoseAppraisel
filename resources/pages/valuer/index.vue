@@ -361,7 +361,14 @@ export default {
 
   methods: {
     async createAchievement () {
-      await this.$axios.$post('api/achievements', this.achievement)
+      const data = {
+        name: this.achievement.name,
+        cnpj: this.achievement.cnpj,
+        phone: this.achievement.phone,
+        adress: this.achievement.adress,
+        valuerId: this.loggedUser.id
+      }
+      await this.$axios.$post('api/achievements', data)
     },
 
     async chargeAchievement (id) {
