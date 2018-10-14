@@ -22,8 +22,9 @@ class Unit extends Model {
   }
 
   responsible () {
-    return this.this.belongsTo('App/Models/User', 'userId')
+    return this.this.belongsTo('App/Models/User', 'responsibleId')
   }
+
 }
 
 module.exports = Unit
