@@ -390,13 +390,13 @@ export default {
       await this.$axios.$post('api/evidences', data)
     },
 
-    async chargeEvidences () {
-      const {id} = this.selected
-      const list = await this.$axios.$get(`api/test/${id}`)
-      this.eviList = list[0].evidences
+    chargeEvidences () {
       this.evidences = true
       this.evaluations = false
       this.members = false
+      this.selectedUn = false
+    },
+
     chargeEvaluations () {
       this.evidences = false
       this.evaluations = true
