@@ -376,6 +376,13 @@ export default {
     async chargeAchievement (id) {
       const achievement = await this.$axios.$get(`api/achievements/${id}`)
       this.selected = achievement
+
+      if (achievement.sponsorId) {
+        const sponsorId = achievement.sponsorId
+        const sponsor = await this.$axios.$get(`api/users/${sponsorId}`)
+        this.patrocinator = sponsor
+      }
+
       this.achievementSelected = true
     },
 
