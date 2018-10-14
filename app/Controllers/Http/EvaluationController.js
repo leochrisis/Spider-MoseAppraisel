@@ -3,11 +3,9 @@
 const Evaluation = use('App/Models/Evaluation')
 
 class EvaluationController {
+
   async index ({ request, response, view }) {
-    const evaluation = Evaluation
-      .query()
-      .with('evidences')
-      .fetch()
+    const evaluation = Evaluation.all()
 
     return evaluation
   }
