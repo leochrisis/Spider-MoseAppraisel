@@ -26,7 +26,7 @@ class UnitController {
     const unit = await Unit.findOrFail(params.id)
 
     if (!unit) {
-      return response.status(404).json({ message: 'User not found!' })
+      return response.status(404).json({ message: 'Unit not found!' })
     }
 
     const evaluations = await unit.evaluations().fetch()

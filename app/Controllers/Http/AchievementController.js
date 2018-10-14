@@ -23,11 +23,10 @@ class AchievementController {
     const achievement = await Achievement.findOrFail(params.id)
 
     if (!achievement) {
-      return response.status(404).json({ message: 'User not found!' })
+      return response.status(404).json({ message: 'Achievement not found!' })
     }
 
     const units = await achievement.units().fetch()
-
     achievement.units = units
 
     if (achievement.sponsorId) {
