@@ -15,21 +15,21 @@ const Evidence = use('App/Models/Evidence')
 class EvidenceSeeder {
   async run () {
     await Evidence.create({
-      unitId: 1,
       role: 'Gerente de projetos',
-      skills: 'Trabalha bem'
+      skills: 'Trabalha bem',
+      unitId: 1
     })
 
     await Evidence.create({
-      unitId: 2,
       role: 'Analista de requisitos',
-      skills: 'Legal com os clientes'
+      skills: 'Legal com os clientes',
+      unitId: 2
     })
 
     await Evidence.create({
-      unitId: 1,
       role: 'Programador',
-      skills: 'Só chora'
+      skills: 'Só chora',
+      unitId: 1
     })
   }
 }
