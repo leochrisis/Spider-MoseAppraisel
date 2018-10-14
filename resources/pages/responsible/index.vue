@@ -358,10 +358,9 @@ export default {
   }),
 
   async created () {
-    const units = await this.$axios.$get('/api/units/2')
-    this.units.push(units)
-    const t = await this.$axios.$get('/api/units/3')
-    this.units.push(t)
+    const id = this.$store.state.authUser.id
+    const units = await this.$axios.$get(`/api/responsible-units/${id}`)
+    this.units = units
   },
 
   methods: {
