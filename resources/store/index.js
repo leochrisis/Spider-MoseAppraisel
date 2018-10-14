@@ -51,5 +51,33 @@ export const getters = {
       return el.id
     })
     return state.authUser && profiles.includes(1)
+  },
+
+  isValuer (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(2)
+  },
+
+  isSponsor (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(3)
+  },
+
+  isResponsible (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(4)
+  },
+
+  isMember (state) {
+    var profiles = state.authUser.profiles.map(function (el) {
+      return el.id
+    })
+    return state.authUser && profiles.includes(5)
   }
 }
