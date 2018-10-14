@@ -110,13 +110,31 @@
               </div>
             </div>
             <div v-if="evidences">
-              <div v-if="eviList.length === 0">
+              <nav class="navbar is-transparent">
+                <div class="navbar-start">
+                  <div class="navbar-item title">
+                    Evidências
+                  </div>
+                </div>
+
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                      <div v-if="selectedEv">
+                        <button class="button is-warning" @click="editionEv = true">Editar</button>
+                        <button class="button is-danger" @click="deleteEvidence">Deletar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              <div v-if="selected.evidences.length === 0">
                 Ainda não existem evidencias.
               </div>
               <div v-else>
                 <b-table
                   :bordered="bordered"
-                  :data="eviList"
+                  :data="selected.evidences"
                   :columns="columnsEv"
                   :selected.sync="selectedEv"
                   focusable
@@ -336,7 +354,7 @@ export default {
     evaluations: true,
     members: false,
     id: null,
-    eviList: []
+    editionEv: false
   }),
 
   async created () {
