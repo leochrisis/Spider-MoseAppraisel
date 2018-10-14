@@ -14,6 +14,8 @@ class UnitSchema extends Schema {
       table.foreign('achievementId').references('achievements.id').onDelete('cascade')
       table.integer('responsibleId').unsigned()
       table.foreign('responsibleId').references('users.id')
+      table.integer('valuerId').unsigned()
+      table.foreign('valuerId').references('users.id')
       table.timestamps()
     })
   }

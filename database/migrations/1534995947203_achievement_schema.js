@@ -12,6 +12,8 @@ class AchievementSchema extends Schema {
       table.string('adress').notNullable()
       table.integer('sponsorId').unsigned()
       table.foreign('sponsorId').references('users.id')
+      table.integer('valuerId').unsigned()
+      table.foreign('valuerId').references('users.id')
       table.timestamps()
     })
   }
