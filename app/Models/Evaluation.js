@@ -16,6 +16,15 @@ class Evaluation extends Model {
       .belongsToMany('App/Models/MamberRole', 'evaluationId', 'memberId')
       .pivotTable('member_evaluations')
   }
+
+  valuer () {
+    return this.this.belongsTo('App/Models/User', 'valuerId')
+  }
+
+  responsibles () {
+    return this.this.belongsTo('App/Models/User', 'responsibleId')
+  }
+
 }
 
 module.exports = Evaluation
