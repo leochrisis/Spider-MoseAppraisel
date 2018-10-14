@@ -79,8 +79,8 @@
           <nav class="navbar is-transparent tabs">
             <div class="container">
               <ul>
-                <li><a>Avaliações</a></li>
-                <li><a @click="">Membros</a></li>
+                <li><a @click="chargeEvaluations">Avaliações</a></li>
+                <li><a @click="chargeMembers">Membros</a></li>
                 <li><a @click="chargeEvidences">Evidencias</a></li>
               </ul>
             </div>
@@ -397,6 +397,20 @@ export default {
       this.evidences = true
       this.evaluations = false
       this.members = false
+    chargeEvaluations () {
+      this.evidences = false
+      this.evaluations = true
+      this.members = false
+      this.selectedUn = false
+    },
+
+    chargeMembers () {
+      this.evidences = false
+      this.evaluations = false
+      this.members = true
+      this.selectedUn = false
+    },
+
     async updateEvidence () {
       const {id} = this.selectedEv
 
