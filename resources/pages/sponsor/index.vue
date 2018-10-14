@@ -65,7 +65,7 @@
               <div>
                 <p class="heading">Patrocinador</p>
                 <p>
-                  Leonardo Christian
+                  {{loggedUser.username}}
                 </p>
               </div>
             </div>
@@ -232,6 +232,8 @@ export default {
 
   data: () => ({
     achievements: [],
+    responsible: null,
+    loggedUser: null,
     achievementSelected: false,
     selected: null,
     createUN: false,
