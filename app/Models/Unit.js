@@ -25,6 +25,9 @@ class Unit extends Model {
     return this.this.belongsTo('App/Models/User', 'responsibleId')
   }
 
+  valuer () {
+    return this.this.belongsTo('App/Models/User', 'valuerId')
+  }
 }
 
 module.exports = Unit
