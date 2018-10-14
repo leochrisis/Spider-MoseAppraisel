@@ -10,9 +10,9 @@ class EvidenceController {
   }
 
   async store ({ request, response }) {
-    const data = request.only(['evaluationId', 'role', 'skills'])
+    const {unitId, role, skills} = request.post()
 
-    const evidence = await Evidence.create(data)
+    const evidence = await Evidence.create({unitId, role, skills})
 
     return evidence
   }
