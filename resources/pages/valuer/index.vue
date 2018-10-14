@@ -355,8 +355,10 @@ export default {
   }),
 
   async created () {
-    const achievements = await this.$axios.$get('/api/achievements')
+    const id = this.$store.state.authUser.id
+    const achievements = await this.$axios.$get(`/api/valuer-achivements/${id}`)
     this.achievements = achievements
+    this.loggedUser = this.$store.state.authUser
   },
 
   methods: {
