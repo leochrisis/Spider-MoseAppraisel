@@ -5,12 +5,6 @@ const Schema = use('Schema')
 class EvidenceSchema extends Schema {
   up () {
     this.create('evidences', (table) => {
-      table.increments()
-      table.string('role', 50)
-      table.string('skills', 300)
-      table.integer('unitId').unsigned()
-      table.foreign('unitId').references('units.id')
-      table.timestamps()
     })
   }
 

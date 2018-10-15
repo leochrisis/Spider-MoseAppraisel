@@ -27,7 +27,7 @@ Route.group(() => {
   Route.resource('achievements', 'AchievementController').apiOnly()
   Route.resource('units', 'UnitController').apiOnly()
   Route.resource('evaluations', 'EvaluationController').apiOnly()
-  Route.resource('evidences', 'EvidenceController').apiOnly()
+  Route.resource('evidences-font', 'EvidenceFontController').apiOnly()
   Route.resource('profiles', 'ProfileController').apiOnly()
   Route.get('roles', 'UserProfileController.index')
   Route.post('roles', 'UserProfileController.store')
