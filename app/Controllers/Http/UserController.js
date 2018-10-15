@@ -13,7 +13,13 @@ class UserController {
   }
 
   async me ({ auth, params }) {
-    return auth.user
+    const authenticated = await auth.getUser()
+    const user = await User.findOrFail(authenticated.id)
+    const profiles = await user.profiles().fetch()
+
+    user.profiles = profiles
+
+    return user
   }
 
   async store ({ request }) {
