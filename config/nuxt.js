@@ -45,6 +45,12 @@ module.exports = {
   */
   loading: { color: '#744d82' },
   /*
+  ** Render
+  */
+  render: {
+    ssr: false
+  },
+  /*
   ** Point to resources
   */
   srcDir: resolve(__dirname, '..', 'resources')
