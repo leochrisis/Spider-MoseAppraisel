@@ -6,8 +6,8 @@ class TeamSchema extends Schema {
   up () {
     this.create('teams', (table) => {
       table.increments()
-      table.integer('userProfileId').unsigned()
-      table.foreign('userProfileId').references('user_profiles.id')
+      table.integer('userId').unsigned()
+      table.foreign('userId').references('users.id')
       table.integer('unitId').unsigned()
       table.foreign('unitId').references('units.id')
       table.timestamps()
