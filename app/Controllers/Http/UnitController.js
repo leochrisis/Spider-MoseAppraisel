@@ -9,8 +9,8 @@ class UnitController {
     return await Unit
       .query()
       .with('evaluations')
+      .with('evidenceFonts')
       .with('members')
-      .with('evidences')
       .fetch()
   }
 
