@@ -1,14 +1,20 @@
 'use strict'
 
-/**
- * Resourceful controller for interacting with teams
- */
+const Team = use('App/Models/Team')
+
 class TeamController {
   /**
    * Show a list of all teams.
    * GET teams
    */
   async index ({ request, response, view }) {
+    const team = Team
+    .query()
+    .with('roles')
+    .with('evaluations')
+    .fetch()
+
+    return team
   }
 
   /**
@@ -51,6 +57,12 @@ class TeamController {
    * DELETE teams/:id
    */
   async destroy ({ params, request, response }) {
+  }
+
+  byUnitId ({ params }) {
+    var team = Team.query().where('unitId', params.id)
+
+    return team
   }
 }
 
