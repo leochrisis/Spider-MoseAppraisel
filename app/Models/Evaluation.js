@@ -13,8 +13,8 @@ class Evaluation extends Model {
 
   particpants () {
     return this
-      .belongsToMany('App/Models/MamberRole', 'evaluationId', 'memberId')
-      .pivotTable('member_evaluations')
+      .belongsToMany('App/Models/MemberRole', 'evaluationId', 'memberId')
+      .pivotTable('member_roles')
   }
 
   valuer () {

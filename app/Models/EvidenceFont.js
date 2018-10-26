@@ -9,7 +9,7 @@ class EvidenceFont extends Model {
 
   owners () {
     return this
-      .belongsToMany('App/Models/Team', 'evidenceId', 'memberId')
+      .belongsToMany('App/Models/Team', 'evidenceFontId', 'memberId')
       .pivotTable('member_roles')
   }
 }

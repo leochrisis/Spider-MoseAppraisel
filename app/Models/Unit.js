@@ -11,13 +11,13 @@ class Unit extends Model {
     return this.hasMany('App/Models/Evaluation', 'id', 'unitId')
   }
 
-  evidences () {
-    return this.hasMany('App/Models/Evidence', 'id', 'unitId')
+  evidenceFonts () {
+    return this.hasMany('App/Models/EvidenceFont', 'id', 'unitId')
   }
 
   members () {
     return this
-      .belongsToMany('App/Models/UserProfile', 'unitId', 'userProfileId')
+      .belongsToMany('App/Models/UserProfile', 'unitId', 'userId')
       .pivotTable('teams')
   }
 
