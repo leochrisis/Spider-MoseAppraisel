@@ -9,6 +9,11 @@ class Team extends Model {
       .pivotTable('member_roles')
   }
 
+  evaluations () {
+    return this
+      .belongsToMany('App/Models/Evaluation', 'memberId', 'evaluationId')
+      .pivotTable('member_roles')
+  }
 }
 
 module.exports = Team
