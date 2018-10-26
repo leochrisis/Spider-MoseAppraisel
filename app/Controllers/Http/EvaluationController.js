@@ -21,13 +21,11 @@ class EvaluationController {
       contractor,
       partner,
       startDate,
-      endDate,
-      valuerId,
-      responsibleId
+      valuerId
     } = request.post()
 
     const evaluation = await Evaluation
-      .create({unitId, type, status, contractor, partner, startDate, endDate, valuerId, responsibleId})
+      .create({unitId, type, status, contractor, partner, startDate, valuerId})
 
     return evaluation
   }
@@ -77,7 +75,6 @@ class EvaluationController {
     const evaluation = await Evaluation
       .query()
       .where('unitId', params.id)
-      .with('evidences')
       .fetch()
 
     return evaluation
