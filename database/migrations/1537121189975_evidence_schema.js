@@ -7,7 +7,6 @@ class EvidenceSchema extends Schema {
     this.create('evidences', (table) => {
       table.increments()
       table.string('url').notNullable()
-      table.string('font').notNullable()
       table.string('practice').notNullable()
       table.string('result')
       table.string('problems')
