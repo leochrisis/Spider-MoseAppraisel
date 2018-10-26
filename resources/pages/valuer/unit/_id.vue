@@ -322,8 +322,18 @@ export default {
 
   methods: {
     async createEvaluation () {
-      this.evaluation.unit_id = this.$route.params.id
-      await this.$axios.$post(`api/evaluation`, this.evaluation)
+      const evaluation = {
+        unitId: this.$route.params.id,
+        type: this.evaluation.type,
+        status: this.evaluation.status,
+        contractor: this.evaluation.contractor,
+        partner: this.evaluation.partner,
+        startDate: this.evaluation.startDate,
+        endDate: null,
+        valuerId: this.$store.state.authUser,
+        responsibleId: null
+      }
+      await this.$axios.$post(`api/evaluation`, evaluation)
     },
 
     editEvaluation () {
