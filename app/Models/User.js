@@ -37,11 +37,17 @@ class User extends Model {
   }
 
   achievements () {
-    return this.hasMany('App/Models/Achievement') 
+    return this.hasMany('App/Models/Achievement')
   }
 
   units () {
     return this.hasMany('App/Models/Unit')
+  }
+
+  participates () {
+    return this
+      .belongsToMany('App/Models/Unit', 'userId', 'unitId')
+      .pivotTable('teams')
   }
 
   evaluations () {

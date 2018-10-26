@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="columns">
+      <!--Side bar-->
       <div class="column is-one-fifth">
         <aside class="menu">
           <div class="card">
@@ -24,7 +25,6 @@
             </div>
           </div>
           <br/>
-
           <ul class="menu-list gray">
             <p class="menu-label">
               Unidades de negócio:
@@ -38,10 +38,12 @@
         </aside>
       </div>
 
+      <!--Application screen-->
       <div class="column">
         <div v-if="!selected">
-          escolha uma unidade de negócio para começar.
+          Escolha uma unidade de negócio para começar.
         </div>
+
         <div v-else>
           <nav class="navbar is-ligthGray">
             <div class="navbar-start">
@@ -81,10 +83,12 @@
               <ul>
                 <li><a @click="chargeEvaluations">Avaliações</a></li>
                 <li><a @click="chargeMembers">Membros</a></li>
-                <li><a @click="chargeEvidences">Evidencias</a></li>
+                <li><a @click="chargeEvidences">Fontes de evidência</a></li>
               </ul>
             </div>
           </nav>
+
+            <!--Evaluations-->
             <div v-if="evaluations">
               <nav class="navbar is-transparent">
                 <div class="navbar-start">
@@ -92,13 +96,19 @@
                     Avaliações
                   </div>
                 </div>
-
                 <div class="navbar-end">
                   <div class="navbar-item">
                     <div class="buttons">
                       <div v-if="selectedUn">
-                        <button class="button" @click="">Plano de melhoria</button>
-                        <button class="button">Resultado</button>
+                        <div v-if="selectedUn.status === 'Vigente'">
+                          <nuxt-link :to="`/responsible/evidences/${selectedUn.id}`">
+                            Evidências
+                          </nuxt-link>
+                        </div>
+                        <div v-else>
+                          <button class="button" @click="">Plano de melhoria</button>
+                          <button class="button">Resultado</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -117,14 +127,15 @@
                 ></b-table>
               </div>
             </div>
+
+            <!--Evidence Font-->
             <div v-if="evidences">
               <nav class="navbar is-transparent">
                 <div class="navbar-start">
                   <div class="navbar-item title">
-                    Evidências
+                    Fonte de evidência
                   </div>
                 </div>
-
                 <div class="navbar-end">
                   <div class="navbar-item">
                     <div class="buttons">
@@ -136,15 +147,48 @@
                   </div>
                 </div>
               </nav>
-              <div v-if="selected.evidences.length === 0">
-                Ainda não existem evidencias.
+              <div v-if="selected.evidenceFonts.length === 0">
+                Ainda não existem fontes de evidências.
               </div>
               <div v-else>
                 <b-table
                   :bordered="bordered"
-                  :data="selected.evidences"
+                  :data="selected.evidenceFonts"
                   :columns="columnsEv"
                   :selected.sync="selectedEv"
+                  focusable
+                ></b-table>
+              </div>
+            </div>
+
+            <!--Members-->
+             <div v-if="members">
+              <nav class="navbar is-transparent">
+                <div class="navbar-start">
+                  <div class="navbar-item title">
+                    Membros
+                  </div>
+                </div>
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                      <div v-if="selectedME">
+                        <button class="button is-warning" @click="">Editar</button>
+                        <button class="button is-danger" @click="">Deletar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              <div v-if="selected.members.length === 0">
+                Ainda não existem membros.
+              </div>
+              <div v-else>
+                <b-table
+                  :bordered="bordered"
+                  :data="memberList"
+                  :columns="columnsMe"
+                  :selected.sync="selectedME"
                   focusable
                 ></b-table>
               </div>
@@ -222,7 +266,7 @@
           <form action="">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de usuário</p>
+                    <p class="modal-card-title">Cadastro de evidência</p>
                 </header>
                 <section class="modal-card-body">
                   <b-field label="Papel">
@@ -256,7 +300,7 @@
           <form action="">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de usuário</p>
+                    <p class="modal-card-title">Edição de evidência</p>
                 </header>
                 <section class="modal-card-body">
                   <b-field label="Papel">
@@ -285,7 +329,6 @@
         </b-modal>
       </div>
     </section>
-    <button @click="teste">teste</button>
   </div>
 </template>
 
@@ -300,6 +343,7 @@ export default {
     bordered: true,
     selectedEv: false,
     editionEv: false,
+    selectedME: false,
     user: {
       username: '',
       email: '',
@@ -349,7 +393,26 @@ export default {
       },
       {
         field: 'skills',
-        label: 'Habilidades'
+        label: 'Habilidades',
+        centered: true
+      }
+    ],
+    columnsMe: [
+      {
+        field: 'id',
+        label: 'ID',
+        width: '40',
+        numeric: true
+      },
+      {
+        field: 'username',
+        label: 'Nome de usuário',
+        centered: true
+      },
+      {
+        field: 'email',
+        label: 'Email',
+        centered: true
       }
     ],
     creation: false,
@@ -362,20 +425,23 @@ export default {
     evaluations: true,
     members: false,
     id: null,
-    editionEv: false
+    editionEv: false,
+    memberList: []
   }),
 
   async created () {
-    const id = this.$store.state.authUser.id
+    const id = this.loggedUser.id
     const units = await this.$axios.$get(`/api/responsible-units/${id}`)
     this.units = units
   },
 
-  methods: {
-    teste () {
-      console.log(this.eviList)
-    },
+  computed: {
+    loggedUser () {
+      return this.$store.state.authUser
+    }
+  },
 
+  methods: {
     selectUnit (unit, i) {
       this.selected = unit
       this.id = i
@@ -395,7 +461,7 @@ export default {
         role: this.evidence.role,
         skills: this.evidence.skills
       }
-      await this.$axios.$post('api/evidences', data)
+      await this.$axios.$post('api/evidences-font', data)
     },
 
     chargeEvidences () {
@@ -412,7 +478,15 @@ export default {
       this.selectedUn = false
     },
 
-    chargeMembers () {
+    async chargeMembers () {
+      this.memberList = []
+      if (this.selected.members.length > 0) {
+        for (var i = 0; i < this.selected.members.length; i++) {
+          var id = this.selected.members[i].userId
+          var member = await this.$axios.$get(`/api/users/${id}`)
+          this.memberList.push(member)
+        }
+      }
       this.evidences = false
       this.evaluations = false
       this.members = true
@@ -422,13 +496,13 @@ export default {
     async updateEvidence () {
       const {id} = this.selectedEv
 
-      await this.$axios.$put(`api/evidences/${id}`, this.selectedEv)
+      await this.$axios.$put(`api/evidences-font/${id}`, this.selectedEv)
     },
 
     async deleteEvidence () {
       const {id} = this.selectedEv
 
-      await this.$axios.$delete(`api/evidences/${id}`)
+      await this.$axios.$delete(`api/evidences-font/${id}`)
     }
   }
 }

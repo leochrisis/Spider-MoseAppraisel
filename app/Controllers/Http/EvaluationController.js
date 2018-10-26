@@ -5,7 +5,10 @@ const Evaluation = use('App/Models/Evaluation')
 class EvaluationController {
 
   async index ({ request, response, view }) {
-    const evaluation = Evaluation.all()
+    const evaluation = Evaluation
+      .query()
+      .with('evidences')
+      .fetch()
 
     return evaluation
   }
@@ -18,13 +21,11 @@ class EvaluationController {
       contractor,
       partner,
       startDate,
-      endDate,
-      valuerId,
-      responsibleId
+      valuerId
     } = request.post()
 
     const evaluation = await Evaluation
-      .create({unitId, type, status, contractor, partner, startDate, endDate, valuerId, responsibleId})
+      .create({unitId, type, status, contractor, partner, startDate, valuerId})
 
     return evaluation
   }
@@ -35,6 +36,9 @@ class EvaluationController {
     if (!evaluation) {
       return response.status(404).json({ message: 'Evaluation not found!' })
     }
+
+    const evidences = await evaluation.evidences().fetch()
+    evaluation.evidences = evidences
 
     return evaluation
   }
@@ -71,7 +75,6 @@ class EvaluationController {
     const evaluation = await Evaluation
       .query()
       .where('unitId', params.id)
-      .with('evidences')
       .fetch()
 
     return evaluation

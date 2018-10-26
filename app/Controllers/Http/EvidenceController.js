@@ -10,9 +10,9 @@ class EvidenceController {
   }
 
   async store ({ request, response }) {
-    const {unitId, role, skills} = request.post()
+    const {url, practice, evaluationId} = request.post()
 
-    const evidence = await Evidence.create({unitId, role, skills})
+    const evidence = await Evidence.create({url, practice, evaluationId})
 
     return evidence
   }
@@ -30,9 +30,9 @@ class EvidenceController {
   async update ({ params, request, response }) {
     const evidence = await Evidence.findOrFail(params.id)
 
-    const {unitId, role, skills} = request.post()
+    const {url, font, result, problems} = request.post()
 
-    evidence.merge({unitId, role, skills})
+    evidence.merge({url, font, result, problems})
 
     await evidence.save()
     return evidence
@@ -42,6 +42,16 @@ class EvidenceController {
     const evidence = await Evidence.findOrFail(params.id)
 
     await evidence.delete()
+  }
+
+  async perPractice ({ request }) {
+    const { evaluationId, practice } = request.all()
+
+    const evidences = Evidence.query()
+      .where('evaluationId', evaluationId)
+      .where('practice', practice)
+
+    return evidences
   }
 }
 

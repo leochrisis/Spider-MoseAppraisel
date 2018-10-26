@@ -1,6 +1,9 @@
 'use strict'
 
 const User = use('App/Models/User')
+const Achievement = use('App/Models/Achievement')
+const Unit = use('App/Models/Unit')
+const Hash = use('Hash')
 
 class UserController {
   async index () {
@@ -13,7 +16,13 @@ class UserController {
   }
 
   async me ({ auth, params }) {
-    return auth.user
+    const authenticated = await auth.getUser()
+    const user = await User.findOrFail(authenticated.id)
+    const profiles = await user.profiles().fetch()
+
+    user.profiles = profiles
+
+    return user
   }
 
   async store ({ request }) {
@@ -49,6 +58,7 @@ class UserController {
 
     user.username = username || user.username
     user.email = email || user.email
+    user.password = await Hash.make(user.password)
 
     await user.save()
 
@@ -83,16 +93,45 @@ class UserController {
 
   async valuerAchivements ({ params }) {
     const achievements = Achievement.query().where('valuerId', params.id)
+      .with('units')
+      .fetch()
 
     return achievements
   }
 
   async unitAchievements ({ params }) {
-    var units = Unit.query().where('responsibleId', params.id).with('evaluations').with('evidences').fetch()
+    var units = Unit.query().where('responsibleId', params.id)
+      .with('evaluations')
+      .with('evidenceFonts')
+      .with('members')
+      .fetch()
 
     return units
   }
 
+  async changePassword ({ request, auth, response }) {
+    const user = auth.current.user
+
+    const verifyPassword = await Hash.verify(
+        request.input('password'),
+        user.password
+    )
+
+    if (!verifyPassword) {
+      return response.status(400).json({
+        status: 'error',
+        message: 'Bad credentials! Please try again.'
+      })
+    }
+
+    user.password = await Hash.make(request.input('newPassword'))
+    await user.save()
+
+    return response.json({
+      status: 'success',
+      message: 'Password updated!'
+    })
+  }
 }
 
 module.exports = UserController

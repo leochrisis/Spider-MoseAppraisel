@@ -53,6 +53,16 @@ class UserProfileSeeder {
       userId: 8,
       profileId: 4
     })
+
+    await Profile.create({
+      userId: 6,
+      profileId: 5
+    })
+
+    await Profile.create({
+      userId: 7,
+      profileId: 5
+    })
   }
 }
 

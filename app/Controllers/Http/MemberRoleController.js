@@ -1,5 +1,6 @@
 'use strict'
 
+const MemberRole = use('App/Models/MemberRole')
 /**
  * Resourceful controller for interacting with memberroles
  */
@@ -9,6 +10,9 @@ class MemberRoleController {
    * GET memberroles
    */
   async index ({ request, response, view }) {
+    const memberRole = MemberRole.all()
+
+    return memberRole
   }
 
   /**
@@ -23,6 +27,11 @@ class MemberRoleController {
    * POST memberroles
    */
   async store ({ request, response }) {
+    const {memberId, evidenceFontId, evaluationId} = request.post()
+
+    const memberEvaluation = await MemberRole.create({memberId, evidenceFontId, evaluationId})
+
+    return memberEvaluation
   }
 
   /**

@@ -9,8 +9,8 @@ class UnitController {
     return await Unit
       .query()
       .with('evaluations')
+      .with('evidenceFonts')
       .with('members')
-      .with('evidences')
       .fetch()
   }
 
@@ -31,6 +31,12 @@ class UnitController {
 
     const evaluations = await unit.evaluations().fetch()
     unit.evaluations = evaluations
+
+    const evidenceFonts = await unit.evidenceFonts().fetch()
+    unit.evidenceFonts = evidenceFonts
+
+    const members = await unit.members().fetch()
+    unit.members = members
 
     if (unit.responsibleId) {
       const responsible = await User.find(unit.responsibleId)

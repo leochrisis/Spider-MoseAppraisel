@@ -2,12 +2,12 @@
 
 const Schema = use('Schema')
 
-class TeamSchema extends Schema {
+class EvidenceFontSchema extends Schema {
   up () {
-    this.create('teams', (table) => {
+    this.create('evidence_fonts', (table) => {
       table.increments()
-      table.integer('userId').unsigned()
-      table.foreign('userId').references('users.id')
+      table.string('role', 50)
+      table.string('skills', 300)
       table.integer('unitId').unsigned()
       table.foreign('unitId').references('units.id')
       table.timestamps()
@@ -15,8 +15,8 @@ class TeamSchema extends Schema {
   }
 
   down () {
-    this.drop('teams')
+    this.drop('evidence_fonts')
   }
 }
 
-module.exports = TeamSchema
+module.exports = EvidenceFontSchema
