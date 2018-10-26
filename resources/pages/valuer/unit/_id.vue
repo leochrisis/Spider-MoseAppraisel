@@ -278,8 +278,7 @@ export default {
       status: 'vigente',
       contractor: '',
       partner: '',
-      startDate: '',
-      endDate: ''
+      startDate: ''
     },
     contractors: [
       'Lorem',
