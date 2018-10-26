@@ -52,6 +52,10 @@ export const actions = {
 }
 
 export const getters = {
+  profiles (state) {
+    return state.authUser && state.authUser.profiles.length > 1
+  },
+
   isAdmin (state) {
     var profiles = state.authUser.profiles.map(function (el) {
       return el.id
