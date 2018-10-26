@@ -8,8 +8,10 @@ class MemberRoleSchema extends Schema {
       table.increments()
       table.integer('memberId').unsigned()
       table.foreign('memberId').references('teams.id')
-      table.integer('evidenceId').unsigned()
-      table.foreign('evidenceId').references('evidences.id')
+      table.integer('evidenceFontId').unsigned()
+      table.foreign('evidenceFontId').references('evidence_fonts.id')
+      table.integer('evaluationId').unsigned()
+      table.foreign('evaluationId').references('evaluations.id')
       table.timestamps()
     })
   }
