@@ -10,9 +10,9 @@ class EvidenceController {
   }
 
   async store ({ request, response }) {
-    const {url, font, practice} = request.post()
+    const {url, practice, evaluationId} = request.post()
 
-    const evidence = await Evidence.create({url, font, practice})
+    const evidence = await Evidence.create({url, practice, evaluationId})
 
     return evidence
   }
@@ -42,6 +42,16 @@ class EvidenceController {
     const evidence = await Evidence.findOrFail(params.id)
 
     await evidence.delete()
+  }
+
+  async perPractice ({ request }) {
+    const { evaluationId, practice } = request.all()
+
+    const evidences = Evidence.query()
+      .where('evaluationId', evaluationId)
+      .where('practice', practice)
+
+    return evidences
   }
 }
 
