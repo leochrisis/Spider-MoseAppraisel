@@ -283,6 +283,13 @@ export default {
     async chargeAchievement (id) {
       const achievement = await this.$axios.$get(`api/achievements/${id}`)
       this.selected = achievement
+
+      /*if (achievement.sponsorId) {
+        const id = achievement.sponsorId
+        const sponsor = await this.$axios.$get(`api/users/${id}`)
+        this.sponsor = sponsor
+      }*/
+
       this.achievementSelected = true
     },
 
