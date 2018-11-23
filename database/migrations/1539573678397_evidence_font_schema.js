@@ -9,7 +9,7 @@ class EvidenceFontSchema extends Schema {
       table.string('role', 50)
       table.string('skills', 300)
       table.integer('unitId').unsigned()
-      table.foreign('unitId').references('units.id')
+      table.foreign('unitId').references('units.id').onDelete('cascade')
       table.timestamps()
     })
   }

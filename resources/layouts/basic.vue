@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-    </nav> 
+    </nav>
     <nuxt/>
   </div>
 </template>

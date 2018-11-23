@@ -60,7 +60,7 @@ class UserSeeder {
       username: 'lucas',
       email: 'lucas@example.com',
       password: '123456'
-    })    
+    })
   }
 }
 

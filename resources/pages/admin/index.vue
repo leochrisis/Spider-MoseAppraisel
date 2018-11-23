@@ -65,68 +65,13 @@
     </div>
 
     <section>
-      <div v-if="creation">
-        <b-modal :active.sync="creation" has-modal-card>
-          <form action="">
-            <div class="modal-card" style="width: auto">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de usuário</p>
-                </header>
-                <section class="modal-card-body">
-                  <b-field label="Papel">
-                    <b-dropdown disabled>
-                      <button class="button" slot="trigger">
-                          <span>Avaliador</span>
-                          <b-icon icon="menu-down"></b-icon>
-                      </button>
-                    </b-dropdown>
-                  </b-field>
-                  <b-field label="Usuário">
-                    <b-input
-                        v-model="user.username"
-                        placeholder="Nome de usuário"
-                        required>
-                    </b-input>
-                  </b-field>
+      <userRegister
+        :activate="!!creation"
+        :profile="profiles.valuer"
+        :createUser="(user, confirmPassword) => createUser(user, confirmPassword)"
+        :onClose="closeuserRegisterModal"
+      ></userRegister>
 
-                  <b-field label="Email">
-                    <b-input
-                        type="email"
-                        v-model="user.email"
-                        placeholder="Email do usuário"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Senha">
-                    <b-input
-                        type="password"
-                        v-model="user.password"
-                        password-reveal
-                        placeholder="Senha do usuário"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Confirmação de senha">
-                    <b-input
-                        type="password"
-                        v-model="confirmPassword"
-                        password-reveal
-                        placeholder="Confirmação de senha"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="creation = false">Cancelar</button>
-                    <button class="button is-primary" @click="createUser">Cadastrar</button>
-                </footer>
-            </div>
-          </form>
-        </b-modal>
-      </div>
       <div v-if="edition">
         <b-modal :active.sync="edition" has-modal-card>
           <form action="">
@@ -165,8 +110,13 @@
 </template>
 
 <script>
+import userRegister from '~/components/user-register-modal.vue'
+import profiles from '~/static/profiles.json'
+
 export default {
   layout: 'basic',
+
+  components: { userRegister },
 
   async created () {
     const users = await this.$axios.$get('/api/users')
@@ -175,13 +125,6 @@ export default {
 
   data: () => ({
     users: [],
-    user: {
-      username: '',
-      email: '',
-      password: '',
-      profiles: [2]
-    },
-    confirmPassword: '',
     selected: null,
     creation: false,
     edition: false,
@@ -203,12 +146,13 @@ export default {
         label: 'Email',
         centered: true
       }
-    ]
+    ],
+    profiles: profiles
   }),
 
   methods: {
-    async createUser () {
-      if (this.user.password === this.confirmPassword) {
+    async createUser ( user, confirmPassword ) {
+      if (user.password === confirmPassword) {
         await this.$axios.$post('api/users', this.user)
       }
     },
@@ -223,6 +167,10 @@ export default {
       const {id} = this.selected
 
       await this.$axios.$delete(`api/users/${id}`)
+    },
+
+    closeuserRegisterModal () {
+      this.creation = false
     }
   }
 }

@@ -14,11 +14,11 @@ class Achievement extends Model {
   }
 
   sponsor () {
-    return this.this.belongsTo('App/Models/User', 'sponsorId')
+    return this.belongsTo('App/Models/User', 'sponsorId')
   }
 
   valuer () {
-    return this.this.belongsTo('App/Models/User', 'valuerId')
+    return this.belongsTo('App/Models/User', 'valuerId')
   }
 }
 

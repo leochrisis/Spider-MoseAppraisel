@@ -1,123 +1,28 @@
 <template>
   <div>
     <div class="columns">
-      <div class="column is-one-fifth">
-        <aside class="menu">
-          <div class="card">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">John Smith</p>
-                  <p class="subtitle is-6">@johnsmith</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br/>
 
-          <ul class="menu-list gray">
-            <a class="button is-info" @click="creation = true">Novo empreendimento</a>
-            <br/>
-            <p class="menu-label">
-              Empreendimentos:
-            </p>
-            <ul>
-              <div v-for="achievement in achievements" :key="achievement.id">
-                <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
-                  <li>
-                    <ul>
-                      <div v-for="unit in achievement.units" :key="unit.id">
-                        <li><a>
-                        <nuxt-link :to="`/valuer/unit/${unit.id}`">
-                          {{unit.name}}
-                        </nuxt-link>
-                        </a></li>
-                      </div>
-                    </ul>
-                  </li>
-              </div>
-            </ul>
-          </ul>
-        </aside>
+      <div class="column is-one-fifth">
+        <sideBar
+          :profile="2"
+          :achievements="achievements"
+          :charge-achievement="(id) => chargeAchievement(id)"
+          :create-achievement="() => achievementCreation()"
+        ></sideBar>
       </div>
+
       <div class="column">
         <div v-if="!achievementSelected">
-          escolha um empreendimento para começar.
+          Escolha um empreendimento para começar.
         </div>
-        <div v-else>
-          <nav class="navbar is-ligthGray">
-            <div class="navbar-start">
-              <div class="navbar-item title">
-                {{selected.name}}
-              </div>
-            </div>
 
-            <div class="navbar-end">
-              <div class="navbar-item">
-                <div class="buttons">
-                  <button class="button is-warning" @click="editAchievement">Editar</button>
-                  <button class="button is-danger" @click="deleteAchievement">Deletar</button>
-                </div>
-              </div>
-            </div>
-          </nav>
-          <nav class="level">
-            <div class="level-item has-text-centered column is-2">
-              <div v-if="!newUser">
-                <p class="heading">Patrocinador</p>
-                <div v-if="!patrocinator">
-                  <p>
-                  O Empreendimento não possui patrocinador.
-                  <a @click="sponsor = true">Clique aqui para cadastra-lo</a>
-                </p>
-                </div>
-                <div v-else>
-                  <p>
-                    {{patrocinator.username}}
-                  </p>
-                </div>
-              </div>
-              <div v-else>
-                <p class="heading">Patrocinador</p>
-                <p>{{newUser.username}}</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">CNPJ</p>
-                <p>{{selected.cnpj}}</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">Telefone</p>
-                <p>{{selected.phone}}</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">Endereço</p>
-                <p>{{selected.adress}}</p>
-              </div>
-            </div>
-          </nav>
-          <nav class="navbar is-transparent">
-            <div class="navbar-start">
-              <div class="navbar-item title">
-                Unidades de negócio
-              </div>
-            </div>
-          </nav>
+        <div v-else>
+          <achievementItem
+            :profile="2"
+            :achievement="selected"
+            :edit-achievement="editAchievement"
+            :delete-achievement="deleteAchievement"
+          ></achievementItem>
           <br/>
           <div v-if="!selected.units.length > 0">
             Ainda não existem unidades de negócio.
@@ -298,12 +203,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import sideBar from '~/components/side-bar.vue'
+import achievementItem from '~/components/achievement-viewer.vue'
+
 export default {
   layout: 'basic',
 
+  components: { sideBar, achievementItem },
+
   data: () => ({
     achievements: [],
-    loggedUser: null,
     patrocinator: null,
     creation: false,
     achievement: {
@@ -356,14 +266,29 @@ export default {
     passwordConfirme: ''
   }),
 
-  async created () {
-    const id = this.$store.state.authUser.id
-    const achievements = await this.$axios.$get(`/api/valuer-achivements/${id}`)
-    this.achievements = achievements
-    this.loggedUser = this.$store.state.authUser
+  computed: {
+    ...mapGetters(['loggedUser'])
+  },
+
+  created () {
+    this.loadAchievements()
   },
 
   methods: {
+    async loadAchievements () {
+      const id = this.$store.state.authUser.id
+      const achievements = await this.$axios.$get(`/api/valuer-achivements/${id}`)
+      this.achievements = achievements
+    },
+
+    achievementCreation () {
+      this.achievement.name = ''
+      this.achievement.cnpj = ''
+      this.achievement.adress = ''
+      this.achievement.phone = ''
+      this.creation = true
+    },
+
     async createAchievement () {
       const data = {
         name: this.achievement.name,
@@ -372,7 +297,10 @@ export default {
         adress: this.achievement.adress,
         valuerId: this.loggedUser.id
       }
+
       await this.$axios.$post('api/achievements', data)
+        .then()
+        .catch()
     },
 
     async chargeAchievement (id) {
@@ -386,6 +314,7 @@ export default {
       }
 
       this.achievementSelected = true
+      this.loadAchievements()
     },
 
     editAchievement () {
@@ -396,12 +325,14 @@ export default {
     async updateAchievement () {
       const {id} = this.edited
       await this.$axios.$put(`api/achievements/${id}`, this.edited)
-      Object.assign(this.selected, this.edited)
+      this.selected = this.edited
     },
 
     async deleteAchievement () {
       const {id} = this.selected
       await this.$axios.$delete(`api/achievements/${id}`)
+      this.achievementSelected = false
+      this.loadAchievements()
     },
 
     async createUSer () {

@@ -15,17 +15,18 @@ class EvaluationController {
 
   async store ({ request, response }) {
     const {
-      unitId,
       type,
       status,
       contractor,
       partner,
       startDate,
-      valuerId
+      unitId,
+      valuerId,
+      responsibleId
     } = request.post()
 
     const evaluation = await Evaluation
-      .create({unitId, type, status, contractor, partner, startDate, valuerId})
+      .create({type, status, contractor, partner, startDate, valuerId, responsibleId})
 
     return evaluation
   }

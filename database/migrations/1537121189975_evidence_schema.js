@@ -11,7 +11,7 @@ class EvidenceSchema extends Schema {
       table.string('result')
       table.string('problems')
       table.integer('evaluationId').unsigned()
-      table.foreign('evaluationId').references('evaluations.id')
+      table.foreign('evaluationId').references('evaluations.id').onDelete('cascade')
       table.timestamps()
     })
   }
