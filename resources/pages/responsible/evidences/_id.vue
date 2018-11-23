@@ -52,7 +52,7 @@
             </a>
           </div>
           <div class="card-content">
-            <b-collapse class="card" @open="chargeEvidences('TH1')">
+            <b-collapse class="card" @open="chargeEvidences('TH 1')">
               <div slot="trigger" slot-scope="props" class="card-header">
                 <p class="card-header-title">
                   Talento Humano
@@ -68,12 +68,12 @@
                   TH1 - Papéis e responsabilidades dos colaboradores são
                   definidos, comunicados e aprovados.
                   <section>
-                    <a v-if="evidences.length > 0" 
-                      class="button is-small" 
+                    <a v-if="evidences.length > 0"
+                      class="button is-small"
                       @click="seeEvidence = true">
                         Vizualizar evidências
                     </a>
-                    <a class="button is-small" @click="setPractice('TH1')">Adicionar evidências</a>
+                    <a class="button is-small" @click="setPractice('TH 1')">Adicionar evidências</a>
                   </section>
                 </th>
               </div>

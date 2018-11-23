@@ -40,7 +40,7 @@ class UnitController {
 
     if (unit.responsibleId) {
       const responsible = await User.find(unit.responsibleId)
-      unit.sponsor = responsible
+      unit.responsible = responsible
     }
 
     if (unit.valuerId) {

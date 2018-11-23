@@ -8,6 +8,7 @@ class AchievementController {
     return await Achievement
       .query()
       .with('units')
+      .with('sponsor')
       .fetch()
   }
 

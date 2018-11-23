@@ -13,6 +13,10 @@ export const state = () => ({
 export const mutations = {
   SET_USER: function (state, user) {
     state.authUser = user
+  },
+
+  SET_PROFILE: function (state, profile) {
+    state.currentProfile = profile
   }
 }
 
@@ -52,42 +56,35 @@ export const actions = {
 }
 
 export const getters = {
+  loggedUser (state) {
+    return state.authUser
+  },
+
+  loggedProfile (state) {
+    return state.currentProfile
+  },
+
   profiles (state) {
     return state.authUser && state.authUser.profiles.length > 1
   },
 
   isAdmin (state) {
-    var profiles = state.authUser.profiles.map(function (el) {
-      return el.id
-    })
-    return state.authUser && profiles.includes(1)
+    return state.authUser && state.authUser.profiles.map(prof => prof.id).includes(1)
   },
 
   isValuer (state) {
-    var profiles = state.authUser.profiles.map(function (el) {
-      return el.id
-    })
-    return state.authUser && profiles.includes(2)
+    return state.authUser && state.authUser.profiles.map(prof => prof.id).includes(2)
   },
 
   isSponsor (state) {
-    var profiles = state.authUser.profiles.map(function (el) {
-      return el.id
-    })
-    return state.authUser && profiles.includes(3)
+    return state.authUser && state.authUser.profiles.map(prof => prof.id).includes(3)
   },
 
   isResponsible (state) {
-    var profiles = state.authUser.profiles.map(function (el) {
-      return el.id
-    })
-    return state.authUser && profiles.includes(4)
+    return state.authUser && state.authUser.profiles.map(prof => prof.id).includes(4)
   },
 
   isMember (state) {
-    var profiles = state.authUser.profiles.map(function (el) {
-      return el.id
-    })
-    return state.authUser && profiles.includes(5)
+    return state.authUser && state.authUser.profiles.map(prof => prof.id).includes(5)
   }
 }

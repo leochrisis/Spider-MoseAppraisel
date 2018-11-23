@@ -16,25 +16,25 @@ class EvidenceSeeder {
   async run () {
     await Evidence.create({
       url: 'www.example.com',
-      practice: 'TH1',
+      practice: 'TH 1',
       evaluationId: 1
     })
 
     await Evidence.create({
       url: 'www.example1.com',
-      practice: 'TH1',
+      practice: 'TH 1',
       evaluationId: 1
     })
 
     await Evidence.create({
       url: 'www.example2.com',
-      practice: 'TH1',
+      practice: 'TH 1',
       evaluationId: 1
     })
 
     await Evidence.create({
       url: 'www.example3.com',
-      practice: 'IN',
+      practice: 'IN 1',
       evaluationId: 2
     })
   }

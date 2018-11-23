@@ -3,19 +3,24 @@
     <div class="box">
       <form @submit.prevent="login">
         <section>
-        </b-field>
-            <b-input type="email"
-              maxlength="30"
+          <b-field>
+            <b-input
+              type="email"
               placeholder="Email"
-              v-model="email">
+              v-model="email"
+              required
+            >
             </b-input>
           </b-field>
 
           <b-field>
-              <b-input type="password"
+              <b-input
+                type="password"
                 password-reveal
                 placeholder="Senha"
-                v-model="password">
+                v-model="password"
+                required
+              >
               </b-input>
           </b-field>
         </section>
@@ -32,6 +37,8 @@
 
 <script>
 export default {
+  name: 'Login',
+
   layout: 'auth',
 
   data: () => ({
@@ -54,12 +61,19 @@ export default {
     handleSuccess () {
       localStorage.setItem('lastEmail', this.email)
 
+      this.$toast.open({
+        message: 'Login realizado com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
+
       if (this.$store.getters.profiles) {
         this.$router.push({path: '/chooser', success: true})
       } else if (this.$store.getters.isAdmin) {
         this.$router.push({path: '/admin', success: true})
       } else if (this.$store.getters.isValuer) {
-        this.$router.push({path: '/valuer', success: true})
+        this.$router.push({path: '/valuer/achievements', success: true})
       } else if (this.$store.getters.isSponsor) {
         this.$router.push({path: '/sponsor', success: true})
       } else if (this.$store.getters.isResponsible) {
@@ -67,8 +81,13 @@ export default {
       }
     },
 
-    handleFail () {
-      // nothing here yet
+    handleFail (response) {
+      this.$toast.open({
+        message: 'Falha ao entrar. Email ou senha incorretos.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
     }
   }
 }

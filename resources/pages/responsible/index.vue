@@ -40,41 +40,20 @@
 
       <!--Application screen-->
       <div class="column">
-        <div v-if="!selected">
+        <div v-if="!selectedUnit">
           Escolha uma unidade de negócio para começar.
         </div>
 
         <div v-else>
-          <nav class="navbar is-ligthGray">
-            <div class="navbar-start">
-              <div class="navbar-item title">
-                {{selected.name}}
-              </div>
-            </div>
-          </nav>
-          <nav class="level">
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">CNPJ</p>
-                <p>{{selected.description}}</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">Telefone</p>
-                <p>{{selected.phone}}</p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered column is-2">
-              <div>
-                <p class="heading">Endereço</p>
-                <p>{{selected.people_number}}</p>
-              </div>
-            </div>
-          </nav>
+          <unitViewer
+            :profile="3"
+            :unit="selectedUnit"
+          >
+          </unitViewer>
+
           <div class="buttons">
-            <a class="button is-info" @click="creation = true">cadastrar membro</a>
-            <a class="button is-info" @click="cadastrate = true">cadastrar fonte de evidência</a>
+            <a class="button is-info" @click="openUserModal = true">cadastrar membro</a>
+            <a class="button is-info" @click="EvidenceFontModal('creation')">cadastrar fonte de evidência</a>
           </div>
           <br/>
 
@@ -114,13 +93,12 @@
                   </div>
                 </div>
               </nav>
-              <div v-if="selected.evaluations.length === 0">
+              <div v-if="selectedUnit.evaluations.length === 0">
                 Ainda não existem avaliações.
               </div>
               <div v-else>
                 <b-table
-                  :bordered="bordered"
-                  :data="selected.evaluations"
+                  :data="selectedUnit.evaluations"
                   :columns="columns"
                   :selected.sync="selectedUn"
                   focusable
@@ -140,20 +118,19 @@
                   <div class="navbar-item">
                     <div class="buttons">
                       <div v-if="selectedEv">
-                        <button class="button is-warning" @click="editionEv = true">Editar</button>
+                        <button class="button is-warning" @click="EvidenceFontModal('edition')">Editar</button>
                         <button class="button is-danger" @click="deleteEvidence">Deletar</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </nav>
-              <div v-if="selected.evidenceFonts.length === 0">
+              <div v-if="selectedUnit.evidenceFonts.length === 0">
                 Ainda não existem fontes de evidências.
               </div>
               <div v-else>
                 <b-table
-                  :bordered="bordered"
-                  :data="selected.evidenceFonts"
+                  :data="selectedUnit.evidenceFonts"
                   :columns="columnsEv"
                   :selected.sync="selectedEv"
                   focusable
@@ -180,12 +157,11 @@
                   </div>
                 </div>
               </nav>
-              <div v-if="selected.members.length === 0">
+              <div v-if="selectedUnit.members.length === 0">
                 Ainda não existem membros.
               </div>
               <div v-else>
                 <b-table
-                  :bordered="bordered"
                   :data="memberList"
                   :columns="columnsMe"
                   :selected.sync="selectedME"
@@ -198,101 +174,25 @@
     </div>
 
     <section>
-      <div v-if="creation">
-        <b-modal :active.sync="creation" has-modal-card>
-          <form action="">
-            <div class="modal-card" style="width: auto">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de usuário</p>
-                </header>
-                <section class="modal-card-body">
-                  <b-field label="Papel">
-                    <b-dropdown disabled>
-                      <button class="button" slot="trigger">
-                          <span>Avaliador</span>
-                          <b-icon icon="menu-down"></b-icon>
-                      </button>
-                    </b-dropdown>
-                  </b-field>
-                  <b-field label="Usuário">
-                    <b-input
-                        v-model="user.username"
-                        placeholder="Nome de usuário"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Email">
-                    <b-input
-                        type="email"
-                        v-model="user.email"
-                        placeholder="Email do usuário"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Senha">
-                    <b-input
-                        type="password"
-                        v-model="user.password"
-                        password-reveal
-                        placeholder="Senha do usuário"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Confirmação de senha">
-                    <b-input
-                        type="password"
-                        v-model="confirmPassword"
-                        password-reveal
-                        placeholder="Confirmação de senha"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="creation = false">Cancelar</button>
-                    <button class="button is-primary" @click="createUser">Cadastrar</button>
-                </footer>
-            </div>
-          </form>
-        </b-modal>
+      <!--Using user registration modal component, you can see it on the file imports -->
+      <div v-if="openUserModal">
+        <userRegister
+          :activate="!!openUserModal"
+          :profile="profiles.team"
+          :create-user="(user, confirmPassword) => submitUser(user, confirmPassword)"
+          :on-close="closeUserModal"
+        >
+        </userRegister>
       </div>
 
-      <div v-if="cadastrate">
-        <b-modal :active.sync="cadastrate" has-modal-card>
-          <form action="">
-            <div class="modal-card" style="width: auto">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de evidência</p>
-                </header>
-                <section class="modal-card-body">
-                  <b-field label="Papel">
-                    <b-input
-                        v-model="evidence.role"
-                        placeholder="Papel"
-                        required>
-                    </b-input>
-                  </b-field>
-
-                  <b-field label="Habilidades">
-                    <b-input
-                        type="textarea"
-                        v-model="evidence.skills"
-                        placeholder="Habilidades"
-                        required>
-                    </b-input>
-                  </b-field>
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="cadastrate = false">Cancelar</button>
-                    <button class="button is-primary" @click="createEvidence">Cadastrar</button>
-                </footer>
-            </div>
-          </form>
-        </b-modal>
+      <div v-if="openEvidenceFontModal">
+        <evidenceFontModal
+          :activate="!!openEvidenceFontModal"
+          :evidence-font-sended="evidence"
+          :create-evidence="(evidenceFont) => submitEvidenceFont(evidenceFont)"
+          :on-close="closeEvidenceFontModal"
+        >
+        </evidenceFontModal>
       </div>
 
       <div v-if="editionEv">
@@ -333,24 +233,28 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import profiles from '~/static/profiles.json'
+import sideBar from '~/components/side-bar.vue'
+import unitViewer from '~/components/unit-viewer.vue'
+import userRegister from '~/components/user-register-modal.vue'
+import evidenceFontModal from '~/components/evidence-font-modal.vue'
+
 export default {
+  name: 'responsibleIndex',
+
   layout: 'basic',
+
+  components: { sideBar, unitViewer, userRegister, evidenceFontModal },
 
   data: () => ({
     units: [],
-    selected: null,
+    selectedUnit: false,
     selectedUn: false,
-    bordered: true,
+    profiles: profiles,
     selectedEv: false,
     editionEv: false,
     selectedME: false,
-    user: {
-      username: '',
-      email: '',
-      password: '',
-      profiles: [4]
-    },
-    confirmPassword: '',
     columns: [
       {
         field: 'id',
@@ -415,53 +319,103 @@ export default {
         centered: true
       }
     ],
-    creation: false,
-    cadastrate: false,
-    evidence: {
+    openUserModal: false,
+    openEvidenceFontModal: false,
+    evidence: {},
+    evidences: {
       role: '',
       skills: ''
     },
-    evidences: false,
     evaluations: true,
     members: false,
-    id: null,
     editionEv: false,
-    memberList: []
+    memberList: [],
+    type: ''
   }),
 
   async created () {
+    // Get all unit related to logged responsible
     const id = this.loggedUser.id
     const units = await this.$axios.$get(`/api/responsible-units/${id}`)
     this.units = units
   },
 
   computed: {
-    loggedUser () {
-      return this.$store.state.authUser
+    // This get the logged user on application
+    ...mapGetters(['loggedUser']),
+
+    // Funtion to return constantly unit's id when it's selected by application's user
+    unitId () {
+      return this.selectedUnit.id
     }
   },
 
   methods: {
-    selectUnit (unit, i) {
-      this.selected = unit
-      this.id = i
+    // Unit selector, just set evidences and evaluations to change units view context
+    selectUnit (unit) {
+      this.selectedUnit = unit
       this.evidences = false
       this.evaluations = true
     },
 
-    async createUser () {
-      if (this.user.password === this.confirmPassword) {
-        await this.$axios.$post('api/users', this.user)
+    // This is used to close user resgiter modal
+    closeUserModal () {
+      this.openUserModal = false
+    },
+
+    async submitUser (newUser, confirmPassword) {
+      newUser.profiles = [profiles.team.id]
+
+      if (newUser.password === confirmPassword) {
+        const user = await this.$axios.$post('api/users', newUser)
+        const updates = { members: [user.id] }
+
+        await this.$axios.$put(`api/units/${this.unitId}`, updates)
+          .then(this.handleUserRegisterSucess)
+          .catch(this.handleUserRegisterFail)
+
+      } else {
+        this.$toast.open({
+          message: 'As senhas não correspondem, tente novamente.',
+          duration: 5000,
+          position: 'is-bottom-right',
+          type: 'is-danger'
+        })
       }
     },
 
-    async createEvidence () {
-      const data = {
-        unitId: this.selected.id,
-        role: this.evidence.role,
-        skills: this.evidence.skills
-      }
-      await this.$axios.$post('api/evidences-font', data)
+    handleUserRegisterSucess () {
+      this.$toast.open({
+        message: 'Membro registrado com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
+      this.openUserModal = false
+    },
+
+    handleUserRegisterFail () {
+      this.$toast.open({
+        message: 'Falha ao registrar usuário. Verifique os dados e tente novamente.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
+    },
+
+    EvidenceFontModal (type) {
+      this.openEvidenceFontModal = true
+      this.type = type
+    },
+
+    closeEvidenceFontModal () {
+      this.openEvidenceFontModal = false
+    },
+
+    async submitEvidenceFont (evidenceFont) {
+      console.log(evidenceFont)
+      /*evidenceFont.unitId = this.unitId
+      await this.$axios.$post('api/evidences-font', evidenceFont)*/
     },
 
     chargeEvidences () {
@@ -480,9 +434,9 @@ export default {
 
     async chargeMembers () {
       this.memberList = []
-      if (this.selected.members.length > 0) {
-        for (var i = 0; i < this.selected.members.length; i++) {
-          var id = this.selected.members[i].userId
+      if (this.selectedUnit.members.length > 0) {
+        for (var i = 0; i < this.selectedUnit.members.length; i++) {
+          var id = this.selectedUnit.members[i].userId
           var member = await this.$axios.$get(`/api/users/${id}`)
           this.memberList.push(member)
         }

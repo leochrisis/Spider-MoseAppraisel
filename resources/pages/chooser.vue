@@ -5,10 +5,14 @@
         <div class="hero-body">
           <div class="container is-fluid has-text-centered">
             <p>Entrar na ferramenta como:</p>
-              <div v-for="profile in profiles">
-                <button class="button" @click="selectRoute(profile)">{{profile}}</button>
-              </br>
-            </div>
+              <button
+                v-for="profiles in loggedUser.profiles"
+                class="button"
+                @click="selectRoute(profiles.profile)"
+              >
+               {{profiles.profile}}
+             </button>
+            </br>
           </div>
         </div>
       </section>
@@ -17,26 +21,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  layout: 'basic',
-
-  created () {
-    const user = this.$store.state.authUser
-
-    for (var i = 0; i < user.profiles.length; i++) {
-      this.profiles.push(user.profiles[i].profile)
-    }
-  },
+  name: 'Chooser',
 
   computed: {
-    loggedUser () {
-      return this.$store.state.authUser
-    }
+    ...mapGetters(['loggedUser'])
   },
-
-  data: () => ({
-    profiles: []
-  }),
 
   methods: {
     selectRoute (profile) {
@@ -45,7 +37,7 @@ export default {
           this.$router.push({path: '/admin', success: true})
           break
         case 'avaliador':
-          this.$router.push({path: '/valuer', success: true})
+          this.$router.push({path: '/valuer/achievements', success: true})
           break
         case 'patrocinador':
           this.$router.push({path: '/sponsor', success: true})
@@ -61,6 +53,7 @@ export default {
 <style>
 .button {
   padding: 5px;
-  display: inline-flex
+  display: inline-flex;
+  margin: 5px;
 }
 </style>
