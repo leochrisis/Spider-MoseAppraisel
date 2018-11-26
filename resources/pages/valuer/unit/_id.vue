@@ -214,7 +214,7 @@ export default {
 
     evaluation: {
       type: 'contexto',
-      status: 'vigente',
+      status: 'Vigente',
       contractor: '',
       partner: '',
       startDate: ''

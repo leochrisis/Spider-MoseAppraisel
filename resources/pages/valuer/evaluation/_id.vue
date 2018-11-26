@@ -314,10 +314,10 @@ export default {
   data: () => ({
     evidences: [],
     selectedOption: [],
-    result: '',
+    result: [],
     evaluation: {
       result: '',
-      problems: ''
+      problem: ''
     },
     competences: competences,
     colors: [
