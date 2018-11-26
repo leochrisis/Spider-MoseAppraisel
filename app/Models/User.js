@@ -53,6 +53,10 @@ class User extends Model {
   evaluations () {
     return this.hasMany('App/Models/Evaluation')
   }
+
+  improvements () {
+    return this.hasMany('App/Models/Improvement')
+  }
 }
 
 module.exports = User
