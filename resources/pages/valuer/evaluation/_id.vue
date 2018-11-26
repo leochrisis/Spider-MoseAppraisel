@@ -361,7 +361,6 @@ export default {
       }
 
       const evidences = await this.$axios.$post('/api/per-practice/', data)
-      console.log(evidences)
       const result = await this.$axios.$post('/api/res-practice/', data)
 
       this.evidences = evidences
