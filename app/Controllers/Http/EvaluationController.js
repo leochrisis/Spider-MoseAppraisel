@@ -27,7 +27,7 @@ class EvaluationController {
     } = request.post()
 
     const evaluation = await Evaluation
-      .create({type, status, contractor, partner, startDate, valuerId, responsibleId})
+      .create({type, status, contractor, partner, startDate, valuerId, unitId, responsibleId})
 
     return evaluation
   }
