@@ -8,8 +8,6 @@ class EvidenceSchema extends Schema {
       table.increments()
       table.string('url').notNullable()
       table.string('practice').notNullable()
-      table.string('result')
-      table.string('problems')
       table.integer('evaluationId').unsigned()
       table.foreign('evaluationId').references('evaluations.id').onDelete('cascade')
       table.timestamps()
