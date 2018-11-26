@@ -18,8 +18,8 @@
                   </figure>
                 </div>
                 <div class="media-content">
-                  <p class="title is-4">John Smith</p>
-                  <p class="subtitle is-6">@johnsmith</p>
+                  <p class="title is-4">{{loggedUser.username}}</p>
+                  <p class="subtitle is-6">@{{loggedUser.username}}</p>
                 </div>
               </div>
             </div>
