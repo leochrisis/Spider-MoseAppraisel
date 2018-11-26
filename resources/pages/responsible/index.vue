@@ -80,7 +80,7 @@
                     <div class="buttons">
                       <div v-if="selectedUn">
                         <div v-if="selectedUn.status === 'Vigente'">
-                          <nuxt-link :to="`/responsible/evidences/${selectedUn.id}`">
+                          <nuxt-link class="button" :to="`/responsible/evidences/${selectedUn.id}`">
                             Evidências
                           </nuxt-link>
                           <a class="button" @click="term = true">Acordo de confidencialidade</a>
@@ -403,6 +403,7 @@ export default {
     // Unit selector, just set evidences and evaluations to change units view context
     selectUnit (unit) {
       this.selectedUnit = unit
+      this.selectedUn = false
       this.evidences = false
       this.evaluations = true
     },
