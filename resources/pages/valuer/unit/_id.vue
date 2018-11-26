@@ -274,9 +274,9 @@ export default {
       this.evaluation.valuerId = this.selectedUnit.valuer.id
       this.evaluation.responsibleId = this.selectedUnit.responsible.id
 
-      /*await this.$axios.$post('api/evaluations', this.evaluation)
+      await this.$axios.$post('api/evaluations', this.evaluation)
         .then(this.handleSuccess)
-        .catch(this.handleFail)*/
+        .catch(this.handleFail)
     },
 
     handleSuccess () {
