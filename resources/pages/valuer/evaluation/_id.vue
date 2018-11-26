@@ -27,42 +27,39 @@
               </div>
 
               <div class="card-content">
-                <div v-for="evidence in evidences" :key="evidence.id">
-                  <div class="card">
-                    <div class="card-header">
-                      <p>Link para a evidênvia: </p>
-                      <a href="evidences.url" target="blank"> {{evidence.url}}</a>
-                    </div>
-
-                    <div class="card-content">
-                      <section>
-                        <b-field label="Resultado">
-                          <b-select
-                            placeholder="Selecione uma cor"
-                            v-model="dataToSend.result"
-                          >
-                            <option
-                              v-for="color in colors"
-                              :value="color.name"
-                              :key="color.id"
-                            >
-                              {{ color.name }}
-                            </option>
-                          </b-select>
-                        </b-field>
-
-                        <b-field label="Problemas encontrados">
-                          <b-input maxlength="1000" type="textarea" v-model="dataToSend.problems"></b-input>
-                        </b-field>
-                      </section>
-
-                      <button class="button" @click="addEvaluation(evidence.id)">Avaliar</button>
-                    </div>
-                  </div>
+                <div v-for="(evidence, i) in evidences" :key="evidence.id">
+                  <p>link para a evidência {{i}}: <a>{{evidence.url}}</a> </p>
                 </br>
                 </div>
-              </div>
+                <div v-if="result.length === 0">
+                  <section>
+                    <b-field label="Resultado">
+                      <b-select
+                        placeholder="Selecione uma cor"
+                        v-model="evaluation.result"
+                      >
+                        <option
+                          v-for="color in colors"
+                          :value="color.name"
+                          :key="color.id"
+                        >
+                          {{ color.name }}
+                        </option>
+                      </b-select>
+                    </b-field>
 
+                    <b-field label="Problemas encontrados">
+                      <b-input maxlength="1000" type="textarea" v-model="evaluation.problem"></b-input>
+                    </b-field>
+                  </section>
+                  <button class="button" @click="addEvaluation(objective.id)">Avaliar</button>
+                </div>
+                <div v-else>
+                  <p><strong>Resultado:</strong> {{result[0].result}}</p>
+                  <p><strong>Problemas:</strong> {{result[0].problem}}</p>
+                  <button class="button" @click="">Editar</button>
+                </div>
+              </div>
               </b-collapse>
             </div>
           </b-tab-item>
@@ -153,7 +150,7 @@
                           >
                             <option
                               v-for="color in colors"
-                              :value="color.id"
+                              :value="color.name"
                               :key="color.id"
                             >
                               {{ color.name }}
@@ -365,11 +362,18 @@ export default {
 
       const evidences = await this.$axios.$post('/api/per-practice/', data)
       console.log(evidences)
+      const result = await this.$axios.$post('/api/res-practice/', data)
+
       this.evidences = evidences
+      this.result = result
     },
 
-    async addEvaluation (id) {
-      await this.$axios.$put(`/api/evidences/${id}`, this.dataToSend)
+    async addEvaluation (practice) {
+      this.evaluation.practice = practice
+      this.evaluation.evaluationId = this.$route.params.id
+
+      await this.$axios.$post('/api/results/', this.evaluation)
+      this.chargeEvidences(practice)
     }
   }
 }
