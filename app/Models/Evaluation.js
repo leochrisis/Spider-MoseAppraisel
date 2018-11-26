@@ -25,6 +25,10 @@ class Evaluation extends Model {
     return this.this.belongsTo('App/Models/User', 'responsibleId')
   }
 
+  results () {
+    return this.hasMany('App/Models/Result', 'id', 'evaluationId')
+  }
+
 }
 
 module.exports = Evaluation
