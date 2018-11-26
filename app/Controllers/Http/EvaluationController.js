@@ -8,6 +8,7 @@ class EvaluationController {
     const evaluation = Evaluation
       .query()
       .with('evidences')
+      .with('results')
       .fetch()
 
     return evaluation
@@ -40,6 +41,9 @@ class EvaluationController {
 
     const evidences = await evaluation.evidences().fetch()
     evaluation.evidences = evidences
+
+    const results = await evaluation.results().fetch()
+    evaluation.results = results
 
     return evaluation
   }
