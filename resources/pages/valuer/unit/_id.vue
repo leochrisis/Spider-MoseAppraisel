@@ -282,11 +282,21 @@ export default {
     },
 
     handleSuccess () {
-      alert('ok')
+      this.$toast.open({
+        message: 'Avaliação criada com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
     },
 
     handleFail () {
-      alert('fail')
+      this.$toast.open({
+        message: 'Falha ao criar avaliação. Verifique os dados e tente novamente.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
     },
 
     editEvaluation () {
