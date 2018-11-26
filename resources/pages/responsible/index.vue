@@ -87,7 +87,7 @@
                         </div>
                         <div v-else>
                           <button class="button" @click="">Plano de melhoria</button>
-                          <button class="button">Resultado</button>
+                          <button class="button">Mapa de calor</button>
                         </div>
                       </div>
                     </div>
