@@ -214,7 +214,7 @@ export default {
 
     evaluation: {
       type: 'contexto',
-      status: 'vigente',
+      status: 'Vigente',
       contractor: '',
       partner: '',
       startDate: ''
@@ -274,19 +274,27 @@ export default {
       this.evaluation.valuerId = this.selectedUnit.valuer.id
       this.evaluation.responsibleId = this.selectedUnit.responsible.id
 
-      console.log(this.evaluation)
-
-      /*await this.$axios.$post('api/evaluations', this.evaluation)
+      await this.$axios.$post('api/evaluations', this.evaluation)
         .then(this.handleSuccess)
-        .catch(this.handleFail)*/
+        .catch(this.handleFail)
     },
 
     handleSuccess () {
-      alert('ok')
+      this.$toast.open({
+        message: 'Avaliação criada com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
     },
 
     handleFail () {
-      alert('fail')
+      this.$toast.open({
+        message: 'Falha ao criar avaliação. Verifique os dados e tente novamente.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
     },
 
     editEvaluation () {

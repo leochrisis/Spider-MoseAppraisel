@@ -2,12 +2,13 @@
 
 const Schema = use('Schema')
 
-class EvidenceSchema extends Schema {
+class ResultSchema extends Schema {
   up () {
-    this.create('evidences', (table) => {
+    this.create('results', (table) => {
       table.increments()
-      table.string('url').notNullable()
-      table.string('practice').notNullable()
+      table.string('practice')
+      table.string('result')
+      table.string('problem')
       table.integer('evaluationId').unsigned()
       table.foreign('evaluationId').references('evaluations.id').onDelete('cascade')
       table.timestamps()
@@ -15,8 +16,8 @@ class EvidenceSchema extends Schema {
   }
 
   down () {
-    this.drop('evidences')
+    this.drop('results')
   }
 }
 
-module.exports = EvidenceSchema
+module.exports = ResultSchema

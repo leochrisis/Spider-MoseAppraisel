@@ -39,6 +39,18 @@
       </div>
 
       <div class="column is-three-quarters">
+        <section class="hero">
+          <div class="hero-body">
+            <h1 class="title">
+              Avaliaçao
+            </h1>
+          </div>
+          <div v-if="evaluation.results" class="navbar-end">
+            <nuxt-link to="`/improvement/${evaluation.id}/`">
+              Plano de melhoria
+            </nuxt-link>
+          </div>
+        </section>
         </br>
         <b-collapse class="card">
           <div slot="trigger" slot-scope="props" class="card-header">
@@ -259,7 +271,7 @@ export default {
     membersId: [],
     evidences: [],
     evidenceFonts: [],
-    evaluation: null,
+    evaluation: {},
     evidence: {
       url: '',
       practice: ''
