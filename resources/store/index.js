@@ -1,13 +1,19 @@
 const TOKEN = 'app/TOKEN'
 const USER = 'app/USER'
+const PROFILE = 'app/PROFILE'
 
 const storedUser = localStorage.getItem(USER)
+const storedProfile = localStorage.getItem(PROFILE)
 const authUser = storedUser
 ? JSON.parse(storedUser)
 : false
+const currentProfile = storedProfile
+? JSON.parse(storedProfile)
+: false
 
 export const state = () => ({
-  authUser
+  authUser,
+  currentProfile
 })
 
 export const mutations = {
@@ -17,6 +23,7 @@ export const mutations = {
 
   SET_PROFILE: function (state, profile) {
     state.currentProfile = profile
+    localStorage.setItem(PROFILE, JSON.stringify(profile))
   }
 }
 
@@ -49,9 +56,10 @@ export const actions = {
 
   async logout ({ commit }) {
     this.$axios.setToken(false)
-    commit('SET_USER', null)
+    commit('SET_USER', '')
     localStorage.setItem(TOKEN, '')
     localStorage.setItem(USER, '')
+    localStorage.setItem(PROFILE, null)
   }
 }
 
