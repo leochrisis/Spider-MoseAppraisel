@@ -36,6 +36,9 @@ class EvaluationController {
     const results = await evaluation.results().fetch()
     evaluation.results = results
 
+    const unit = await evaluation.units().fetch()
+    evaluation.unit = unit
+
     return evaluation
   }
 
