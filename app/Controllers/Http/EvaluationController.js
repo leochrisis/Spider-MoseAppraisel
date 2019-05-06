@@ -92,8 +92,12 @@ class EvaluationController {
     const evaluation = await Evaluation
       .query()
       .where('unitId', params.id)
+      .with('valuer')
+      .with('responsible')
       .fetch()
 
+    return evaluation
+  }
 
   async sponsorConfirm ({ params, request }) {
     const evaluation = await Evaluation.findOrFail(params.id)
