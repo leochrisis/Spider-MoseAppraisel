@@ -82,6 +82,32 @@ class EvaluationController {
       .where('unitId', params.id)
       .fetch()
 
+
+  async sponsorConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['sponsorConfirmation'])
+    evaluation.merge(data)
+    
+    await evaluation.save()
+    return evaluation
+  }
+
+  async responsibleConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['responsibleConfirmation'])
+    evaluation.merge(data)
+    await evaluation.save()
+    return evaluation
+  }
+
+  async valuerConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['valuerConfirmation'])
+    evaluation.merge(data)
+    await evaluation.save()
     return evaluation
   }
 }
