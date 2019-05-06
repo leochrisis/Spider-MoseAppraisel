@@ -39,7 +39,9 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~assets/main.scss'],
+  css: ['~assets/main.scss',
+    { src: 'font-awesome/scss/font-awesome.scss', lang: 'scss' }
+  ],
   /*
   ** Customize the progress-bar color
   */
