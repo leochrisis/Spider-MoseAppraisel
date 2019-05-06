@@ -15,19 +15,10 @@ class EvaluationController {
   }
 
   async store ({ request, response }) {
-    const {
-      type,
-      status,
-      contractor,
-      partner,
-      startDate,
-      unitId,
-      valuerId,
-      responsibleId
-    } = request.post()
+    const data = request.only(
+      ['type', 'status', 'contractor', 'partner', 'startDate', 'valuerId', 'unitId', 'responsibleId'])
 
-    const evaluation = await Evaluation
-      .create({type, status, contractor, partner, startDate, valuerId, unitId, responsibleId})
+    const evaluation = await Evaluation.create(data)
 
     return evaluation
   }
@@ -57,14 +48,32 @@ class EvaluationController {
       status,
       contractor,
       partner,
-      startDate,
       endDate,
+      colorFinal,
+      planFinal,
       valuerId,
-      responsibleId
+      responsibleId,
+      valuerConfirmation,
+      responsibleConfirmation,
+      sponsorConfirmation
     } = request.post()
 
     evaluation
-      .merge({unitId, type, status, contractor, partner, startDate, endDate, valuerId, responsibleId})
+      .merge({
+        unitId,
+        type,
+        status,
+        contractor,
+        partner,
+        endDate,
+        colorFinal,
+        planFinal,
+        valuerId,
+        responsibleId,
+        valuerConfirmation,
+        responsibleConfirmation,
+        sponsorConfirmation
+      })
 
     await evaluation.save()
     return evaluation
