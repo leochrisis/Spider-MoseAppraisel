@@ -15,19 +15,10 @@ class EvaluationController {
   }
 
   async store ({ request, response }) {
-    const {
-      type,
-      status,
-      contractor,
-      partner,
-      startDate,
-      unitId,
-      valuerId,
-      responsibleId
-    } = request.post()
+    const data = request.only(
+      ['type', 'status', 'contractor', 'partner', 'startDate', 'valuerId', 'unitId', 'responsibleId'])
 
-    const evaluation = await Evaluation
-      .create({type, status, contractor, partner, startDate, valuerId, unitId, responsibleId})
+    const evaluation = await Evaluation.create(data)
 
     return evaluation
   }
@@ -45,6 +36,9 @@ class EvaluationController {
     const results = await evaluation.results().fetch()
     evaluation.results = results
 
+    const unit = await evaluation.units().fetch()
+    evaluation.unit = unit
+
     return evaluation
   }
 
@@ -57,14 +51,32 @@ class EvaluationController {
       status,
       contractor,
       partner,
-      startDate,
       endDate,
+      colorFinal,
+      planFinal,
       valuerId,
-      responsibleId
+      responsibleId,
+      valuerConfirmation,
+      responsibleConfirmation,
+      sponsorConfirmation
     } = request.post()
 
     evaluation
-      .merge({unitId, type, status, contractor, partner, startDate, endDate, valuerId, responsibleId})
+      .merge({
+        unitId,
+        type,
+        status,
+        contractor,
+        partner,
+        endDate,
+        colorFinal,
+        planFinal,
+        valuerId,
+        responsibleId,
+        valuerConfirmation,
+        responsibleConfirmation,
+        sponsorConfirmation
+      })
 
     await evaluation.save()
     return evaluation
@@ -80,8 +92,38 @@ class EvaluationController {
     const evaluation = await Evaluation
       .query()
       .where('unitId', params.id)
+      .with('valuer')
+      .with('responsible')
       .fetch()
 
+    return evaluation
+  }
+
+  async sponsorConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['sponsorConfirmation'])
+    evaluation.merge(data)
+    
+    await evaluation.save()
+    return evaluation
+  }
+
+  async responsibleConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['responsibleConfirmation'])
+    evaluation.merge(data)
+    await evaluation.save()
+    return evaluation
+  }
+
+  async valuerConfirm ({ params, request }) {
+    const evaluation = await Evaluation.findOrFail(params.id)
+
+    const data = request.only(['valuerConfirmation'])
+    evaluation.merge(data)
+    await evaluation.save()
     return evaluation
   }
 }

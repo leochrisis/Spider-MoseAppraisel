@@ -18,11 +18,11 @@ class Evaluation extends Model {
   }
 
   valuer () {
-    return this.this.belongsTo('App/Models/User', 'valuerId')
+    return this.belongsTo('App/Models/User', 'valuerId')
   }
 
-  responsibles () {
-    return this.this.belongsTo('App/Models/User', 'responsibleId')
+  responsible () {
+    return this.belongsTo('App/Models/User', 'responsibleId')
   }
 
   results () {

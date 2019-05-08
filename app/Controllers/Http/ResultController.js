@@ -5,7 +5,10 @@ const Result = use('App/Models/Result')
 class ResultController {
 
   async index ({ request, response, view }) {
-    const results = Result.all()
+    const results = Result
+      .query()
+      .with('improvements')
+      .fetch()
 
     return results
   }
@@ -50,8 +53,16 @@ class ResultController {
     const result = Result.query()
       .where('evaluationId', evaluationId)
       .where('practice', practice)
+      .with('improvements')
+      .fetch()
 
     return result
+  }
+
+  byEvaluationId ({ params }) {
+    const results = Result.query().where('evaluationId', params.id)
+
+    return results
   }
 }
 

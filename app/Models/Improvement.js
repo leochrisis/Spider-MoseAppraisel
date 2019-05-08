@@ -4,11 +4,11 @@ const Model = use('Model')
 
 class Improvement extends Model {
   results () {
-    this.belongsTo('App/Models/Result', 'resultId')
+    return this.belongsTo('App/Models/Result', 'resultId')
   }
 
   members () {
-    this.belongsTo('App/Models/User', 'memberId')  
+    return this.belongsTo('App/Models/User', 'memberId')  
   }
 }
 

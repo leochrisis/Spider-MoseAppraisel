@@ -10,7 +10,10 @@ class MemberRoleController {
    * GET memberroles
    */
   async index ({ request, response, view }) {
-    const memberRole = MemberRole.all()
+    const memberRole = MemberRole
+      .query()
+      .with('members')
+      .fetch()
 
     return memberRole
   }

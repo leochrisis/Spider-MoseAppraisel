@@ -6,8 +6,8 @@ class ResultSchema extends Schema {
   up () {
     this.create('results', (table) => {
       table.increments()
-      table.string('practice')
       table.string('result')
+      table.string('practice')
       table.string('problem')
       table.integer('evaluationId').unsigned()
       table.foreign('evaluationId').references('evaluations.id').onDelete('cascade')

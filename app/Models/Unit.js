@@ -22,11 +22,11 @@ class Unit extends Model {
   }
 
   responsible () {
-    return this.this.belongsTo('App/Models/User', 'responsibleId')
+    return this.belongsTo('App/Models/User', 'responsibleId')
   }
 
   valuer () {
-    return this.this.belongsTo('App/Models/User', 'valuerId')
+    return this.belongsTo('App/Models/User', 'valuerId')
   }
 }
 

@@ -32,6 +32,9 @@ class UnitController {
     const evaluations = await unit.evaluations().fetch()
     unit.evaluations = evaluations
 
+    const achievement = await unit.achievements().fetch()
+    unit.achievement = achievement
+
     const evidenceFonts = await unit.evidenceFonts().fetch()
     unit.evidenceFonts = evidenceFonts
 
@@ -55,21 +58,20 @@ class UnitController {
     const unit = await Unit.findOrFail(request.params.id)
 
     const {
-      achievementId,
       name,
       description,
       phone,
       people_number,
-      members,
       responsibleId,
-      valuerId} = request.post()
+      members
+    } = request.post()
 
-    unit.merge({achievementId, name, description, phone, people_number, responsibleId, valuerId})
-
+    unit.merge({name, description, phone, people_number, responsibleId})
     await unit.save()
 
     if (members && members.length > 0) {
       await unit.members().attach(members)
+      unit.members = unit.members().fetch()
     }
 
     return unit

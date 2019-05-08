@@ -1,155 +1,73 @@
 <template>
   <div>
-    <div class="columns">
-      <!--Side bar-->
-      <div class="column is-one-fifth">
-        <aside class="menu">
-          <div class="card">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">John Smith</p>
-                  <p class="subtitle is-6">@johnsmith</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br/>
-          <ul class="menu-list gray">
-            <p class="menu-label">
-              Unidades de negócio:
-            </p>
-            <!--<ul>
-              <div v-for="(unit, i) in units" :key="unit.id">
-                <li><a @click="selectUnit(unit, i)">{{unit.name}}</a></li>
-              </div>
-            </ul> -->
-          </ul>
-        </aside>
+    <section class="hero">
+      <div class="hero-body">
+        <h1 class="title">
+          Avaliaçao de {{ evaluation.type }}
+        </h1>
+        <h2 class="subtitle">
+          <strong>Unidade de negócio:</strong> {{ evaluation.unit.name }}
+        </h2>
+      </div>
+    </section>
+
+    <div class="column">
+      <div v-if="evaluation.results.length > 0" class="navbar-end">
+        <a @click="chargeImprovement">Plano de melhoria</a>
       </div>
 
-      <div class="column is-three-quarters">
-        <section class="hero">
-          <div class="hero-body">
-            <h1 class="title">
-              Avaliaçao
-            </h1>
+      <b-tabs position="is-centered">
+        <b-tab-item label="Talento Humano">
+          <div v-for="(objective, i) in objectives.TH" :key="objective.id">
+            <objectiveItem
+              :objective="objective"
+              :set-practice="(id) => setPractice(id)"
+            ></objectiveItem>
           </div>
-          <div v-if="evaluation.results" class="navbar-end">
-            <nuxt-link to="`/improvement/${evaluation.id}/`">
-              Plano de melhoria
-            </nuxt-link>
+        </b-tab-item>
+
+        <b-tab-item label="Gestão e Qualidade">
+          <div v-for="objective in objectives.GQ" :key="objective.id">
+            <objectiveItem
+              :objective="objective"
+              :set-practice="(id) => setPractice(id)"
+            ></objectiveItem>
           </div>
-        </section>
-        </br>
-        <b-collapse class="card">
-          <div slot="trigger" slot-scope="props" class="card-header">
-            <p class="card-header-title">
-              Objetivos da competência
-            </p>
-            <a class="card-header-icon">
-              <b-icon
-                :icon="props.open ? 'menu-down' : 'menu-up'">
-              </b-icon>
-            </a>
+        </b-tab-item>
+
+        <b-tab-item label="Cliente e Mercado">
+          <div v-for="objective in objectives.CM" :key="objective.id">
+            <objectiveItem
+              :objective="objective"
+              :set-practice="(id) => setPractice(id)"
+            ></objectiveItem>
           </div>
-          <div class="card-content">
-            <b-collapse class="card" @open="chargeEvidences('TH 1')">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  Talento Humano
-                </p>
-                <a class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
-                </a>
-              </div>
-              <div class="card-content">
-                <th>
-                  TH1 - Papéis e responsabilidades dos colaboradores são
-                  definidos, comunicados e aprovados.
-                  <section>
-                    <a v-if="evidences.length > 0"
-                      class="button is-small"
-                      @click="seeEvidence = true">
-                        Vizualizar evidências
-                    </a>
-                    <a class="button is-small" @click="setPractice('TH 1')">Adicionar evidências</a>
-                  </section>
-                </th>
-              </div>
-            </b-collapse>
+        </b-tab-item>
 
-            <b-collapse class="card">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  Gestão e qualidade
-                </p>
-                <a class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
-                </a>
-              </div>
-            </b-collapse>
-
-            <b-collapse class="card">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  Cliente e mercado
-                </p>
-                <a class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
-                </a>
-              </div>
-            </b-collapse>
-
-            <b-collapse class="card">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  Inovação
-                </p>
-                <a class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
-                </a>
-              </div>
-            </b-collapse>
-
-            <b-collapse class="card">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  Sociedade e sustentabilidade
-                </p>
-                <a class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
-                </a>
-              </div>
-            </b-collapse>
+        <b-tab-item label="Inovação">
+          <div v-for="objective in objectives.IN" :key="objective.id">
+            <objectiveItem
+              :objective="objective"
+              :set-practice="(id) => setPractice(id)"
+            ></objectiveItem>
           </div>
-        </b-collapse>
-      </div>
+        </b-tab-item>
+
+        <b-tab-item label="Sociedade e sustentabilidade">
+          <div v-for="objective in objectives.SO" :key="objective.id">
+            <objectiveItem
+              :objective="objective"
+              :set-practice="(id) => setPractice(id)"
+            ></objectiveItem>
+          </div>
+        </b-tab-item>
+      </b-tabs>
     </div>
 
-    <div v-if="addEvidence">
-        <b-modal :active.sync="addEvidence" has-modal-card>
-          <form action="">
+    <section>
+      <div v-if="addEvidence">
+        <b-modal :active.sync="addEvidence">   
+          <form @submit.prevent="createEvidence">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
                     <p class="modal-card-title">Cadastro de evidência</p>
@@ -172,7 +90,7 @@
                     </b-input>
                   </b-field>
 
-                  <b-field label="Quem fornece essa evidência?">
+                  <b-field label="Quem fornece essa evidência ?">
                     <b-autocomplete
                       rounded
                       v-model="name"
@@ -198,38 +116,38 @@
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button" type="button" @click="addEvidence = false">Cancelar</button>
-                    <button class="button is-primary" @click="createEvidence">Cadastrar</button>
+                    <button class="button is-primary" type="submit">Cadastrar</button>
                 </footer>
             </div>
           </form>
         </b-modal>
       </div>
-
-       <div v-if="seeEvidence">
-        <b-modal :active.sync="seeEvidence" has-modal-card>
-          <div class="modal-card" style="width: auto">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Evidencias cadastradas</p>
-            </header>
-            <section class="modal-card-body">
-              <div <div v-for="evidence in evidences">
-                <a :href="evidence.url">{{evidence.url}}</a>
-                <a class="button is-small">excluir</a>
-              </div>
-            </section>
-          </div>
-        </b-modal>
-      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import objectives from '~/static/competence-objectives.json'
+import competences from '~/static/competences.json'
+import objectiveItem from '~/components/responsible-objective-item'
+
 export default {
   layout: 'basic',
 
+  components: { objectiveItem },
+
   computed: {
-    loggedUser () {
-      this.$store.state.authUser.id
+    ...mapGetters(['loggedUser']),
+
+    objectives () {
+      return Object.values(objectives).reduce((acc, result) => {
+        if (!acc[result.competence]) {
+          acc[result.competence] = []
+        }
+        acc[result.competence].push(result)
+        return acc
+      }, {})
     },
 
     filteredMemberObj () {
@@ -252,70 +170,94 @@ export default {
   },
 
   async created () {
-    const id = this.$route.params.id
-    const evaluation = await this.$axios.$get(`/api/evaluations/${id}`)
-    this.evaluation = evaluation
-
-    const unitId = this.evaluation.unitId
-    const unit = await this.$axios.$get(`/api/units/${unitId}`)
-    this.evidenceFonts = unit.evidenceFonts
-    this.membersId = unit.members
-
-    const team = await this.$axios.$get(`/api/unit-id/${unitId}`)
-    this.team = team
     this.chargeMembers()
   },
 
-  data: () => ({
-    members: [],
-    membersId: [],
-    evidences: [],
-    evidenceFonts: [],
-    evaluation: {},
-    evidence: {
-      url: '',
-      practice: ''
-    },
-    fontId: null,
-    member: null,
-    name: '',
-    role: '',
-    addEvidence: false,
-    evidenceFont: null,
-    font: '',
-    seeEvidence: false,
-    team: []
-  }),
+  async asyncData ({ app, params }) {
+    const { id } = params
+
+    const data = {
+      id,
+      members: [],
+      sponsor: {},
+      unit: {},
+      teste: [],
+      membersId: [],
+      evidences: [],
+      evidenceFonts: [],
+      competences: competences,
+      evaluation: {},
+      evidence: {
+        url: '',
+        practice: ''
+      },
+      fontId: null,
+      member: null,
+      name: '',
+      role: '',
+      addEvidence: false,
+      evidenceFont: null,
+      font: '',
+      seeEvidence: false,
+      team: []
+    }
+
+    const evaluation = await app.$axios.$get(`/api/evaluations/${id}`)
+    Object.assign(data.evaluation, evaluation)
+
+    const unitId = evaluation.unitId
+    const unit = await app.$axios.$get(`/api/units/${unitId}`)
+    Object.assign(data.unit, unit)
+
+    data.evidenceFonts = unit.evidenceFonts
+    data.membersId = unit.members
+
+    const members = await app.$axios.$get(`api/unit-id/${unitId}`)
+    data.team = members
+
+    const teste = await app.$axios.$get(`api/member-role`)
+    data.teste = teste
+
+    const sponsor = await app.$axios.$get(`/api/users/${unit.achievement.sponsorId}`)
+    Object.assign(data.sponsor, sponsor)
+
+    return data
+  },
 
   methods: {
     async chargeMembers () {
       this.members = []
-      for (var i = 0; i < this.membersId.length; i++) {
-        var user = await this.$axios.$get(`/api/users/${this.membersId[i].userId}`)
+      for (var i = 0; i < this.team.length; i++) {
+        var user = this.team[i].member
         this.members.push(user)
       }
-    },
-
-    async chargeEvidences (practice) {
-      const data = {
-        evaluationId: this.evaluation.id,
-        practice: practice
-      }
-
-      const evidences = await this.$axios.$post('/api/per-practice/', data)
-      this.evidences = evidences
+      this.members.push(this.sponsor)
+      this.members.push(this.unit.responsible)
     },
 
     async createEvidence () {
       const evidence = {
         url: this.evidence.url,
         practice: this.evidence.practice,
-        evaluationId: this.evaluation.id
+        evaluationId: this.evaluation.id,
+        memberId: this.member.id,
+        evidenceFontId: this.font.id
       }
 
       await this.$axios.$post('api/evidences', evidence)
 
-      this.memberRoleRelate()
+      const data = {
+        memberId: this.member.id,
+        evaluationId: this.evaluation.id
+      }
+
+      const val = await this.$axios.$post('api/exist-member', data)
+      if (val.length === 0) {
+        await this.$axios.$post('api/member-evaluation', data)
+        this.memberRoleRelate()
+      } else {
+        this.memberRoleRelate()
+      }
     },
 
     async memberRoleRelate () {
@@ -329,11 +271,17 @@ export default {
           await this.$axios.$post('api/member-role', data)
         }
       }
+      this.addEvidence = false
+      this.$router.go()
     },
 
     setPractice (practice) {
       this.evidence.practice = practice
       this.addEvidence = true
+    },
+
+    chargeImprovement () {
+      this.$router.push({path: `/improvement/${this.evaluation.id}`})
     }
   }
 }

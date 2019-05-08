@@ -43,6 +43,12 @@ class EvidenceFontController {
 
     await evidenceFont.delete()
   }
+
+  byUnitId ({ params }) {
+    var evidenceFont = EvidenceFont.query().where('unitId', params.id)
+
+    return evidenceFont
+  }
 }
 
 module.exports = EvidenceFontController

@@ -3,289 +3,77 @@
     <section class="hero">
       <div class="hero-body">
         <h1 class="title">
-          Avaliaçao
+          Avaliaçao de {{ evaluation.type }}
         </h1>
+        <h2 class="subtitle">
+          <strong>Unidade de negócio:</strong> {{ evaluation.unit.name }}
+        </h2>
       </div>
     </section>
 
     <div class="columns margin-layout">
-      <div class="column is-three-quarters is-offset-2">
-        <b-tabs>
+      <div class="column">
+        <b-tabs position="is-centered">
           <b-tab-item label="Talento Humano">
 
-            <div v-for="objective in objectives.TH" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences(objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="(evidence, i) in evidences" :key="evidence.id">
-                  <p>link para a evidência {{i}}: <a>{{evidence.url}}</a> </p>
-                </br>
-                </div>
-                <div v-if="result.length === 0">
-                  <section>
-                    <b-field label="Resultado">
-                      <b-select
-                        placeholder="Selecione uma cor"
-                        v-model="evaluation.result"
-                      >
-                        <option
-                          v-for="color in colors"
-                          :value="color.name"
-                          :key="color.id"
-                        >
-                          {{ color.name }}
-                        </option>
-                      </b-select>
-                    </b-field>
-
-                    <b-field label="Problemas encontrados">
-                      <b-input maxlength="1000" type="textarea" v-model="evaluation.problem"></b-input>
-                    </b-field>
-                  </section>
-                  <button class="button" @click="addEvaluation(objective.id)">Avaliar</button>
-                </div>
-                <div v-else>
-                  <p><strong>Resultado:</strong> {{result[0].result}}</p>
-                  <p><strong>Problemas:</strong> {{result[0].problem}}</p>
-                  <button class="button" @click="">Editar</button>
-                </div>
-              </div>
-              </b-collapse>
+            <div v-for="(objective, i) in objectives.TH" :key="objective.id">
+              <objectiveItem
+                :objective="objective"
+              ></objectiveItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Gestão e Qualidade">
             <div v-for="objective in objectives.GQ" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="evidence in evidences" :key="evidence.id">
-                  <div class="card">
-                    <div class="card-header">
-                      <p>Link para a evidênvia: </p>
-                      <a href="evidences.url" target="blank"> {{evidence.url}}</a>
-                    </div>
-
-                    <div class="card-content">
-                      <section>
-                        <b-field label="Resultado">
-                          <b-select
-                            placeholder="Selecione uma cor"
-                            v-model="result"
-                          >
-                            <option
-                              v-for="color in colors"
-                              :value="color.id"
-                              :key="color.id"
-                            >
-                              {{ color.name }}
-                            </option>
-                          </b-select>
-                        </b-field>
-
-                        <b-field label="Problemas encontrados">
-                          <b-input maxlength="1000" type="textarea" v-model="evaluation.problems"></b-input>
-                        </b-field>
-                      </section>
-
-                      <button class="button" @click="addEvaluation(evidence.id)">Avaliar</button>
-                    </div>
-                  </div>
-                </br>
-                </div>
-              </div>
-
-              </b-collapse>
+              <objectiveItem
+                :objective="objective"
+              ></objectiveItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Cliente e Mercado">
             <div v-for="objective in objectives.CM" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="evidence in evidences" :key="evidence.id">
-                  <div class="card">
-                    <div class="card-header">
-                      <p>Link para a evidênvia: </p>
-                      <a href="evidences.url" target="blank"> {{evidence.url}}</a>
-                    </div>
-
-                    <div class="card-content">
-                      <section>
-                        <b-field label="Resultado">
-                          <b-select
-                            placeholder="Selecione uma cor"
-                            v-model="result"
-                          >
-                            <option
-                              v-for="color in colors"
-                              :value="color.name"
-                              :key="color.id"
-                            >
-                              {{ color.name }}
-                            </option>
-                          </b-select>
-                        </b-field>
-
-                        <b-field label="Problemas encontrados">
-                          <b-input maxlength="1000" type="textarea" v-model="evaluation.problems"></b-input>
-                        </b-field>
-                      </section>
-
-                      <button class="button" @click="addEvaluation(evidence.id)">Avaliar</button>
-                    </div>
-                  </div>
-                </br>
-                </div>
-              </div>
-
-              </b-collapse>
+              <objectiveItem
+                :objective="objective"
+              ></objectiveItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Inovação">
             <div v-for="objective in objectives.IN" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="evidence in evidences" :key="evidence.id">
-                  <div class="card">
-                    <div class="card-header">
-                      <p>Link para a evidênvia: </p>
-                      <a href="evidences.url" target="blank"> {{evidence.url}}</a>
-                    </div>
-
-                    <div class="card-content">
-                      <section>
-                        <b-field label="Resultado">
-                          <b-select
-                            placeholder="Selecione uma cor"
-                            v-model="result"
-                          >
-                            <option
-                              v-for="color in colors"
-                              :value="color.id"
-                              :key="color.id"
-                            >
-                              {{ color.name }}
-                            </option>
-                          </b-select>
-                        </b-field>
-
-                        <b-field label="Problemas encontrados">
-                          <b-input maxlength="1000" type="textarea" v-model="dataToSend.problems"></b-input>
-                        </b-field>
-                      </section>
-
-                      <button class="button" @click="addEvaluation(evidence.id)">Avaliar</button>
-                    </div>
-                  </div>
-                </br>
-                </div>
-              </div>
-
-              </b-collapse>
+              <objectiveItem
+                :objective="objective"
+              ></objectiveItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Sociedade e sustentabilidade">
             <div v-for="objective in objectives.SO" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="evidence in evidences" :key="evidence.id">
-                  <div class="card">
-                    <div class="card-header">
-                      <p>Link para a evidênvia: </p>
-                      <a href="evidences.url" target="blank"> {{evidence.url}}</a>
-                    </div>
-
-                    <div class="card-content">
-                      <section>
-                        <b-field label="Resultado">
-                          <b-select
-                            placeholder="Selecione uma cor"
-                            v-model="result"
-                          >
-                            <option
-                              v-for="color in colors"
-                              :value="color.id"
-                              :key="color.id"
-                            >
-                              {{ color.name }}
-                            </option>
-                          </b-select>
-                        </b-field>
-
-                        <b-field label="Problemas encontrados">
-                          <b-input maxlength="1000" type="textarea" v-model="evaluation.problems"></b-input>
-                        </b-field>
-                      </section>
-
-                      <button class="button" @click="addEvaluation(evidence.id)">Avaliar</button>
-                    </div>
-                  </div>
-                </br>
-                </div>
-              </div>
-
-              </b-collapse>
+              <objectiveItem
+                :objective="objective"
+              ></objectiveItem>
             </div>
           </b-tab-item>
         </b-tabs>
+        </br>
+        <button class="button" @click="checkFinalize">Finalizar avaliação</button>
       </div>
     </div>
+    <section>
+      <b-modal :active.sync="finalize">
+      <form action="">
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+              <p class="modal-card-title">Essa ação não pode ser desfeita. Deseja continuar?</p>
+          </header>
+          <footer class="modal-card-foot">
+              <button class="button" type="button" @click="finalize = false">Cancelar</button>
+              <button class="button is-primary" type="button" @click="finalizeEvaluation">Finalizar</button>
+          </footer>
+        </div>
+      </form>
+    </b-modal>
+    </section>
   </div>
 </template>
 
@@ -293,9 +81,12 @@
 import { mapGetters } from 'vuex'
 import objectives from '~/static/competence-objectives.json'
 import competences from '~/static/competences.json'
+import objectiveItem from '~/components/objective-item'
 
 export default {
   layout: 'basic',
+
+  components: { objectiveItem },
 
   computed: {
     ...mapGetters(['loggedUser']),
@@ -311,68 +102,52 @@ export default {
     }
   },
 
-  data: () => ({
-    evidences: [],
-    selectedOption: [],
-    result: [],
-    evaluation: {
-      result: '',
-      problem: ''
-    },
-    competences: competences,
-    colors: [
-      {
-        id: 1,
-        name: 'Verde'
-      },
-      {
-        id: 2,
-        name: 'Azul'
-      },
-      {
-        id: 3,
-        name: 'Amarelo'
-      },
-      {
-        id: 4,
-        name: 'Laranja'
-      },
-      {
-        id: 5,
-        name: 'Vermelho'
-      },
-      {
-        id: 6,
-        name: 'Cinza'
-      }
-    ],
+  async asyncData ({ app, params }) {
+    const { id } = params
 
-    dataToSend: {
-      result: '',
-      problems: null
+    const data = {
+      id,
+      competences: competences,
+      finalize: false,
+      evaluation: {}
     }
-  }),
+
+    const evaluation = await app.$axios.$get(`/api/evaluations/${id}`)
+    Object.assign(data.evaluation, evaluation)
+
+    return data
+  },
 
   methods: {
-    async chargeEvidences (practice) {
-      const data = {
-        evaluationId: this.$route.params.id,
-        practice: practice
-      }
-
-      const evidences = await this.$axios.$post('/api/per-practice/', data)
-      const result = await this.$axios.$post('/api/res-practice/', data)
-
-      this.evidences = evidences
-      this.result = result
+    async loadEvaluation () {
+      const evaluation = await this.$axios.$get(`/api/evaluations/${this.id}`)
+      this.evaluation = evaluation
     },
 
-    async addEvaluation (practice) {
-      this.evaluation.practice = practice
-      this.evaluation.evaluationId = this.$route.params.id
+    async checkFinalize () {
+      const results = await this.$axios.$get(`/api/evaluation-result/${this.id}`)
+     
+      if (results.length < 20) {
+        this.$toast.open({
+          message: 'Os objetios não foram avaliados por completo. Avalie todos e tente novamente.',
+          duration: 5000,
+          position: 'is-bottom-right',
+          type: 'is-danger'
+        })
+      } else {
+        this.finalize = true
+      }
+    },
 
-      await this.$axios.$post('/api/results/', this.evaluation)
-      this.chargeEvidences(practice)
+    async finalizeEvaluation () {
+      const data = {
+        colorFinal: true,
+        status: 'Finalizada',
+        endDate: new Date()
+      }
+
+      await this.$axios.$put(`/api/evaluations/${this.id}`, data)
+      this.$router.push({path: `/valuer/unit/${this.evaluation.unitId}`, success: true})
     }
   }
 }

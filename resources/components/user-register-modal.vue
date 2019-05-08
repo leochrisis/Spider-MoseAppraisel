@@ -4,7 +4,7 @@
       <form @submit.prevent="createUser(user, confirmPassword)">
         <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
-                <p class="modal-card-title">Cadastro de usuário</p>
+                <p class="modal-card-title">Cadastro de {{profile.name}}</p>
             </header>
             <section class="modal-card-body">
               <b-field label="Papel">
@@ -54,7 +54,7 @@
 
             </section>
             <footer class="modal-card-foot">
-                <button class="button" type="button" @click="onClose">Cancelar</button>
+                <button class="button" type="button" @click="closeModal">Cancelar</button>
                 <button class="button is-primary" type="submit">Cadastrar</button>
             </footer>
         </div>
@@ -91,10 +91,26 @@ export default {
     user: {
       username: '',
       email: '',
-      password: '',
-      profile: this.profile.id
+      password: ''
     },
     confirmPassword: ''
-  })
+  }),
+
+  methods: {
+    closeModal () {
+      this.user.username = ''
+      this.user.email = ''
+      this.user.password = ''
+      this.confirmPassword = ''
+      this.onClose()
+    }
+  }
 }
 </script>
+
+<style scoped>
+.button {
+  padding: 5px;
+  display: inline-flex
+}
+</style>
