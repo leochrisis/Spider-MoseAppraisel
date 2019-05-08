@@ -2,177 +2,92 @@
   <div>
     <section class="hero">
       <div class="hero-body">
-        <h1 class="title">
-          Plano de melhoria
+        <h1 v-if="evaluation !== null" class="title">
+          Plano de melhoria da unidade de negócio {{evaluation.unit.name}}
         </h1>
       </div>
-      <div class="navbar-end">
-        <nuxt-link to="`/${evaluation.id}/map`">
-          mapa de calor
-        </nuxt-link>
-      </div>
     </section>
+
     <div class="columns margin-layout">
-      <div class="column is-three-quarters is-offset-2">
-        <b-tabs>
+      <div class="column">
+
+        <div class="navbar-end">
+          <a @click="chargeMap">
+            mapa de calor
+          </a>
+        </div>
+
+        <b-tabs position="is-centered">
           <b-tab-item label="Talento Humano">
 
             <div v-for="objective in objectives.TH" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences(objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-                <div v-for="(evidence, i) in evidences" :key="evidence.id">
-                  <p>link para a evidência {{i}}: <a>{{evidence.url}}</a></p>
-                </div>
-                <div v-if="result.length > 0">
-                  </hr>
-                  <p><strong>Resultado:</strong> {{result[0].result}}</p>
-                  </br>
-                  <p><strong>Problemas:</strong> {{result[0].problem}}</p>
-
-                  <p><strong>Solução</strong></p>
-                    <b-input type="textarea" v-model="plan.solution"></b-input>
-                    </br>
-
-                    <b-field label="Quem resolve?">
-                      <b-autocomplete
-                        rounded
-                        v-model="name"
-                        :data="filteredMemberObj"
-                        placeholder="Insira o nome do membro"
-                        icon="magnify"
-                        field="username"
-                        @select="option => member = option">
-                      </b-autocomplete>
-                    </b-field>
-
-                    <p><strong>Quando resolve?</strong></p>
-                    <b-datepicker
-                      placeholder="Selecione uma data..."
-                      v-model="plan.solutionDate"
-                      icon="calendar-today">
-                    </b-datepicker>
-                    </br>
-
-                    <p><strong>Status</strong></p>
-                    <b-dropdown>
-                      <button class="button is-primary" slot="trigger">
-                          <span>Selecione um status</span>
-                          <b-icon icon="menu-down"></b-icon>
-                      </button>
-
-                      <b-dropdown-item>Novo</b-dropdown-item>
-                      <b-dropdown-item>Em andamento</b-dropdown-item>
-                      <b-dropdown-item>Finalizado</b-dropdown-item>
-                  </b-dropdown>
-                </div>
-                <div v-else>
-                  <p>Critério não aplicável</p>
-                </div>
-                <footer class="card-footer">
-                  <a class="card-footer-item" @click="addImprovementPlan(objective.id)">Salvar</a>
-                </footer>
-              </div>
-              </b-collapse>
+              <improvementItem
+                :objective="objective"
+                :team="team"
+              ></improvementItem>
             </div>
           </b-tab-item>
 
-          <b-tab-item label="Gestão e Qualidade">
+          <b-tab-item label="Gestão e qualidade">
+
             <div v-for="objective in objectives.GQ" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-
-              </div>
-
-              </b-collapse>
+              <improvementItem
+                :objective="objective"
+                :team="team"
+              ></improvementItem>
             </div>
           </b-tab-item>
 
-          <b-tab-item label="Cliente e Mercado">
+          <b-tab-item label="Cliente e mercado">
+
             <div v-for="objective in objectives.CM" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-              </div>
-
-              </b-collapse>
+              <improvementItem
+                :objective="objective"
+                :team="team"
+              ></improvementItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Inovação">
+
             <div v-for="objective in objectives.IN" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
-
-              <div class="card-content">
-              </div>
-
-              </b-collapse>
+              <improvementItem
+                :objective="objective"
+                :team="team"
+              ></improvementItem>
             </div>
           </b-tab-item>
 
           <b-tab-item label="Sociedade e sustentabilidade">
-            <div v-for="objective in objectives.SO" :key="objective.id">
-              <b-collapse class="card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
-                <p class="card-header-title">
-                  {{objective.id}} - {{objective.description}}
-                </p>
-                <a @click="chargeEvidences (objective.id)" class="card-header-icon">
-                  <b-icon
-                    :icon="props.open ? 'menu-up' : 'menu-down'">
-                  </b-icon>
-                </a>
-              </div>
 
-              <div class="card-content">
-              </div>
-              </b-collapse>
+            <div v-for="objective in objectives.SO" :key="objective.id">
+              <improvementItem
+                :objective="objective"
+                :team="team"
+              ></improvementItem>
             </div>
           </b-tab-item>
         </b-tabs>
+        <br/>
+        <button class="button" @click="finalize = true">Finalizar plano</button>
       </div>
     </div>
+
+    <section>
+      <b-modal :active.sync="finalize">
+      <form action="">
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+              <p class="modal-card-title">Essa ação não pode ser desfeita. Deseja continuar?</p>
+          </header>
+          <footer class="modal-card-foot">
+              <button class="button" type="button" @click="finalize = false">Cancelar</button>
+              <button class="button is-primary" type="button" @click="finalizePlan">Finalizar</button>
+          </footer>
+        </div>
+      </form>
+    </b-modal>
+    </section>
   </div>
 </template>
 
@@ -180,23 +95,16 @@
 import { mapGetters } from 'vuex'
 import objectives from '~/static/competence-objectives.json'
 import competences from '~/static/competences.json'
+import improvementItem from '~/components/improvement-item.vue'
 
 export default {
   name: 'improvement',
 
   layout: 'basic',
 
+  components: { improvementItem },
+
   async created () {
-    const id = this.$route.params.id
-    const evaluation = await this.$axios.$get(`/api/evaluations/${id}`)
-    this.evaluation = evaluation
-
-    const unitId = this.evaluation.unitId
-    const unit = await this.$axios.$get(`/api/units/${unitId}`)
-    this.membersId = unit.members
-
-    const team = await this.$axios.$get(`/api/unit-id/${unitId}`)
-    this.team = team
     this.chargeMembers()
   },
 
@@ -223,24 +131,57 @@ export default {
     }
   },
 
-  data: () => ({
-    competences: competences,
-    evidences: [],
-    result: [],
-    plan: {
-      solution: '',
-      solutionDate: '',
-      status: 'novo'
-    },
-    membersId: null,
-    team: null,
-    members: [],
-    evaluation: null,
-    name: '',
-    member: null
-  }),
+  async asyncData ({ app, params }) {
+    const { id } = params
+
+    const data = {
+      id,
+      competences: competences,
+      evidences: [],
+      result: [],
+      plan: {
+        solution: '',
+        solutionDate: new Date(),
+        status: 'novo'
+      },
+      membersId: [],
+      team: [],
+      members: [],
+      unit: {},
+      sponsor: {},
+      evaluation: {},
+      finalize: false
+    }
+
+    const evaluation = await app.$axios.$get(`/api/evaluations/${id}`)
+    Object.assign(data.evaluation, evaluation)
+
+    const unitId = evaluation.unitId
+    const unit = await app.$axios.$get(`/api/units/${unitId}`)
+    Object.assign(data.unit, unit)
+
+    data.membersId = unit.members
+
+    const team = await app.$axios.$get(`/api/unit-id/${unitId}`)
+    data.team = team
+
+    const sponsor = await app.$axios.$get(`/api/users/${unit.achievement.sponsorId}`)
+    Object.assign(data.sponsor, sponsor)
+
+    return data
+  },
 
   methods: {
+    async chargeMembers () {
+      this.members = []
+      for (var i = 0; i < this.team.length; i++) {
+        var user = this.team[i].member
+        this.members.push(user)
+      }
+      this.members.push(this.sponsor)
+      this.members.push(this.unit.responsible)
+    },
+
     async chargeEvidences (practice) {
       const data = {
         evaluationId: this.$route.params.id,
@@ -254,20 +195,17 @@ export default {
       this.result = result
     },
 
-    async addImprovementPlan (practice) {
-      this.plan.practice = practice
-      this.plan.resultId = this.result[0].id
-      this.plan.memberId = this.member.id
-
-      await this.$axios.$post('/api/improvements/', this.plan)
+    chargeMap () {
+      this.$router.push({path: `/improvement/${this.evaluation.id}/map`})
     },
 
-    async chargeMembers () {
-      this.members = []
-      for (var i = 0; i < this.membersId.length; i++) {
-        var user = await this.$axios.$get(`/api/users/${this.membersId[i].userId}`)
-        this.members.push(user)
+    async finalizePlan () {
+      const data = {
+        planFinal: true
       }
+
+      await this.$axios.$put(`/api/evaluations/${this.id}`, data)
+      this.$router.push({path: `/valuer/unit/${this.evaluation.unitId}`, success: true})
     }
   }
 }
