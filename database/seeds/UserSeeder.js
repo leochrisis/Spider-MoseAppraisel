@@ -45,20 +45,20 @@ class UserSeeder {
     })
 
     await User.create({
-      username: 'leonardo',
-      email: 'leo@example.com',
+      username: 'example1',
+      email: 'example1@example.com',
       password: '123456'
     })
 
     await User.create({
-      username: 'Ian',
-      email: 'ian@example.com',
+      username: 'example2',
+      email: 'example2@example.com',
       password: '123456'
     })
 
     await User.create({
-      username: 'lucas',
-      email: 'lucas@example.com',
+      username: 'example3',
+      email: 'example3@example.com',
       password: '123456'
     })
   }

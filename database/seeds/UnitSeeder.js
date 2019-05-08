@@ -15,8 +15,8 @@ const Unit = use('App/Models/Unit')
 class UnitSeeder {
   async run () {
     await Unit.create({
-      name: 'Lorde',
-      description: 'Here to help you on your app',
+      name: 'Example 1',
+      description: 'Made to perform tests',
       phone: '8033-3265',
       people_number: 45,
       achievementId: 1,
@@ -24,7 +24,7 @@ class UnitSeeder {
       valuerId: 2
     })
     await Unit.create({
-      name: 'Green ligth',
+      name: 'Example 2',
       description: 'Let it go!',
       phone: '8033-3547',
       people_number: 120,
@@ -33,7 +33,7 @@ class UnitSeeder {
       valuerId: 6
     })
     await Unit.create({
-      name: 'Sober',
+      name: 'Example 3',
       description: 'King and queen of the weekends!',
       phone: '8033-5555',
       people_number: 320,
@@ -42,7 +42,7 @@ class UnitSeeder {
       valuerId: 2
     })
     await Unit.create({
-      name: 'Loyalty',
+      name: 'Example 4',
       description: 'Masters of cards!',
       phone: '8033-6547',
       people_number: 30,

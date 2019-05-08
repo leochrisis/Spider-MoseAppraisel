@@ -25,7 +25,7 @@ class TeamSeeder {
     })
 
     await Team.create({
-      userId: 6,
+      userId: 6,   
       unitId: 1
     })
 

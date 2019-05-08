@@ -15,7 +15,7 @@ const Achievement = use('App/Models/Achievement')
 class AchievementSeeder {
   async run () {
     await Achievement.create({
-      name: 'Tennis Court',
+      name: 'Achievement 1',
       cnpj: '2315648',
       phone: '8033-3265',
       adress: 'Lorem inpsum dolor sit amet, 23, Cidadella, Brasil',
@@ -24,7 +24,7 @@ class AchievementSeeder {
     })
 
     await Achievement.create({
-      name: 'Snow Fairy',
+      name: 'Achievement 2',
       cnpj: '245689',
       phone: '8032-2154',
       adress: 'Sit amet inpsum Lorem, 54, Marulos, Brasil',
