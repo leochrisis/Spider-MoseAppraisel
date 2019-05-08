@@ -8,7 +8,7 @@ class Result extends Model {
   }
 
   improvements () {
-    return this.hasOne('App/Models/Improvement', 'id', 'improvementId')    
+    return this.hasOne('App/Models/Improvement', 'id', 'resultId')
   }
 }
 

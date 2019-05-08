@@ -35,6 +35,7 @@ class ImprovementController {
 
     improvement.merge(data)
     await improvement.save()
+    
     return improvement
   }
 
@@ -42,6 +43,16 @@ class ImprovementController {
     const improvement = await Improvement.findOrFail(params.id)
 
     await improvement.delete()
+  }
+
+  async perResult ({ params }) {
+    const improvement = Improvement
+      .query()
+      .where('resultId', params.id)
+      .with('members')
+      .fetch()
+
+    return improvement
   }
 }
 

@@ -10,6 +10,10 @@ class EvidenceSchema extends Schema {
       table.string('practice').notNullable()
       table.integer('evaluationId').unsigned()
       table.foreign('evaluationId').references('evaluations.id').onDelete('cascade')
+      table.integer('memberId').unsigned()
+      table.foreign('memberId').references('users.id').onDelete('cascade')
+      table.integer('evidenceFontId').unsigned()
+      table.foreign('evidenceFontId').references('evidence_fonts.id').onDelete('cascade')
       table.timestamps()
     })
   }

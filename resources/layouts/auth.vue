@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-primary is-fullheight">
+    <section class="hero is-mose is-fullheight">
       <div class="hero-head">
         <nav class="navbar">
           <div class="navbar-brand">

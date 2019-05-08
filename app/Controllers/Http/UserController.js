@@ -54,17 +54,14 @@ class UserController {
   async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
-    const {username, email, profiles} = request.post()
+    const data = request.only(['username', 'email', 'profiles'])
 
-    user.username = username || user.username
-    user.email = email || user.email
-    user.password = await Hash.make(user.password)
-
+    user.merge(data)
     await user.save()
 
-    if (profiles && profiles.length > 0) {
+    if (data.profiles && data.profiles.length > 0) {
       await user.profiles().detach()
-      await user.profiles().attach(profiles)
+      await user.profiles().attach(data.profiles)
       user.profiles = await user.profiles().fetch()
     }
 
@@ -87,6 +84,8 @@ class UserController {
 
   async sponsorAchievements ({ params }) {
     const achievements = Achievement.query().where('sponsorId', params.id)
+      .with('units')
+      .fetch()
 
     return achievements
   }
@@ -103,6 +102,7 @@ class UserController {
     var units = Unit.query().where('responsibleId', params.id)
       .with('evaluations')
       .with('evidenceFonts')
+      .with('responsible')
       .with('members')
       .fetch()
 

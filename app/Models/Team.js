@@ -3,6 +3,14 @@
 const Model = use('Model')
 
 class Team extends Model {
+  member () {
+    return this.belongsTo('App/Models/User', 'userId')
+  }
+
+  unit () {
+    return this.belongsTo('App/Models/Unit', 'unitId')
+  }
+
   roles () {
     return this
       .belongsToMany('App/Models/EvidenceFont', 'memberId', 'evidenceFontId')

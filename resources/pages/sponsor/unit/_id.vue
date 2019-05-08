@@ -1,247 +1,357 @@
 <template>
   <div>
     <div class="columns">
-      <div class="column is-one-fifth">
-        <aside class="menu">
-          <div class="card">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">John Smith</p>
-                  <p class="subtitle is-6">@johnsmith</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br/>
+      <div class="column" v-if="selectedUnit">
+        <!-- unit viwer -->
+        <unitViewer
+          :profile="3"
+          :unit="selectedUnit"
+          :edit-unit="editUnit"
+          :delete-unit="deleteUnit"
+          :open-responsible-creator="openResponsibleCreator"
+          :open-responsible-update="openResponsibleUpdateModal"
+          :disassociate-responsible="disassociateResponsible"
+        >
+        </unitViewer>
 
-          <ul class="menu-list gray">
-            <a class="button is-info" @click="creation = true">Novo empreendimento</a>
-            <br/>
-            <p class="menu-label">
-              Empreendimentos:
-            </p>
-            <ul>
-              <div v-for="achievement in achievements" :key="achievement.id">
-                <li><a @click="chargeAchievement(achievement.id)">{{achievement.name}}</a></li>
-                  <li>
-                    <ul>
-                      <div v-for="unit in achievement.unit" :key="unit.id">
-                        <li><a>
-                        <nuxt-link :to="`/sponsor/unit/${unit.id}`">
-                          {{unit.name}}
-                        </nuxt-link>
-                        </a></li>
-                      </div>
-                    </ul>
-                  </li>
-              </div>
-            </ul>
-          </ul>
-        </aside>
-      </div>
-
-      <div class="column" v-if="selected">
-        <nav class="navbar is-ligthGray">
-          <div class="navbar-start">
-            <div class="navbar-item title">
-              {{selected.name}}
-            </div>
-          </div>
-
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <button class="button is-warning" @click="editUnit">Editar</button>
-                <button class="button is-danger" @click="deleteUnit">Deletar</button>
-              </div>
-            </div>
-          </div>
-        </nav>
-        <nav class="level">
-          <div class="level-item has-text-centered column is-2">
-            <div>
-              <p class="heading">Responsável</p>
-              <p>
-                A unidade de negócio não possui responsável.
-                <a @click="creation = true">Clique aqui para cadastra-lo</a>
-              </p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered column is-2">
-            <div>
-              <p class="heading">Descrição</p>
-              <p>{{selected.description}}</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered column is-2">
-            <div>
-              <p class="heading">Telefone</p>
-              <p>{{selected.phone}}</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered column is-2">
-            <div>
-              <p class="heading">Número de membros</p>
-              <p>{{selected.people_number}}</p>
-            </div>
-          </div>
-        </nav>
-        <nav class="navbar is-transparent">
+        <nav class="navbar is-ligthBlue">
           <div class="navbar-start">
             <div class="navbar-item title">
               Avaliações
             </div>
           </div>
+          <div class="navbar-end" v-if="selectedEvaluation">
+            <div class="navbar-item">
+              <div class="buttons">
+                <button 
+                  v-if="selectedEvaluation.status === 'Vigente'"
+                  class="button" 
+                  @click="openTerm = true"
+                >
+                  Termo de confidencialidade
+                </button>
+                <div v-if="selectedEvaluation.status === 'Finalizada'">
+                  <button class="button" @click="chargeImprovement">Plano de melhoria</button>
+                  <button class="button" @click="">Mapa de calor</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </nav>
         <br/>
-        <div v-if="selected.evaluations.length === 0">
+        <div v-if="selectedUnit.evaluations.length === 0">
           Ainda não existem avaliações.
         </div>
         <div v-else>
           <b-table
-            :bordered="bordered"
-            :data="selected.evaluations"
+            :data="evaluations"
             :columns="columns"
+            :selected.sync="selectedEvaluation"
             focusable
           ></b-table>
         </div>
       </div>
     </div>
     <section>
-      <div v-if="creation">
-        <b-modal :active.sync="creation" has-modal-card>
-          <form action="">
+      <userRegister
+        :activate="!!creation"
+        :profile="profiles.responsible"
+        :createUser="(user, confirmPassword) => createUser(user, confirmPassword)"
+        :onClose="closeUserRegisterModal"
+      ></userRegister>
+
+      <div v-if="edition">
+        <b-modal :active.sync="edition">
+          <form>
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Cadastro de patrocinador</p>
+                    <p class="modal-card-title">Edição de unidade de negócio</p>
                 </header>
                 <section class="modal-card-body">
-                  <b-field label="Papel">
-                    <b-dropdown disabled>
-                      <button class="button" slot="trigger">
-                          <span>Responsável</span>
-                          <b-icon icon="menu-down"></b-icon>
-                      </button>
-                    </b-dropdown>
-                  </b-field>
-
-                  <b-field label="Usuário">
+                  <b-field label="Nome da unidade">
                     <b-input
-                        v-model="user.username"
-                        placeholder="Nome do patrocinador"
+                        v-model="editedUnit.name"
+                        placeholder="Nome da unidade"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Email">
+                  <b-field label="Descrição">
                     <b-input
-                        type="email"
-                        v-model="user.email"
-                        placeholder="Email do usuário"
+                        type="textarea"
+                        v-model="editedUnit.description"
+                        placeholder="Decrição da unidade"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Senha">
+                  <b-field label="Telefone">
                     <b-input
-                        v-model="user.password"
-                        placeholder="Senha do usuário"
+                        v-model="editedUnit.phone"
+                        placeholder="Telefone da unidade"
                         required>
                     </b-input>
                   </b-field>
 
-                  <b-field label="Confime a senha">
+                  <b-field label="Número de pessoas da unidade">
                     <b-input
-                        v-model="passwordConfirme"
-                        placeholder="Confirme a senha"
+                        v-model="editedUnit.people_number"
+                        placeholder="Número de pessoas da unidade"
                         required>
                     </b-input>
                   </b-field>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="sponsor = false">Cancelar</button>
-                    <button class="button is-primary" @click="createUSer">cadastrar</button>
+                    <button class="button" type="button" @click="edition = false">Cancelar</button>
+                    <button class="button is-primary" type="submit" @click="updateUnit">Atualizar</button>
                 </footer>
             </div>
           </form>
         </b-modal>
+      </div>
+
+      <div v-if="responsibleChange">
+        <b-modal :active.sync="responsibleChange">
+          <form>
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Mudança de responsável</p>
+                </header>
+                <section class="modal-card-body">
+                  <b-field label="Qual o novo responsável?">
+                    <b-autocomplete
+                      rounded
+                      v-model="name"
+                      :data="filteredUserObj"
+                      placeholder="Insira o nome do novo responsável"
+                      icon="magnify"
+                      field="username"
+                      @select="option => newResponsible = option">
+                    </b-autocomplete>
+                  </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="responsibleChange = false">Cancelar</button>
+                    <button class="button is-primary" @click="updateResponsible">Atualizar</button>
+                </footer>
+            </div>
+          </form>
+        </b-modal>
+      </div>
+
+      <div v-if="openTerm && isCurrentSponsor">
+        <confidentialityTerm
+          :activate="!!openTerm"
+          :unit="selectedUnit"
+          :evaluation="selectedEvaluation"
+          :on-close="closeTermModal"
+          :sponsor="sponsor"
+          :responsible="selectedUnit.responsible"
+          :valuer="selectedUnit.valuer"
+          :members="members"
+          :confirm-term="confimSponsorTerm"
+        ></confidentialityTerm>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import sideBar from '~/components/side-bar.vue'
+import unitViewer from '~/components/unit-viewer.vue'
+import userRegister from '~/components/user-register-modal.vue'
+import confidentialityTerm from '~/components/confidentiality-term.vue'
+import profiles from '~/static/profiles.json'
+import helper from '~/static/helpers.json'
+
 export default {
   layout: 'basic',
 
-  async created () {
-    const achievements = await this.$axios.$get('/api/achievements/1')
-    this.achievements.push(achievements)
-    var id = this.$route.params.id
-    const selected = await this.$axios.$get(`/api/units/${id}`)
-    this.selected = selected
+  components: { sideBar, userRegister, unitViewer, confidentialityTerm },
+
+  created() {
+    this.loadSponsorAchievement()
   },
 
-  data: () => ({
-    achievements: [],
-    selected: null,
-    responsible: false,
-    bordered: true,
-    creation: false,
-    edition: false,
-    user: {
-      username: '',
-      email: '',
-      password: '',
-      profiles: [4]
-    },
-    passwordConfirme: '',
-    contractors: [
-      'Lorem',
-      'Inpsun',
-      'Sit amet'
-    ],
-    columns: [
-      {
-        field: 'type',
-        label: 'Tipo',
-        centered: true
-      },
-      {
-        field: 'status',
-        label: 'status',
-        centered: true
-      },
-      {
-        field: 'contractor',
-        label: 'Contratante',
-        centered: true
-      },
-      {
-        field: 'partner',
-        label: 'Parceiro',
-        centered: true
+  async asyncData ({ app, params }) {
+    const { id } = params
+
+    const data = {
+      achievements: [],
+      evaluations: [],
+      selectedUnit: null,
+      responsible: false,
+      creation: false,
+      openTerm: false,
+      edition: false,
+      selectedEvaluation: null,
+      editedUnit: {},
+      profiles: profiles,
+      newResponsible: null,
+      responsibleChange: false,
+      users: [],
+      members: [],
+      sponsor: {},
+      name: '',
+      contractors: helper.contractors,
+      columns: [
+        {
+          field: 'type',
+          label: 'Tipo',
+          centered: true
+        },
+        {
+          field: 'status',
+          label: 'status',
+          centered: true
+        },
+        {
+          field: 'valuer.username',
+          label: 'Avaliador',
+          centered: true
+        },
+        {
+          field: 'responsible.username',
+          label: 'Responsável',
+          centered: true
+        },
+        {
+          field: 'contractor',
+          label: 'Contratante',
+          centered: true
+        },
+        {
+          field: 'partner',
+          label: 'Parceiro',
+          centered: true
+        },
+        {
+          field: 'startDate',
+          label: 'Data de início',
+          centered: true
+        },
+        {
+          field: 'endDate',
+          label: 'Data de finalização',
+          centered: true
+        }
+      ],
+    }
+
+    const selectedUnit = await app.$axios.$get(`/api/units/${id}`)
+    data.selectedUnit = selectedUnit
+
+    data.evaluations = await app.$axios.$get(`api/per-unit/${id}`)
+
+    //This part of code is used to convert to string the date data received from backend.
+    for (var i = 0; i < data.evaluations.length; i++) {
+      data.evaluations[i].startDate = new Date(data.evaluations[i].startDate).toLocaleDateString()
+      if (data.evaluations[i].endDate) {
+        data.evaluations[i].endDate = new Date(data.evaluations[i].endDate).toLocaleDateString()
       }
-    ],
-    edited: {}
-  }),
+    }
+
+    const sponsor = await app.$axios.$get(`/api/users/${selectedUnit.achievement.sponsorId}`)
+    Object.assign(data.sponsor, sponsor)
+
+    const members = await app.$axios.$get(`/api/unit-id/${selectedUnit.id}`)
+    data.members = members
+
+    const users = await app.$axios.$get('/api/users')
+    data.users = users
+
+    return data
+  },
+
+  computed: {
+    ...mapGetters(['loggedUser']),
+
+    filteredUserObj () {
+      return this.users.filter((option) => {
+        return option.username
+          .toString()
+          .toLowerCase()
+          .indexOf(this.name.toLowerCase()) >= 0
+      })
+    },
+
+    isCurrentSponsor () {
+      return this.selectedUnit.achievement.sponsorId === this.loggedUser.id
+    }
+  },
 
   methods: {
-    async createUser () {
-      if (this.user.password === this.passwordConfirme) {
-        await this.$axios.$post('api/users', this.user)
+    async createUser (user, confirmPassword) {
+      if (user.password === confirmPassword) {
+        user.profile = [this.profiles.responsible.id]
+        const { id } = await this.$axios.$post('api/users', user)
+
+        const data = {responsibleId: id}
+        const unitId = this.selected.id
+
+      await this.$axios.$put(`api/units/${unitId}`, data)
+          .then(this.handleCreateSuccess)
+          .catch(this.handleCreateFail)
       }
+
+      this.closeUserRegisterModal()
+    },
+
+    async loadSponsorAchievement () {
+      const id = this.loggedUser.id
+      const achievements = await this.$axios.$get(`/api/sponsor-achivements/${id}`)
+      this.achievements = achievements
+    },
+
+    async loadUnits () {
+      const id = this.loggedUser.id
+      const achievements = await this.$axios.$get(`/api/sponsor-achivements/${id}`)
+      this.achievements = achievements
+      var idUN = this.$route.params.id
+      const selectedUnit = await this.$axios.$get(`/api/units/${idUN}`)
+      this.selectedUnit = selectedUnit
+      this.evaluations = await this.$axios.$get(`api/per-unit/${idUN}`)
+
+      for (var i = 0; i < this.evaluations.length; i++) {
+        this.evaluations[i].startDate = new Date(this.evaluations[i].startDate).toLocaleDateString()
+        if (this.evaluations[i].endDate) {
+          this.evaluations[i].endDate = new Date(this.evaluations[i].endDate).toLocaleDateString()
+        }
+      }
+
+      const sponsor = await this.$axios.$get(`/api/users/${selectedUnit.achievement.sponsorId}`)
+      this.sponsor = sponsor
+
+      const members = await this.$axios.$get(`/api/unit-id/${selectedUnit.id}`)
+      this.members = members
+    },
+
+    async loadUsers () {
+      const users = await this.$axios.$get('/api/users')
+      this.users = users
+    },
+
+    handleCreateSuccess () {
+      this.$toast.open({
+        message: 'Responsável criado com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
+    },
+
+    handleCreateFail () {
+      this.$toast.open({
+        message: 'Falha ao criar responsável. Cheque os dados e tente novamente.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
+    },
+
+    closeUserRegisterModal () {
+      this.creation = false
     },
 
     editEvaluation () {
@@ -249,32 +359,88 @@ export default {
       this.edition = true
     },
 
-    async updateEvaluation () {
-      const {id} = this.edited
-      await this.$axios.$put(`api/evaluation/${id}`, this.edited)
-      Object.assign(this.selected, this.edited)
-    },
-
-    async deleteEvaluation () {
-      const {id} = this.selected
-      await this.$axios.$delete(`api/evaluation/${id}`)
-    },
-
     editUnit () {
-      Object.assign(this.edited, this.selected)
+      Object.assign(this.editedUnit, this.selectedUnit)
       this.edition = true
     },
 
     async updateUnit () {
-      const {id} = this.edited
-      await this.$axios.$put(`api/unit/${id}`, this.edited)
-      Object.assign(this.selected, this.edited)
+      const {id} = this.editedUnit
+
+      await this.$axios.$put(`api/units/${id}`, this.editedUnit)
     },
 
     async deleteUnit () {
-      const {id} = this.selected
-      await this.$axios.$delete(`api/unit/${id}`)
-      this.$router.push({path: '/sponsor', success: true})
+      const {id} = this.selectedUnit
+
+
+      await this.$axios.$delete(`api/units/${id}`)
+      this.loadSponsorAchievement()
+      this.$router.push({path: '/sponsor/achievements', success: true})
+    },
+
+    openResponsibleCreator () {
+      this.creation = true
+    },
+
+    openResponsibleUpdateModal () {
+      this.responsibleChange = true
+    },
+
+    async updateResponsible () {
+      const data = {responsibleId: this.newResponsible.id}
+
+      await this.$axios.$put(`api/units/${this.selectedUnit.id}`, data)
+        .then(this.handleResponsibleUpdateSuccess)
+        .catch(this.handleResponsibleUpdateFail)
+
+      this.chargeAchievement(this.selectedUnit.id)
+    },
+
+    closeTermModal () {
+      this.openTerm = false
+    },
+
+    chargeImprovement () {
+      this.$router.push({path: `/improvement/${this.selectedEvaluation.id}`})
+    },
+
+    async confimSponsorTerm () {
+      const data = {sponsorConfirmation: true}
+
+      await this.$axios.$post(`api/sponsor-confirm/${this.selectedEvaluation.id}`, data)
+        .then(this.handleConfirmSuccess)
+        .cath(this.handleConfirmFail)
+    },
+
+    handleConfirmSuccess () {
+      this.$toast.open({
+        message: 'Acordo assinado com sucesso.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-success'
+      })
+
+      this.openTerm = false
+      this.$router.go()
+    },
+
+    handleConfirmFail () {
+      this.$toast.open({
+        message: 'Falha ao assinar acordo. Verifique sua conexão e tente novamente.',
+        duration: 5000,
+        position: 'is-bottom-right',
+        type: 'is-danger'
+      })
+    },
+
+    async disassociateResponsible () {
+      const data = {responsibleId: null}
+      const id = this.selectedUnit.id
+
+      await this.$axios.$put(`api/units/${id}`, data)
+
+      this.loadUnits()
     }
   }
 }
